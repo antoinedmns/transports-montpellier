@@ -4,8 +4,10 @@ import { join } from 'path';
 import { AppEtats } from './struct/enums/app';
 import Logger from './struct/internal/Logger';
 import fs from 'fs';
+import RouteAbstract from './struct/express/RouteAbstract';
+import MiddlewareAbstract from './struct/express/MiddlewareAbstract';
 
-class Application {
+export default class Application {
 
     /**
      * Application Transports Montpellierains
@@ -15,9 +17,14 @@ class Application {
         // Démarrage du serveur HTTP Express.js
         this.serveur = express()
 
+        console.log('s')
+
         // Configuration express.js
 		this.serveur.set('view engine', 'ejs');
 		this.serveur.set('views', join(__dirname, 'src', 'vues')); // Path to views
+
+        // Initialiser l'application
+        this._init();
 
     }
 
@@ -39,7 +46,8 @@ class Application {
         // Si l'application est déjà initialisée
         if (this.etatApp !== AppEtats.PREPARATION_DEMARRAGE) Logger.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.')
 
-
+        // Charger et lier les routes HTTP
+        this._loadRoutes();
 
     }
 
@@ -51,9 +59,10 @@ class Application {
 
 		return new Promise((resolve) => {
 
+            const tempsDebut = Date.now();
             let routes: string[] = []
 
-			// Récupérer récursivement tous les fichiers dans le dossier /src/routes/
+			// Ajouter récursivement tous les fichiers du dossier /src/routes/ dans la liste 'routes'
 			const getAllFiles = (dir: string): void =>
 
                 fs.readdirSync(dir).forEach((fichier, i) => {
@@ -68,36 +77,78 @@ class Application {
                     // Sinon; on l'ajoute à la liste des routes chargées
                     else routes.push(cheminFichier);
                     
-                })
+                });
+
+            getAllFiles(join(__dirname, 'routes'));
 
             // Pour chaque route
-            routes.forEach(routePath => {
+            for (const routePath of routes) {
 
-                // Récupérer le contenu du fichier route
-                const routeFile = require(routePath);
+                // Récupérer l'élement exporté par défaut dans le fichier route
+                const ConstructeurRoute = require(routePath).default;
 
-            });
+                // Vérifier que la classe exportée étend la classe abstraite RouteAbstract
+                if (!ConstructeurRoute || !(ConstructeurRoute.prototype instanceof RouteAbstract)) {
 
-			// For each route..
-			getAllFiles(join(__dirname, 'src', 'routes')).forEach(routePath => {
+                    Logger.log.error('Routeur', 'La route ', routePath, ' n\'a pas pu être chargée car elle n\'étend pas la classe abstraite RouteAbstract.');
+                    continue;
 
-				// Get route
-				const routeFile = require(routePath);
+                }
 
-				// Load route
-				this[routeFile.data.method] // Add route to express.js depending on its method (GET, POST, etc)
-					(routeFile.data.path, (req, res) => routeFile.route(this, req, res));
+                // On créé une nouvelle instance de la route
+                const instanceRoute = new ConstructeurRoute() as RouteAbstract;
 
-			});
+                // On lie la route au serveur HTTP
+                this.serveur[instanceRoute.methode](instanceRoute.chemin, instanceRoute.execution);
 
-			// Log
-			logger.log("Routes", "Loaded ", routes.length, " routes in ", (new Date() - startTime).toString() + "ms", "... ", "OK!");
+            }
 
-			// Résout la promesse
-			resolve();
+            Logger.log.info('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms',' ... ', 'OK!');
+			resolve(true);
 
 		});
 
 	}
+
+    /**
+     * Charger les middlewares
+	 */
+	_loadMiddlewares = () => {
+
+		return new Promise((resolve) => {
+
+			let tempsDebut = new Date();
+
+			// Récupérer tous les middlewares du repertoire /src/middlewares
+			const middlewares = fs.readdirSync(join(__dirname, 'middlewares'))
+				.filter(file => file.endsWith('.js')) // Ne garder que les fichiers en .js
+				.sort(); // Trier dans l'ordre alphabétique
+
+			middlewares.forEach(middleware => {
+
+                // Récupérer l'élement exporté par défaut dans le fichier middleware
+                const ConstructeurMiddleware = require(join(__dirname, 'middlewares', middleware)).default;
+
+                // Vérifier que la classe exportée étend la classe abstraite MiddlewareAbstract
+                if (!ConstructeurMiddleware || !(ConstructeurMiddleware.prototype instanceof MiddlewareAbstract)) {
+
+                    Logger.log.error('Middlwre', 'Le middleware ', middleware, ' n\'a pas pu être chargée car elle n\'étend pas la classe abstraite RouteAbstract.');
+                    continue;
+
+                }
+
+                // On créé une nouvelle instance de la route
+                const instanceRoute = new ConstructeurMiddleware() as RouteAbstract;
+
+                // On lie la route au serveur HTTP
+                this.serveur[instanceRoute.methode](instanceRoute.chemin, instanceRoute.execution);
+
+
+			});
+
+            Logger.log.info('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms',' ... ', 'OK!');
+			resolve(true);
+
+		});
 
 }

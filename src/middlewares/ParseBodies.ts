@@ -6,14 +6,14 @@ export default class ParseBodies extends MiddlewareAbstract {
     public execution(req: express.Request, res: express.Response, next: NextFunction): void {
 
         express.json({
-            verify: (req, res, buf) => {
+            verify: (reqV, resV, bufV) => {
 
-                // Try parsing buf as JSON
-                try { (req as any).body = JSON.parse(buf.toString()); }
+                // Parser le body en JSON
+                try { req.body = JSON.parse(bufV.toString()); }
 
-                // If body cannot be parsed, return '400: Bad Request' error
+                // Si le body n'est pas du JSON, on renvoie une erreur
                 catch (e) {
-                    (res as express.Response).json({ status: 400, message: "Bad Request" });
+                    res.json({ status: 400, message: "Bad Request" });
                 }
 
             }

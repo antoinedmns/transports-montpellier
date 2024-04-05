@@ -188,6 +188,20 @@ export default class Logger {
 
     }
 
+    public init(): void {
+
+        ['', '   _______                                   _         ____  __  __ ',
+        '  |__   __|                                 | |       |___ \\|  \\/  |',
+        '     | |_ __ __ _ _ __  ___ _ __   ___  _ __| |_ ___    __) | \\  / |',
+        '     | | \'__/ _` | \'_ \\/ __| \'_ \\ / _ \\| \'__| __/ __|  |__ <| |\\/| |',
+        '     | | | | (_| | | | \\__ \\ |_) | (_) | |  | |_\\__ \\  ___) | |  | |',
+        '     |_|_|  \\__,_|_| |_|___/ .__/ \\___/|_|   \\__|___/ |____/|_|  |_|',
+        '                           | |                                      ',
+        '                           |_|           Transports Montpelliérains',
+        '', ''].forEach((line) => this.print('~', '', Logger.styles.fg.green, true, '', line));
+
+    }
+
     /**
      * Get header of the log
      * @param title Title of the log

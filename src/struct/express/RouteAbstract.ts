@@ -1,9 +1,11 @@
+import { Methodes } from "./Methodes";
+
 export default abstract class RouteAbstract {
 
     /**
      * Méthode HTTP d'accès à la page
      */
-    public abstract methode: methodes;
+    public abstract methode: Methodes;
     
     /**
      * Chemin URL dynamique pour charger la route.
@@ -19,5 +21,3 @@ export default abstract class RouteAbstract {
     public abstract execution(req: Express.Request, res: Express.Response): void;
 
 }
-
-type methodes = 'get' | 'post' | 'patch' | 'put' | 'delete';

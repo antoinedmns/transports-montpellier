@@ -8,9 +8,9 @@ const MiddlewareAbstract_1 = __importDefault(require("../struct/express/Middlewa
 class ParseBodies extends MiddlewareAbstract_1.default {
     execution(req, res, next) {
         express_1.default.json({
-            verify: (req, res, buf) => {
+            verify: (reqV, resV, bufV) => {
                 try {
-                    req.body = JSON.parse(buf.toString());
+                    req.body = JSON.parse(bufV.toString());
                 }
                 catch (e) {
                     res.json({ status: 400, message: "Bad Request" });

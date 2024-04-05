@@ -10,18 +10,16 @@ import MiddlewareAbstract from './struct/express/MiddlewareAbstract';
 export default class Application {
 
     /**
-     * Application Transports Montpellierains
+     * Application Transports Montpellierains (3M)
      */
     constructor() {
 
         // Démarrage du serveur HTTP Express.js
         this.serveur = express()
 
-        console.log('s')
-
         // Configuration express.js
 		this.serveur.set('view engine', 'ejs');
-		this.serveur.set('views', join(__dirname, 'src', 'vues')); // Path to views
+		this.serveur.set('views', join(__dirname, '..', 'src', 'vues'));
 
         // Initialiser l'application
         this._init();
@@ -43,11 +41,49 @@ export default class Application {
      */
     private _init() {
 
+        Logger.log.init();
+
+        // Charger les variables d'environnement du fichier .env
+        this._config();
+
         // Si l'application est déjà initialisée
-        if (this.etatApp !== AppEtats.PREPARATION_DEMARRAGE) Logger.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.')
+        if (this.etatApp !== AppEtats.PREPARATION_DEMARRAGE)
+            Logger.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.')
 
         // Charger et lier les routes HTTP
         this._loadRoutes();
+
+        // Charger et lier les middlewares
+        this._loadMiddlewares();
+
+        // Ecouter sur le port configuré dans le fichier .env
+        this.serveur.listen(process.env.PORT, () => {
+
+            Logger.log.separator();
+            Logger.log.debug('Serveur', 'Serveur HTTP démarré sur le port ', process.env.PORT);
+            Logger.log.debug('Serveur', 'Vous pouvez accéder à l\'application via ', 'http://localhost:' + process.env.PORT);
+            Logger.log.separator();
+            this.etatApp = AppEtats.FONCTIONNELLE;
+
+        });
+
+    }
+
+    /**
+     * Charger les variables d'environnement du fichier .env
+     */
+    private _config() {
+
+        const result = dotenv.config({ path: join(__dirname, '..', '.env') });
+
+        if (result.error) {
+
+            Logger.log.error('AppInit', 'Veuillez renommer le fichier ', 'exemple.env', ' en ', '.env', ' puis configurez-le.');
+            process.exit(1);
+
+        }
+
+        Logger.log.success('Config', 'Chargement du fichier .env ... ', 'OK!');
 
     }
 
@@ -90,7 +126,11 @@ export default class Application {
                 // Vérifier que la classe exportée étend la classe abstraite RouteAbstract
                 if (!ConstructeurRoute || !(ConstructeurRoute.prototype instanceof RouteAbstract)) {
 
-                    Logger.log.error('Routeur', 'La route ', routePath, ' n\'a pas pu être chargée car elle n\'étend pas la classe abstraite RouteAbstract.');
+                    Logger.log.error('Routeur', 'La route ',
+                        routePath.replace(__dirname, '').replace('js', 'ts'),
+                        ' n\'a pas pu être chargée car elle n\'étend pas la classe abstraite RouteAbstract.'
+                    );
+                    
                     continue;
 
                 }
@@ -103,7 +143,7 @@ export default class Application {
 
             }
 
-            Logger.log.info('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms',' ... ', 'OK!');
+            Logger.log.success('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms','... ', 'OK!');
 			resolve(true);
 
 		});
@@ -117,14 +157,14 @@ export default class Application {
 
 		return new Promise((resolve) => {
 
-			let tempsDebut = new Date();
+			let tempsDebut = Date.now();
 
 			// Récupérer tous les middlewares du repertoire /src/middlewares
 			const middlewares = fs.readdirSync(join(__dirname, 'middlewares'))
 				.filter(file => file.endsWith('.js')) // Ne garder que les fichiers en .js
 				.sort(); // Trier dans l'ordre alphabétique
 
-			middlewares.forEach(middleware => {
+			for (const middleware of middlewares) {
 
                 // Récupérer l'élement exporté par défaut dans le fichier middleware
                 const ConstructeurMiddleware = require(join(__dirname, 'middlewares', middleware)).default;
@@ -132,23 +172,24 @@ export default class Application {
                 // Vérifier que la classe exportée étend la classe abstraite MiddlewareAbstract
                 if (!ConstructeurMiddleware || !(ConstructeurMiddleware.prototype instanceof MiddlewareAbstract)) {
 
-                    Logger.log.error('Middlwre', 'Le middleware ', middleware, ' n\'a pas pu être chargée car elle n\'étend pas la classe abstraite RouteAbstract.');
+                    Logger.log.error('Middlwre', 'Le middleware ', middleware, ' n\'a pas pu être chargée car il n\'étend pas la classe abstraite MiddlewareAbstract.');
                     continue;
 
                 }
 
-                // On créé une nouvelle instance de la route
-                const instanceRoute = new ConstructeurMiddleware() as RouteAbstract;
+                // On créé une nouvelle instance du middleware
+                const instanceMiddleware = new ConstructeurMiddleware() as MiddlewareAbstract;
 
-                // On lie la route au serveur HTTP
-                this.serveur[instanceRoute.methode](instanceRoute.chemin, instanceRoute.execution);
+                // On lie le middleware au serveur HTTP
+                this.serveur.use(instanceMiddleware.execution);
 
+			}
 
-			});
-
-            Logger.log.info('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms',' ... ', 'OK!');
+            Logger.log.success('Middlewares', 'Chargement de ', middlewares.length, ' middlewares en ', (Date.now() - tempsDebut) + 'ms','... ', 'OK!');
 			resolve(true);
 
 		});
+
+    }
 
 }

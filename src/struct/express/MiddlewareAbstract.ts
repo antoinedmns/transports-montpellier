@@ -11,5 +11,3 @@ export default abstract class MiddlewareAbstract {
     public abstract execution(req: Express.Request, res: Express.Response, next: NextFunction): void;
 
 }
-
-type methodes = 'get' | 'post' | 'patch' | 'put' | 'delete';

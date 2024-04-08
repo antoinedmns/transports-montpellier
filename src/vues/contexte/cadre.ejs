@@ -18,36 +18,46 @@
         <!-- Barre de navigation -->
         <div class="navbar">
 
-            <div class="marge">
-                
-                <div class = "Logo">
-                    <!-- <a href="url><img src="/home/e20230001839/Bureau/Projet/Logo_TAM_Montpellier_3M.png/"></a><br> pour inserer une image en hyperlink a la place du carre bleu quand on en aura une-->
-                    <a href = "url"><t>Transports<br>Montpellier</t></a>
+            <!-- Logo -->
+            <div class="flex logo-container">
+                <div class="logo"><h2>tm</h2></div>
+                <div>
+                    <h1>Transports</h1>
+                    <h2>Montpellier</h2>
                 </div>
-        
-                <entete>LEDEV</entete>
-                    <a class = "Carte" onclick="coordinateur.actualiserPage()">RECHARGER</a>
+            </div>
 
-                <entete>Réseau TAM</entete>
-                    <a class = "Carte">Carte</a>
-        
-                    <a class = "Arrets">Arrêts</a>
-        
-                    <a class = "Lignes">Lignes</a>
-                
-                    <a class = "Incidents" onclick="coordinateur.chargerPage('incidents')">Incidents</a>
-        
-                <entete>Voyager</entete>
-                    <a class = "Itineraires" onclick="coordinateur.chargerPage('itineraires')">Itinéraires</a>
-        
-                    <a class = "Favoris" onclick="coordinateur.chargerPage('favoris')">Favoris</a>
-        
-                <entete>Plus</entete>
-                    <a class = "Mtickets" >M'Tickets</a>
-        
-                    <a class = "Site">Site officiel TAM</a>
-        
-                    <a class = "Statistiques">Statistiques</a>
+            <div class="nav-section">
+
+                <div class="titre">LEDEV</div>
+                <div class="nav-element" onclick="coordinateur.actualiserPage()">le recharger</div>
+
+            </div>
+
+            <div class="nav-section">
+
+                <div class="titre">Réseau TAM</div>
+                <div data-nav-page="carte" class="nav-element">Carte</div>
+                <div data-nav-page="arrets" class="nav-element">Arrêts</div>
+                <div data-nav-page="lignes" class="nav-element">Lignes</div>
+                <div data-nav-page="incidents" class="nav-element">Incidents</div>
+
+            </div>
+
+            <div class="nav-section">
+
+                <div class="titre">Voyager</div>
+                <div data-nav-page="itineraires" class="nav-element">Itinéraires</div>
+                <div data-nav-page="favoris" class="nav-element">Favoris</div>
+
+            </div>
+
+            <div class="nav-section">
+
+                <div class="titre">Plus</div>
+                <div data-nav-page="jsp" class="nav-element">M'Ticket</div>
+                <div data-nav-page="jsp" class="nav-element">Site officiel TaM</div>
+                <div data-nav-page="statistiques" class="nav-element">Statistiques</div>
 
             </div>
 

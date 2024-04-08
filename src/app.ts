@@ -21,6 +21,9 @@ export default class Application {
 		this.serveur.set('view engine', 'ejs');
 		this.serveur.set('views', join(__dirname, '..', 'src', 'vues'));
 
+        // Repertoire statique
+        this.serveur.use(express.static(join(__dirname, '..', 'statique')));
+
         // Initialiser l'application
         this._init();
 

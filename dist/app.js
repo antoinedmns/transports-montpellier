@@ -16,6 +16,7 @@ class Application {
         this.serveur = (0, express_1.default)();
         this.serveur.set('view engine', 'ejs');
         this.serveur.set('views', (0, path_1.join)(__dirname, '..', 'src', 'vues'));
+        this.serveur.use(express_1.default.static((0, path_1.join)(__dirname, '..', 'statique')));
         this._init();
     }
     serveur;

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transports 3M</title>
+
+    <!-- Feuilles de style -->
+    <link rel="stylesheet" href="css/main.css" />
+
+</head>
+<body>
+
+    <!-- Cadre Contextuel -->
+    <div class="flex">
+
+        <!-- Barre de navigation -->
+        <div class="navbar">
+
+            <div class="marge">
+                
+                <div class = "Logo">
+                    <!-- <a href="url><img src="/home/e20230001839/Bureau/Projet/Logo_TAM_Montpellier_3M.png/"></a><br> pour inserer une image en hyperlink a la place du carre bleu quand on en aura une-->
+                    <a href = "url"><t>Transports<br>Montpellier</t></a>
+                </div>
+        
+                <entete>LEDEV</entete>
+                    <a class = "Carte" onclick="coordinateur.actualiserPage()">RECHARGER</a>
+
+                <entete>Réseau TAM</entete>
+                    <a class = "Carte">Carte</a>
+        
+                    <a class = "Arrets">Arrêts</a>
+        
+                    <a class = "Lignes">Lignes</a>
+                
+                    <a class = "Incidents" onclick="coordinateur.chargerPage('incidents')">Incidents</a>
+        
+                <entete>Voyager</entete>
+                    <a class = "Itineraires" onclick="coordinateur.chargerPage('itineraires')">Itinéraires</a>
+        
+                    <a class = "Favoris" onclick="coordinateur.chargerPage('favoris')">Favoris</a>
+        
+                <entete>Plus</entete>
+                    <a class = "Mtickets" >M'Tickets</a>
+        
+                    <a class = "Site">Site officiel TAM</a>
+        
+                    <a class = "Statistiques">Statistiques</a>
+
+            </div>
+
+        </div>
+    
+        <!-- Contenu principal à afficher -->
+        <div class="cadre-contenu" id="cadreContenu">
+            .............................
+        </div>
+    
+    </div>
+    
+</body>
+
+<!-- Scripts -->
+<script src="js/main.js"></script>
+
+</html>

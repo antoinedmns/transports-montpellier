@@ -1,0 +1,81 @@
+/* Général */
+p {
+    margin: 0;
+}
+
+
+/* ---- ENTETE ---- */
+
+.entete {
+    background-color: rgb(17, 73, 159);
+    padding: 1.9rem 3.3rem;
+    font-family: 'Roboto', 'sans-serif';
+    width: 100vw;
+
+    .premier-titre-entete {
+        font-size: 2em;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .second-titre-entete {
+        font-size: 2.5em;
+        font-weight: 900;
+        color: rgba(255, 255, 255);
+    }
+    
+}
+/*------------------------------*/
+
+/* ---- BODY ----*/
+
+/*Barre de recherche + filtre */
+.barre-de-recherche {
+    padding: 3.3rem 3.3rem;
+    display: flex;
+    align-items: center;
+
+
+    #boite-recherche {
+        padding: 1rem;
+        border-radius: 0.3rem;
+        background-color: rgba(230, 232, 236, 0.5);
+        border: solid 0.2rem rgba(0, 0, 0, 0.1);
+        color: rgba(22, 22, 22, 0.7);
+        font-size: 1em;
+        width: 50vw;
+    }
+    
+    .recherche-bouton {
+        margin-left: 0.3rem;
+        border-radius: 0.4rem;
+        padding: 0.7rem;
+        border: solid 0.2rem rgba(255, 255, 255, 0.8);
+        background-color: rgba(17, 73, 159, 0.82);
+    }
+
+    .icon {
+        font-size: 2em;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    a {
+        margin-left: 2em;
+        color:rgb(17, 73, 159);
+    }
+}
+
+/* ----- CATEGORIES TRANSPORTS ----- */
+
+/*Tramways*/
+.categorie-tramways {
+    display: flex;
+    padding: 3.3rem;
+}
+
+.titre-categorie-tram {
+    font-family: 'Roboto', 'sans-serif';
+    color:rgb(17, 73, 159);
+    font-weight: 900;
+    font-size: 1.2em;
+    margin-left: 0.5rem;
+}

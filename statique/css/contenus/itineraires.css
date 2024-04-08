@@ -1,0 +1,65 @@
+#map { 
+    height: 2000px; 
+    width: 2000px; 
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensemble de la boite de dialogue */
+.box-container {
+    font-weight: bold;
+    color: white;
+    font-family: roboto;
+    border-radius: 0.5em;
+    display: flex;
+}
+
+/* Partie supérieure de la boite de dialogue */
+.box-background {
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(230, 232, 236, 1);
+    border-radius: 0.5rem;
+    height: 8rem;
+    width: 30rem;
+}
+
+.search-box-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    font-family: roboto;
+    line-height: 3.2rem;
+    background-color: rgba(17, 73, 159, 1);
+    padding: 0;
+    border-radius: 0.4rem;
+    height: 3.2rem;
+    width: 28.5rem;
+    font-size: 1.4rem;
+    margin-top: 0.4rem;
+    padding-left: 0.4rem;
+}
+
+.separateur {
+    position: absolute;
+    height: 2.2rem;
+    width: 0.12rem;
+    background-color: white;
+    border-radius: 0.8rem;
+    margin-top: 0.5rem;
+    margin-left: 2.5rem;
+}
+
+.text-start {
+    margin-left: 0.2rem;
+}
+
+.text-finish {
+    margin-left: 0.5rem;
+}

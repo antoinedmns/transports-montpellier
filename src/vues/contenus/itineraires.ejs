@@ -1,41 +1,40 @@
+<!--Import de la police (Roboto)-->
+
 <link rel="stylesheet" type="text/css" href="css/contenus/itineraires.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet">
+
+<!--Ajout du module de la map (OpenStreetView)-->
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
- <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-<div id="map"></div>
+<!--Corps de la page-->
 
-<div class="box-container">
-    <div class="box-background">
-        <div class="search-box-container">
-            <div class="search-box">
-                <div class="separateur"></div>
-                <div class="text-start">De</div>
-            </div>
-        </div>
-        <div class="search-box-container">
-            <div class="search-box">
-                <div class="separateur"></div>
-                <div class="text-finish">À</div>
+<div class="search-box-container">
+    <div class="search-box-background">
+        <input type="search" class="search-box-start" placeholder="D'où partez-vous ?" />
+        <input type="search" class="search-box-finish" placeholder="Où voulez-vous aller ?" />
+    </div>
+    <div class="switch-container">
+        <div class="switch">
+            <div class="arrows">
+                <i class="fa-solid fa-right-left fa-lg" style="color: rgba(255, 255, 255, 0.95);transform: rotate(90deg);"></i>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-        var map = L.map('map').setView([42.611242, 2.876734], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-</script>
-</body>
+<div class="box-valider">Chercher</div>
+
+<div class="carte" id="map"></div>
+
+<!--Importation du script qui initialise la position de la map-->
+
+<script src="js/contenus/itineraires.js"></script>

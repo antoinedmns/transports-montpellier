@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="css/contenus/incidents.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="css/ressources/indicateur_lignes.css">
 
 <div class="entete">
     <div class="titre-entete">
@@ -14,9 +15,50 @@
         <button class="recherche-bouton"><i class="fa-solid fa-magnifying-glass icon"></i></button>
     </div>
     <div class="categories-transports">
-        <div class="categorie-tramways">
+        <div class="categorie">
             <img src="assets/tram-logo.png">
-            <p class="titre-categorie-tram">Tramways</p>
+            <div class="conteneur-tc">
+                <p class="titre-categorie">Tramways</p>
+                <div class="logo-lignes">
+                    <h1>
+                        <span class="incident-nul indicateur-ligne tramway ligne-1">T1</span>
+                        <span class="incident-nul indicateur-ligne tramway ligne-2">T2</span>
+                        <span class="incident-modéré indicateur-ligne tramway ligne-3">T3</span>
+                        <span class="incident-nul indicateur-ligne tramway ligne-4">T4</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="categorie">
+            <img src="assets/bus-montpellier-logo.png">
+            <div class="conteneur-tc">
+                <p class="titre-categorie">Bus Montpellier</p>
+                <div class="logo-lignes">
+                    <h1>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-6">6</span>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-7">7</span>
+                        <span class="incident-grave indicateur-ligne busMTP ligne-8">8</span>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-9">9</span>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-10">10</span>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-11">11</span>
+                        <span class="incident-nul indicateur-ligne busMTP ligne-15">15</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="categorie">
+            <img src="assets/bus-metropole-logo.png">
+            <div class="conteneur-tc">
+                <p class="titre-categorie">Bus Métropole</p>
+                <div class="logo-lignes">
+                    <h1>
+                        <span class="incident-grave indicateur-ligne bus3M ligne-20">20</span>
+                        <span class="travaux incident-modéré indicateur-ligne bus3M ligne-21">21</span>
+                        <span class="incident-nul indicateur-ligne bus3M ligne-22">22</span>
+                        <span class="travaux incident-nul indicateur-ligne bus3M ligne-23">23</span>
+                    </h1>
+                </div>
+            </div>
         </div>
     </div>
 </div>

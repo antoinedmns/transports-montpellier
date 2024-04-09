@@ -3,6 +3,10 @@ p {
     margin: 0;
 }
 
+.cadre-contenu {
+    width: 100%;
+}
+
 
 /* ---- ENTETE ---- */
 
@@ -10,7 +14,7 @@ p {
     background-color: rgb(17, 73, 159);
     padding: 1.9rem 3.3rem;
     font-family: 'Roboto', 'sans-serif';
-    width: 100vw;
+    width: 100%;
 
     .premier-titre-entete {
         font-size: 2em;
@@ -38,11 +42,11 @@ p {
     #boite-recherche {
         padding: 0.7rem;
         border-radius: 0.3rem;
-        background-color: rgba(230, 232, 236, 0.5);
+        background-color: rgba(230, 232, 236, 0.502);
         border: solid 0.2rem rgba(0, 0, 0, 0.1);
         color: rgba(22, 22, 22, 0.7);
         font-size: 1.1em;
-        width: 50vw;
+        width: 100%;
         outline: none;
     }
     
@@ -67,16 +71,116 @@ p {
 
 /* ----- CATEGORIES TRANSPORTS ----- */
 
-/*Tramways*/
-.categorie-tramways {
-    display: flex;
-    padding: 3.3rem;
+/*  ---------- ICONES TRANSPORTS ---------- */
+
+/* Permet de régler l'ensemble des icones */
+.indicateur-ligne {
+    font-weight: bolder;
+    background-color: rgb(17, 73, 159);
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1.8em;
+    color: #fff;
+    border: #fff solid 3px;
+    margin-right: 0.6em;
 }
 
-.titre-categorie-tram {
+/* Ajoute les spécifications des icones des tramways */
+.indicateur-ligne.tramway {
+    border-radius: 0.34em;
+}
+
+/* Ajoute les spécifications des icones des bus montpelliérain */
+.indicateur-ligne.busMTP {
+    border-radius: 1em;
+}
+
+/* Ajoute les spécifications des icones des bus de la métropole */
+.indicateur-ligne.bus3M {
+    width: 2em;
+    height: 1.6em;
+    line-height: 1.6em;
+    border-radius: 0.34em;
+}
+
+/*  ---------- ICONES BORDURES INCDIDENTS ---------- */
+
+.incident-nul {
+    position: relative;
+    outline: 0.2rem solid rgb(0, 170, 0);
+}
+
+.incident-modéré {
+    position: relative;
+    outline: 0.3rem solid rgb(255, 140, 0);
+}
+
+.incident-modéré::after {
+    content: url("../../assets/incident-modéré.png");
+    position: absolute;
+    z-index: 2;
+    bottom: -65%;
+    right: -20%;
+}
+
+.travaux::after {
+    content:url("../../assets/travaux.png");
+    position: absolute;
+    bottom: -65%;
+    left: -20%;
+}
+
+.travaux::before {
+    content:url("../../assets/travaux.png");
+    z-index: 3;
+    position: absolute;
+    bottom: -65%;
+    left: -20%;
+}
+
+.incident-grave {
+    position: relative;
+    outline: 0.3rem solid rgb(255, 20, 0);
+}
+
+.incident-grave::after {
+    content: url("../../assets/incident-grave.png");
+    position:absolute;
+    bottom: -65%;
+    right: -20%;
+    z-index: 2;
+}
+
+/* ------------------------------------- */
+
+
+/* ---- CATEGORIE ---- */
+
+/* pour chaque titre de catégorie de transport, le style est le même */
+.titre-categorie {
     font-family: 'Roboto', 'sans-serif';
     color:rgb(17, 73, 159);
     font-weight: 900;
-    font-size: 1.5em;
-    margin-left: 0.5rem;
+    font-size: 1.7em;
+    line-height: 1.4rem;
+    margin: 0 0 1.2rem 0;
 }
+
+.conteneur-tc {
+    margin: 0 0 0 1.5rem;
+}
+
+
+/*------- Catégorie items ---------*/
+
+.categorie {
+    display: flex;
+    padding: 3.3rem;
+    align-items: flex-start;
+}
+
+/* -----------------------------*/
+

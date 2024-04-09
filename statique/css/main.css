@@ -21,6 +21,12 @@ div {
     box-sizing: border-box;
 }
 
+/* CADRE CONTEXTUEL */
+.cadre-contenu {
+    width: 100%;
+    position: relative;
+}
+
 /* BARRE DE NAVIGATION */
 .navbar {
     height: 100vh;

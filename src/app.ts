@@ -6,6 +6,8 @@ import Logger from './struct/internal/Logger';
 import fs from 'fs';
 import RouteAbstract from './struct/express/RouteAbstract';
 import MiddlewareAbstract from './struct/express/MiddlewareAbstract';
+import ApiLigneTram from './struct/api_distante/reseau/ApiLigneTram';
+import LignesManager from './struct/cache/lignes/LignesManager';
 
 export default class Application {
 
@@ -42,7 +44,7 @@ export default class Application {
     /**
      * Init app
      */
-    private _init() {
+    private async _init() {
 
         Logger.log.init();
 
@@ -59,8 +61,14 @@ export default class Application {
         // Charger et lier les middlewares
         this._loadMiddlewares();
 
+        // Charger et récupérer les données des lignes
+        await (new ApiLigneTram().recuperer());
+
+        // Générer les ressources
+        this._genererRessources();
+
         // Ecouter sur le port configuré dans le fichier .env
-        this.serveur.listen(process.env.PORT, () => {
+        this.serveur.listen(process.env.PORT, async () => {
 
             Logger.log.separator();
             Logger.log.debug('Serveur', 'Serveur HTTP démarré sur le port ', process.env.PORT);
@@ -192,6 +200,19 @@ export default class Application {
 			resolve(true);
 
 		});
+
+    }
+
+    /**
+     * Générer les ressources statiques du serveur
+     */
+    private async _genererRessources() {
+
+        // Générer le code CSS des indicateurs couleur de lignes
+        fs.appendFile(join(__dirname, '..', 'statique', 'css', 'ressources', 'indicateur_lignes.css'), LignesManager.genererCSS(), function (err) {
+            if (err) throw err;
+            Logger.log.success('COOL', 'yowzas');
+        }); 
 
     }
 

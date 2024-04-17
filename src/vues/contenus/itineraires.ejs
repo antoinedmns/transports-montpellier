@@ -17,24 +17,34 @@
 
 <!--Corps de la page-->
 
-<div class="search-box-container">
-    <div class="search-box-background">
-        <input type="search" class="search-box-start" placeholder="D'où partez-vous ?" />
-        <input type="search" class="search-box-finish" placeholder="Où voulez-vous aller ?" />
-    </div>
-    <div class="switch-container">
-        <div class="switch">
-            <div class="arrows">
-                <i class="fa-solid fa-right-left fa-lg" style="color: rgba(255, 255, 255, 0.95);transform: rotate(90deg);"></i>
-            </div>
-        </div>
+<div class="entete">
+    <div class="titre-entete">
+        <p class="premier-titre-entete">Montpellier</p>
+        <p class="second-titre-entete">Itinéraires</p>
     </div>
 </div>
 
-<div class="box-valider">Chercher</div>
+<div class="boite-conteneur">
+    <div class="boite-fond">
+        <input type="search" class="boite-debut" placeholder="D'où partez-vous ?" />
+        <input type="search" class="boite-fin" placeholder="Où voulez-vous aller ?" />
+    </div>
+    <button class="fleche-conteneur" onclick="echangerTexte()">
+        <div class="fleche">
+            <div class="fleche-switch">
+                <i class="fa-solid fa-right-left fa-lg" style="color: rgba(255, 255, 255, 0.95); transform: rotate(90deg);"></i>
+            </div>
+        </div>
+    </button>    
+</div>
+
+
+<button class="bouton-valider" id="bouton-valider"><i class="fa-solid fa-magnifying-glass fa-xl"
+        style="color: #ffffff;"></i></button>
+
 
 <div class="carte" id="map"></div>
 
-<!--Importation du script qui initialise la position de la map-->
+<!--Importation du script qui initialise la position de la map et autre-->
 
 <script src="js/contenus/itineraires.js"></script>

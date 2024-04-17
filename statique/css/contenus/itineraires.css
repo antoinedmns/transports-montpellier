@@ -55,7 +55,7 @@
 .boite-debut {
     background-color: rgba(230, 232, 236);
     border: rgba(0, 0, 0, 0.1) solid 3px;
-    padding: 0; 
+    padding: 0;
     border-radius: 0.4em;
     height: 3rem;
     outline: transparent;
@@ -87,10 +87,14 @@
     margin-left: 20.5rem;
     margin-top: 2rem;
     background: none;
-    border: none; /* Supprime la bordure par défaut */
-    padding: 0; /* Supprime le rembourrage par défaut */
-    cursor: pointer; /* Affiche le curseur comme pointer */
-    outline: none; /* Supprime la bordure de focus */
+    border: none;
+    /* Supprime la bordure par défaut */
+    padding: 0;
+    /* Supprime le rembourrage par défaut */
+    cursor: pointer;
+    /* Affiche le curseur comme pointer */
+    outline: none;
+    /* Supprime la bordure de focus */
 }
 
 .fleche {
@@ -123,19 +127,22 @@
     background-color: rgba(17, 73, 159, 1);
     height: 2.5rem;
     width: 2.5rem;
-    border: none; /* Retire la bordure */
+    border: none;
+    /* Retire la bordure */
     border-radius: 0.4rem;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     top: 90.5%;
     left: 64.5%;
     transform: translate(-50%, -50%);
-    cursor: pointer; /* Ajoute un curseur indiquant que c'est cliquable */
+    cursor: pointer;
+    /* Ajoute un curseur indiquant que c'est cliquable */
 }
 
 @keyframes spin {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }

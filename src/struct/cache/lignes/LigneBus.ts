@@ -2,6 +2,18 @@ import LigneAbstrait from "./LigneAbstrait"
 
 export default class LigneBus extends LigneAbstrait {
 
-    // Implémentation dans LigneAbstrait
+    // Réseau de rattachement de la ligne
+    // Urbain = Montpellier intramuros, Suburbain = Montpellier Métropole
+    reseau: ReseauBus;
 
+    constructor(id: string, nom: string, couleur: string, reseau: ReseauBus) {
+        super(id, nom, couleur);
+        this.reseau = reseau;
+    }
+
+}
+
+export enum ReseauBus {
+    Urbain,
+    Suburbain
 }

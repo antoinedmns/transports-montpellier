@@ -6,8 +6,9 @@ import Logger from './struct/internal/Logger';
 import fs from 'fs';
 import RouteAbstract from './struct/express/RouteAbstract';
 import MiddlewareAbstract from './struct/express/MiddlewareAbstract';
-import ApiLigneTram from './struct/api_distante/reseau/ApiLigneTram';
+import ApiLigneTram from './struct/api_distante/reseau/ApiLignesTram';
 import LignesManager from './struct/cache/lignes/LignesManager';
+import ApiLigneBus from './struct/api_distante/reseau/ApiLignesBus';
 
 export default class Application {
 
@@ -63,6 +64,7 @@ export default class Application {
 
         // Charger et récupérer les données des lignes
         await (new ApiLigneTram().recuperer());
+        await (new ApiLigneBus().recuperer());
 
         // Générer les ressources
         this._genererRessources();
@@ -209,9 +211,9 @@ export default class Application {
     private async _genererRessources() {
 
         // Générer le code CSS des indicateurs couleur de lignes
-        fs.appendFile(join(__dirname, '..', 'statique', 'css', 'ressources', 'indicateur_lignes.css'), LignesManager.genererCSS(), function (err) {
+        fs.writeFile(join(__dirname, '..', 'statique', 'css', 'ressources', 'indicateur_lignes.css'), LignesManager.genererCSS(), function (err) {
             if (err) throw err;
-            Logger.log.success('COOL', 'yowzas');
+            Logger.log.success('Ressources', 'Génération du fichier ', 'indicateur_lignes.css', '... ', 'OK!');
         }); 
 
     }

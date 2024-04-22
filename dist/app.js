@@ -11,8 +11,9 @@ const Logger_1 = __importDefault(require("./struct/internal/Logger"));
 const fs_1 = __importDefault(require("fs"));
 const RouteAbstract_1 = __importDefault(require("./struct/express/RouteAbstract"));
 const MiddlewareAbstract_1 = __importDefault(require("./struct/express/MiddlewareAbstract"));
-const ApiLigneTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiLigneTram"));
+const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesTram"));
 const LignesManager_1 = __importDefault(require("./struct/cache/lignes/LignesManager"));
+const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesBus"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -30,7 +31,8 @@ class Application {
             Logger_1.default.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.');
         this._loadRoutes();
         this._loadMiddlewares();
-        await (new ApiLigneTram_1.default().recuperer());
+        await (new ApiLignesTram_1.default().recuperer());
+        await (new ApiLignesBus_1.default().recuperer());
         this._genererRessources();
         this.serveur.listen(process.env.PORT, async () => {
             Logger_1.default.log.separator();
@@ -93,10 +95,10 @@ class Application {
         });
     };
     async _genererRessources() {
-        fs_1.default.appendFile((0, path_1.join)(__dirname, '..', 'statique', 'css', 'ressources', 'indicateur_lignes.css'), LignesManager_1.default.genererCSS(), function (err) {
+        fs_1.default.writeFile((0, path_1.join)(__dirname, '..', 'statique', 'css', 'ressources', 'indicateur_lignes.css'), LignesManager_1.default.genererCSS(), function (err) {
             if (err)
                 throw err;
-            Logger_1.default.log.success('COOL', 'yowzas');
+            Logger_1.default.log.success('Ressources', 'Génération du fichier ', 'indicateur_lignes.css', '... ', 'OK!');
         });
     }
 }

@@ -19,13 +19,19 @@ export default abstract class ApiEndpointAbstract {
      */
     public async recupererDonnees(): Promise<string> {
 
+        const horodatageDebut = Date.now();
+
         return await new Promise((resolve, reject) => {
         
             request.get(this.cheminDistant, (error, response, body) => {
 
                 // Si les données distantes ont été récupérées, on résout avec le corps de la requête
-                if (!error && response.statusCode == 200) resolve(body)
-                else reject(error) // Si une erreur est survenue, on rejette avec l'erreur
+                if (!error && response.statusCode == 200) {
+
+                    Logger.log.success('Api', 'Données distantes ', this.nom, ' récupérées en ', Date.now() - horodatageDebut + 'ms', '.');
+                    resolve(body);
+
+                } else reject(error) // Si une erreur est survenue, on rejette avec l'erreur
 
             }).on('error', (error) => {
 
@@ -71,6 +77,7 @@ export default abstract class ApiEndpointAbstract {
         // Entêtes CSV
         let entetes: string[] = [];
         donneesLignes.shift()!.replace('\r', '').split(',').forEach((entete => {
+            if(entete.charCodeAt(0) === 65279) entete = entete.slice(1);
             (parsed as any)[entete] = [];
             entetes.push(entete);
         }));

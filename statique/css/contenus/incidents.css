@@ -7,27 +7,6 @@ p {
     width: 100%;
 }
 
-
-/* ---- ENTETE ---- */
-
-.entete {
-    background-color: rgb(17, 73, 159);
-    padding: 1.9rem 3.3rem;
-    font-family: 'Roboto', 'sans-serif';
-    width: 100%;
-
-    .premier-titre-entete {
-        font-size: 2em;
-        color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .second-titre-entete {
-        font-size: 2.5em;
-        font-weight: 900;
-        color: rgba(255, 255, 255);
-    }
-    
-}
 /*------------------------------*/
 
 /* ---- BODY ----*/

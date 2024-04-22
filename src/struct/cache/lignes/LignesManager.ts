@@ -14,7 +14,11 @@ export default class LignesManager {
         let css = '';
 
         for (const ligne of LignesManager.tramway.cache.values()) {
-            css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur}};`
+            css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur};}`
+        }
+
+        for (const ligne of LignesManager.bus.cache.values()) {
+            css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur};}`
         }
 
         return css;

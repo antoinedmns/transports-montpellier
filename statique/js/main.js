@@ -9,6 +9,9 @@ class CoordinateurContenu {
     // Cache des éléments actuels
     cacheElements = new Map();
 
+    // Coordinateur de l'API
+    api = new CoordinateurAPI();
+
     // Element d'affichage du contenu dans le cadre contextuel
     static ELEMENT_CONTENU_CADRE = document.getElementById('cadreContenu');
 
@@ -35,7 +38,10 @@ class CoordinateurContenu {
      */
     async actualiserPage() {
 
-        console.log('contenus/' + this.pageActuelle)
+        // Vider le cache API
+        this.api.cacheElements.clear();
+
+        // Afficher un message de chargement
         CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = 'CHARGEMENT EN COURS......';
         const resultat = await fetch('contenus/' + this.pageActuelle);
         CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = await resultat.text();
@@ -72,6 +78,49 @@ class CoordinateurContenu {
         this.pageActuelle = chemin;
         this.actualiserPage();
 
+    }
+
+}
+
+class CoordinateurAPI {
+
+    // Cache des éléments liés au cache
+    cacheElements = new Map();
+
+    /**
+     * Envoyer une requête GET à une API JSON, et renvoyer les données parsées
+     * @param {string} url chemin de l'API (/api/... pour l'API locale)
+     */
+    async getAPI(url) {
+        console.log('GET', url);
+        const resultat = await fetch(url).catch((err) => { console.warn('Requête GET vers', url, 'échouée'); console.error(err); });
+        return await resultat.json();
+    }
+    
+    /**
+     * Envoyer une requête POST à une API JSON, et renvoyer les données parsées
+     * @param {string} url chemin de l'API (/api/... pour l'API locale)
+     * @param {object} data Données à envoyer
+     */
+    async postAPI(url, data) {
+        const resultat = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        return await resultat.json();
+    }
+
+    /**
+     * Récupérer ou ajouter un élément au cache DOM
+     * @param {string} id ID de l'élément à récupérer
+     * @returns {Element} Element DOM
+     */
+    recupererCache(id) {
+        if (!this.cacheElements.has(id)) this.cacheElements.set(id, document.getElementById(id));
+        return this.cacheElements.get(id);
     }
 
 }

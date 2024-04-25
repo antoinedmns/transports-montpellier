@@ -64,7 +64,7 @@ p {
     line-height: 1.8em;
     color: #fff;
     border: #fff solid 3px;
-    margin-right: 0.6em;
+    margin: 0 0.6rem 0.6rem 0;
 }
 
 /* Ajoute les spécifications des icones des tramways */
@@ -87,6 +87,8 @@ p {
 
 /*  ---------- ICONES BORDURES INCDIDENTS ---------- */
 
+/* --- BORDURES --- */
+
 .incident-nul {
     position: relative;
     outline: 0.2rem solid rgb(0, 170, 0);
@@ -97,10 +99,18 @@ p {
     outline: 0.3rem solid rgb(255, 140, 0);
 }
 
-.incident-modéré::after {
+
+.incident-grave {
+    position: relative;
+    outline: 0.3rem solid rgb(255, 20, 0);
+}
+
+
+/* --- LOGO INCIDENTS --- */
+
+.perturbation-modéré::after {
     content: url("../../assets/incident-modéré.png");
     position: absolute;
-    z-index: 2;
     bottom: -65%;
     right: -20%;
 }
@@ -108,29 +118,14 @@ p {
 .travaux::after {
     content:url("../../assets/travaux.png");
     position: absolute;
-    bottom: -65%;
+    bottom: -50%;
     left: -20%;
 }
-
-.travaux::before {
-    content:url("../../assets/travaux.png");
-    z-index: 3;
-    position: absolute;
-    bottom: -65%;
-    left: -20%;
-}
-
-.incident-grave {
-    position: relative;
-    outline: 0.3rem solid rgb(255, 20, 0);
-}
-
-.incident-grave::after {
+.perturbation-grave::after {
     content: url("../../assets/incident-grave.png");
     position:absolute;
     bottom: -65%;
     right: -20%;
-    z-index: 2;
 }
 
 /* ------------------------------------- */
@@ -157,7 +152,7 @@ p {
 
 .categorie {
     display: flex;
-    padding: 3.3rem;
+    padding: 1.5rem 3.3rem 1.5rem 3.3rem;
     align-items: flex-start;
 }
 

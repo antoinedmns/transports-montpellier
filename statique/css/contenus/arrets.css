@@ -1,0 +1,28 @@
+.cadre-contenu {
+    width: 100%;
+}
+
+
+.titre-entete {
+    text-align: center;
+    margin: 12rem 10rem 2rem 10rem;
+    top: 0;
+    
+}
+
+.couleur-titre {
+    color: rgba(17, 73, 159, 1);
+}
+
+#barre-de-recherche {
+    padding: 0.9rem;
+    border-radius: 0.3rem;
+    background-color: rgba(230, 232, 236, 0.502);
+    border: solid 0.1rem rgba(0, 0, 0, 0.1);
+    color: rgba(22, 22, 22, 0.7);
+    font-size: 1.3em;
+    width: 50%;
+    outline: none;
+    margin: 0 auto;
+    display: block;
+}

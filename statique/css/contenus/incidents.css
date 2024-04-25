@@ -119,7 +119,7 @@ p {
     content:url("../../assets/travaux.png");
     position: absolute;
     bottom: -50%;
-    left: -20%;
+    right: -30%;
 }
 .perturbation-grave::after {
     content: url("../../assets/incident-grave.png");

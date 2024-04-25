@@ -94,7 +94,7 @@ p {
     outline: 0.2rem solid rgb(0, 170, 0);
 }
 
-.incident-modéré {
+.incident-modere {
     position: relative;
     outline: 0.3rem solid rgb(255, 140, 0);
 }
@@ -108,7 +108,7 @@ p {
 
 /* --- LOGO INCIDENTS --- */
 
-.perturbation-modéré::after {
+.perturbation-modere::after {
     content: url("../../assets/incident-modéré.png");
     position: absolute;
     bottom: -65%;

@@ -126,3 +126,52 @@ class CoordinateurAPI {
 }
 
 const coordinateur = new CoordinateurContenu();
+
+document.querySelectorAll('button[data-ouvrir-dialogue]').forEach(buttonDialogue => {
+
+    // Stockage de la boite de dialogue choisie
+    const boiteDeDialogueActuelle = document.getElementById(buttonDialogue.getAttribute('data-ouvrir-dialogue'));
+
+    // Ajout de l'évènement click sur les bouttons ouvrir
+    buttonDialogue.addEventListener("click", () => {
+
+        // affiche l'overlay et la boite choisie
+        document.getElementById('overlay').style.display = 'flex';
+        boiteDeDialogueActuelle.style.display = 'block';
+
+    });
+});
+
+function ouvrirDialogue(id) {
+
+    // affiche l'overlay et la boite choisie
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById(id).style.display = 'block';
+
+}
+
+function fermerDialogue(id) {
+
+    const boiteDialogue = document.getElementById(id);
+    const overlay = document.getElementById('overlay');
+
+    boiteDialogue.classList.add("slide-out");
+    overlay.classList.add("fade-out");
+    setTimeout(() => {
+
+        boiteDialogue.style.display = 'none';
+        overlay.style.display = 'none';
+        boiteDialogue.classList.remove("slide-out");
+        overlay.classList.remove("fade-out");
+    
+    }, 400);
+
+}
+
+function fermerBoutonDialogue(boutonFermerDialogue) {
+
+    const boiteDialogue = boutonFermerDialogue.parentNode.parentNode;
+    console.log(boiteDialogue.id);
+    fermerDialogue(boiteDialogue.id);
+
+}

@@ -117,3 +117,147 @@ div {
     }
     
 }
+
+/* DIALOGUE */
+.overlay {
+    z-index: 130;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 0.5s ease;
+}
+
+.dialog-container {
+    border-radius: 10px; 
+    max-width: 40%;
+    max-height: 90%;
+    animation: slide-in 0.5s ease;
+}
+
+.dialog-box {
+    background-color: #FFFFFF;
+    position: relative;
+    display: none;
+    border-radius: 0.4em;
+
+}
+
+.dialog-text-container {
+    padding: 1em;
+}
+
+.header-dialog-box {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    background-color: #11499F;
+    border-top-right-radius: 0.4em;
+    border-top-left-radius: 0.4em;
+    text-align: left;
+}
+
+.title-header {
+    padding-left: 1.3em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.first-title {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2em;
+}
+
+.second-title {
+    margin: 0;
+    color: rgb(255, 255, 255);
+}
+
+.close-button-container {
+    position:relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    padding: 0.5em;
+    padding-right: 1.3em;
+}
+
+.close-button-container button {
+    border: none;
+    background-color: rgba(217, 217, 217, 0.2);
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.dialog-container,
+.liste-ligne {
+    flex: 1;
+}
+
+.liste-ligne {
+    padding: 1.5em;
+    background-color: #FFFFFF;
+}
+
+.fade-out {
+    animation: fade-out 0.5s ease;
+}
+
+.slide-out {
+    animation: slide-out 0.5s ease;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(-20%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20%);
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

@@ -20,11 +20,30 @@
         <p class="second-titre-entete">Itinéraires</p>
     </div>
 </div>
+<div class="overlay" id="overlay">
+    <div class="dialog-container">
+        <div class="dialog-box" id="erreurCoord">
+            <div class="header-dialog-box">
+                <div class="title-header">
+                    <h1 class="first-title">Attention !</h1>
+                    <h2 class="second-title">Une erreur est survenue</h2>
+                </div>
+                <div class="close-button-container" onclick="fermerBoutonDialogue(this)">
+                    <button>&times;</button>
+                </div>
+            </div>
+            <div class="body-dialog-box dialog-text-container">
+                <p>Veuillez vérifier votre connexion internet et recharger la page.</p>
+            </div>
+        </div>
 
+
+    </div>
+</div>
 <div class="boite-conteneur">
     <div class="boite-fond">
-        <input type="search" class="boite-debut" placeholder="D'où partez-vous ?" />
-        <input type="search" class="boite-fin" placeholder="Où voulez-vous aller ?" />
+        <input type="search" class="boite-debut" id="boite-debut" placeholder="D'où partez-vous ?" />
+        <input type="search" class="boite-fin" id="boite-fin" placeholder="Où voulez-vous aller ?" />
     </div>
     <button class="fleche-conteneur" onclick="echangerTexte()">
         <div class="fleche">
@@ -34,12 +53,11 @@
             </div>
         </div>
     </button>
-</div>
-
-
-<button class="bouton-valider" id="bouton-valider"><i class="fa-solid fa-magnifying-glass fa-xl"
+    <div class="bouton-valider-conteneur">
+    <button class="bouton-valider" id="bouton-valider"><i class="fa-solid fa-magnifying-glass fa-xl"
         style="color: #ffffff;"></i></button>
-
+    </div>
+</div>
 
 <div class="carte" id="map"></div>
 

@@ -1,11 +1,22 @@
 <link rel="stylesheet" href="css/contenus/arrets.css">
 
-<div class="conteneur-principal">
-    <div class="titre-entete">
-        <h1>Chercher un <span class="couleur-titre">arrêt</span></h1>
-    </div>
-    <div class="conteneur-de-recherche">
-        <input type="search" class="barre-de-recherche" placeholder="Place de l'Europe, Saint-Eloi,...">
-    </div>
-
+<div class="titre-entete">
+    <h1>Chercher un <span class="couleur-titre">arrêt</span></h1>
 </div>
+
+<div class="conteneur-recherche">
+    <div class="sous-conteneur-recherche">
+        <div class="conteneur-barre-recherche">
+            <input type="text" class="barre-de-recherche" id="recherche" placeholder="Place de l'Europe, Saint-Eloi,...">
+        </div>
+        <div class="conteneur-resultat-recherche" id="res-recherche">
+            <div class="resultat-recherche ">Euromédecine</div>
+            <div class="resultat-recherche ">Place de l'Europe</div>
+            <div class="resultat-recherche">Saint-Eloi</div>
+            <div class="resultat-recherche ">Riège</div>
+            <div class="resultat-recherche hidden">Aucun résultat trouvé</div>
+        </div>
+    </div>
+</div>
+
+<script src="js/contenus/arrets.js"></script>

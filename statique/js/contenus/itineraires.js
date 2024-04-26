@@ -9,16 +9,41 @@ map.addEventListener("click", (e) => console.log(e.latlng));
 
 (async () => {
 
+    const layerTram = L.layerGroup();
+    const layerBus = L.layerGroup();
     const resultatTraces = await coordinateur.api.getAPI('api/traces-reseau/');
+
     if (resultatTraces === undefined) {ouvrirDialogue("erreurCoord")}
     console.log(resultatTraces);
-    for(const ligne of resultatTraces) {
-        console.log(ligne)
+
+    for(let i=resultatTraces.length-1; i >= 0;i--) {
+        const ligne = resultatTraces[i];
+        console.log(ligne);
         for(const trajet of ligne.coordonnees) {
-            console.log(trajet)
-            L.polyline(trajet, { color: ligne.couleur}).addTo(map);
+            console.log(trajet);
+            if(ligne.num >= 5) {
+                layerBus.addLayer(L.polyline(trajet, { color: ligne.couleur,opacity: 0.5}));
+            }
+            else {
+                layerTram.addLayer(L.polyline(trajet, { color: ligne.couleur,weight: 5}));
+            }
         }
     }
+
+    map.on('zoomend',function() {
+        console.log(map.getZoom())
+        if(map.getZoom() >= 14 && !map.hasLayer(layerBus)) {
+            map.addLayer(layerBus);
+        }
+        if(map.getZoom() < 14 && map.hasLayer(layerBus)) {
+            map.removeLayer(layerBus);
+        }
+    });
+
+    layerTram.addTo(map);
+    layerBus.addTo(map);
+    
+
 })();
 
 // dashArray: "6 1 0" 

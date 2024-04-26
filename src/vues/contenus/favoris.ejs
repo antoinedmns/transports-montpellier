@@ -1,11 +1,23 @@
 <link rel="stylesheet" href="css/contenus/favoris.css"/>
+<script src="js/contenus/favoris.js"></script>
+
 
 <div class="banniere">
-    <div class="Titre">Favoris</div>
+    <div class="Nompage">Favoris</div>
     <div class="Annonce">Sauvegardez vos préférences</div>
 </div>
 
 <div class="Vosfav">Vos Favoris</div>
-<ul id = "listefav" onload = "affiche()"></ul>
+<div class="Listefav">
+    <ul>
+        <ul id="listefav" ></ul>
+    </ul>
+</div>
 
-<script src="js/contenus/favoris.js"></script>
+<div class="Ajouter"><a class="ajouter" href="#" onclick="ajouter()"> Ajouter</a></div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+      <a class="valider" href ="#" onclick="valider()">valider</a>
+      
+    </div>
+</div>

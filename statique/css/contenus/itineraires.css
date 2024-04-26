@@ -65,6 +65,7 @@
     padding-left: 0.8em;
     margin-bottom: 0.6rem;
     width: 100%;
+    transition-duration: 0.4s;
 }
 
 .boite-fin {
@@ -79,6 +80,7 @@
     font-family: roboto;
     padding-left: 0.8em;
     width: 100%;
+    transition-duration: 0.4s;
 }
 
 .fleche-conteneur {
@@ -144,5 +146,14 @@
 }
 
 .spin-effect {
-    animation: spin 0.25s linear;
+    animation: spin 0.25s ease-out;
+}
+
+.boite-debut:disabled,.boite-fin:disabled{
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+#panneaux {
+    display: none;
 }

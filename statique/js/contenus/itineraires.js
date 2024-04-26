@@ -5,25 +5,23 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-map.addEventListener("click", (e) => console.log(e.latlng))
-
-var latlngs = [
-    [43.6160663084847, 3.81995767333402],
-    [43.6168077761118, 3.81959795202173],
-    [43.6168691815976, 3.81956910466489]
-];
-
-var polyline = L.polyline(latlngs, { color: '#005CA9', dashArray: "6 1 0" }).addTo(map);
+map.addEventListener("click", (e) => console.log(e.latlng));
 
 (async () => {
 
     const resultatTraces = await coordinateur.api.getAPI('api/traces-reseau/');
     if (resultatTraces === undefined) {ouvrirDialogue("erreurCoord")}
-
+    console.log(resultatTraces);
+    for(const ligne of resultatTraces) {
+        console.log(ligne)
+        for(const trajet of ligne.coordonnees) {
+            console.log(trajet)
+            L.polyline(trajet, { color: ligne.couleur}).addTo(map);
+        }
+    }
 })();
 
-// zoom the map to the polyline
-map.fitBounds(polyline.getBounds());
+// dashArray: "6 1 0" 
 
 function echangerTexte() {
     // Ajouter la classe pour l'effet de rotation
@@ -58,11 +56,26 @@ map.addEventListener("click", (e) => {
     }
 })
 
-coordinateur.api.recupererCache('bouton-valider').addEventListener('click', async () => {
-    console.log("click")
-    const adrDebut = coordinateur.api.recupererCache('boite-debut').value;
-    const adrFin = coordinateur.api.recupererCache('boite-fin').value;
+var boutonValider = coordinateur.api.recupererCache('bouton-valider');
+
+if(boutonValider) boutonValider.addEventListener('click', async () => {
+    const elmDebut = coordinateur.api.recupererCache('boite-debut');
+    const elmFin = coordinateur.api.recupererCache('boite-fin');
+    const icoLoupe = coordinateur.api.recupererCache('loupe');
+    const icoPan = coordinateur.api.recupererCache('panneaux');
+    elmDebut.disabled = true;
+    elmFin.disabled = true;
+
+    icoLoupe.style.display = "none";
+    icoPan.style.display = "inline-block";
+
+    const adrDebut = elmDebut.value;
+    const adrFin = elmFin.value;
 
     const resultat = await coordinateur.api.postAPI('api/hhhhhhhhhh',{debut: adrDebut, fin: adrFin});
+    elmDebut.disabled = false;
+    elmFin.disabled = false;
+    icoLoupe.style.display = "inline-block";
+    icoPan.style.display = "none";
     if (true) {ouvrirDialogue("erreurCoord");}   
 });

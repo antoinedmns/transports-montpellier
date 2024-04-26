@@ -261,3 +261,32 @@ div {
         opacity: 0;
     }
 }
+
+.indicateur-ligne {
+    font-weight: bolder;
+    background-color: rgb(17, 73, 159);
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1.8em;
+    color: #fff;
+    border: #fff solid 3px;
+    margin: 0 0.6rem 0.6rem 0;
+}
+
+.indicateur-ligne.tramway {
+    border-radius: 0.34em;
+}
+
+.indicateur-ligne.busMTP {
+    border-radius: 1em;
+}
+
+.indicateur-ligne.bus3M {
+    width: 2em;
+    height: 1.6em;
+    line-height: 1.6em;
+    border-radius: 0.34em;
+}

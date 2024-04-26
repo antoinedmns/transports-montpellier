@@ -6,9 +6,10 @@ import Logger from './struct/internal/Logger';
 import fs from 'fs';
 import RouteAbstract from './struct/express/RouteAbstract';
 import MiddlewareAbstract from './struct/express/MiddlewareAbstract';
-import ApiLigneTram from './struct/api_distante/reseau/ApiLignesTram';
+import ApiLignesTram from './struct/api_distante/reseau/ApiLignesTram';
 import LignesManager from './struct/cache/lignes/LignesManager';
 import ApiLigneBus from './struct/api_distante/reseau/ApiLignesBus';
+import ApiTraceTram from './struct/api_distante/reseau/ApiTraceTram';
 
 export default class Application {
 
@@ -63,8 +64,9 @@ export default class Application {
         this._loadMiddlewares();
 
         // Charger et récupérer les données des lignes
-        await (new ApiLigneTram().recuperer());
+        await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
+        await (new ApiTraceTram().recuperer());
 
         // Générer les ressources
         this._genererRessources();

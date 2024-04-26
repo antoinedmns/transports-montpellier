@@ -14,6 +14,7 @@ const MiddlewareAbstract_1 = __importDefault(require("./struct/express/Middlewar
 const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesTram"));
 const LignesManager_1 = __importDefault(require("./struct/cache/lignes/LignesManager"));
 const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesBus"));
+const ApiTraceTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceTram"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -33,6 +34,7 @@ class Application {
         this._loadMiddlewares();
         await (new ApiLignesTram_1.default().recuperer());
         await (new ApiLignesBus_1.default().recuperer());
+        await (new ApiTraceTram_1.default().recuperer());
         this._genererRessources();
         this.serveur.listen(process.env.PORT, async () => {
             Logger_1.default.log.separator();

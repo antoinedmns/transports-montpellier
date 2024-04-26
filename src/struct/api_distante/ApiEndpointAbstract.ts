@@ -1,5 +1,8 @@
 import request from 'request';
 import Logger from '../internal/Logger';
+import { kml } from "@tmcw/togeojson";
+import { DOMParser } from 'xmldom';
+import type { Geometry, FeatureCollection, GeoJsonProperties } from 'geojson';
 
 export default abstract class ApiEndpointAbstract {
 
@@ -92,5 +95,16 @@ export default abstract class ApiEndpointAbstract {
         return parsed;
 
     }
+
+    /**
+     * Extraire les données KML
+     */
+    public extraireKML(donneesRaw: string): FeatureCollection<Geometry | null, GeoJsonProperties> {
+
+        const document = new DOMParser().parseFromString(donneesRaw);
+        return kml(document);
+
+    }
+
 
 }

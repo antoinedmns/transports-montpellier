@@ -2,7 +2,7 @@ import LigneTramway from "../../cache/lignes/LigneTramway";
 import LignesManager from "../../cache/lignes/LignesManager";
 import ApiEndpointAbstract from "../ApiEndpointAbstract";
 
-export default class ApiLigneTram extends ApiEndpointAbstract {
+export default class ApiLignesTram extends ApiEndpointAbstract {
 
     public cheminDistant = 'https://data.montpellier3m.fr/node/12889/download';
     public nom = 'Lignes tram'; 

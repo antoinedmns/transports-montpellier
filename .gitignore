@@ -1,3 +1,4 @@
 node_modules/*
 .env
 dist/*
+statique/css/ressources/indicateur_ligne.css

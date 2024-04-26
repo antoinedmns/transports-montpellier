@@ -20,6 +20,14 @@ export default class Test extends RouteAbstract {
             })
         }
 
+        for (const ligneBus of LignesManager.bus.cache.values()) {
+            resultat.push({
+                num: ligneBus.numExploitation,
+                couleur: ligneBus.couleur,
+                coordonnees: ligneBus.traces
+            })
+        }
+
         res.json(
             resultat
         );

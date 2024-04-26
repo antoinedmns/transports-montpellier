@@ -1,7 +1,7 @@
 
 coordinateur.api.recupererCache('api-flan-boutton').addEventListener('click', async () => {
 
-    const resultat2 = await coordinateur.api.getAPI('api/traces-reseau');
+    const resultat2 = await coordinateur.api.getAPI('api/arrets/reseau');
     console.log(resultat2);
 
     const flan = coordinateur.api.recupererCache('api-flan');

@@ -15,6 +15,9 @@ const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/Ap
 const LignesManager_1 = __importDefault(require("./struct/cache/lignes/LignesManager"));
 const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesBus"));
 const ApiTraceTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceTram"));
+const ApiArretsTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiArretsTram"));
+const ApiArretsBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiArretsBus"));
+const ApiTraceBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceBus"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -35,6 +38,9 @@ class Application {
         await (new ApiLignesTram_1.default().recuperer());
         await (new ApiLignesBus_1.default().recuperer());
         await (new ApiTraceTram_1.default().recuperer());
+        await (new ApiTraceBus_1.default().recuperer());
+        await (new ApiArretsTram_1.default().recuperer());
+        await (new ApiArretsBus_1.default().recuperer());
         this._genererRessources();
         this.serveur.listen(process.env.PORT, async () => {
             Logger_1.default.log.separator();

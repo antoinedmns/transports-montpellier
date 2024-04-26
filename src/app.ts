@@ -10,6 +10,9 @@ import ApiLignesTram from './struct/api_distante/reseau/ApiLignesTram';
 import LignesManager from './struct/cache/lignes/LignesManager';
 import ApiLigneBus from './struct/api_distante/reseau/ApiLignesBus';
 import ApiTraceTram from './struct/api_distante/reseau/ApiTraceTram';
+import ApiArretsTram from './struct/api_distante/reseau/ApiArretsTram';
+import ApiArretBus from './struct/api_distante/reseau/ApiArretsBus';
+import ApiTraceBus from './struct/api_distante/reseau/ApiTraceBus';
 
 export default class Application {
 
@@ -67,6 +70,9 @@ export default class Application {
         await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
         await (new ApiTraceTram().recuperer());
+        await (new ApiTraceBus().recuperer());
+        await (new ApiArretsTram().recuperer());
+        await (new ApiArretBus().recuperer());
 
         // Générer les ressources
         this._genererRessources();

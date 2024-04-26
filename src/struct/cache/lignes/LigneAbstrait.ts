@@ -1,4 +1,7 @@
-export default abstract class LigneAbstrait {
+import ArretBus from "../arrets/ArretBus";
+import ArretTramway from "../arrets/ArretTramway";
+
+export default abstract class LigneAbstrait<D extends ArretTramway | ArretBus> {
 
     /**
      * Couleur assignée à la ligne
@@ -14,6 +17,16 @@ export default abstract class LigneAbstrait {
      * Numéro d'exploitation de la ligne
      */
     public numExploitation: string = '0';
+
+    /**
+     * Cache des arrêts de la ligne, indexé par nom
+     */
+    public arrets = new Map<string, D>();
+
+    /**
+     * Tracés de la ligne
+     */
+    public traces: number[][][] = [];
 
     /**
      * Nom complet de la ligne

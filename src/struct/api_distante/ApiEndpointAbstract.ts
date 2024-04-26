@@ -106,5 +106,13 @@ export default abstract class ApiEndpointAbstract {
 
     }
 
+    /**
+     * Extraire les données JSON
+     */
+    public extraireJSON<D>(donneesRaw: string): D {
+
+        return JSON.parse(donneesRaw);
+        
+    }
 
 }

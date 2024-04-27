@@ -6,19 +6,21 @@
         console.log("CECI EST UNE ALERTE ROUGE");
     }
 
-    console.log(resultatsArrets);
-    
-    /*resultatsArrets.forEach(element => {
+    const nomArrets = Object.keys(resultatsArrets);
+    console.log(nomArrets);
+
+    nomArrets.forEach(element => {
+
         const resultatRecherche = document.getElementById("res-recherche");
         const arretActuel = document.createElement("div");
 
         arretActuel.setAttribute("class", "resultat-recherche hidden");
 
-        arretActuel.innerHTML = element.nom;
+        arretActuel.innerHTML = element;
 
         resultatRecherche.appendChild(arretActuel);
-        
-    });*/
+
+    })
 
 })();
 
@@ -35,6 +37,7 @@ barreRecherche.addEventListener("keyup", (e) => {
 
     /* Barre de recherche active (première lettre relâché) */
     if(!barreRecherche.classList.contains("recherche-active") && barreRecherche.value.length > 0) {
+        barreRecherche.classList.remove("recherche-inactive");
         barreRecherche.classList.add("recherche-active");
     }
     
@@ -42,6 +45,7 @@ barreRecherche.addEventListener("keyup", (e) => {
     if(barreRecherche.value.length < 1) {
 
         barreRecherche.classList.remove("recherche-active");
+        barreRecherche.classList.add("recherche-inactive");
 
         for(i = 0 ; i < resultRecherche.length ; i++){
 
@@ -57,7 +61,7 @@ barreRecherche.addEventListener("keyup", (e) => {
         for(i = 0; i <resultRecherche.length ; i ++){
 
 
-            if(resultRecherche[i].innerHTML.toUpperCase().includes(barreRecherche.value.toUpperCase())) {
+            if(resultRecherche[i].innerHTML.toUpperCase().includes(barreRecherche.value.toUpperCase()) && resultRecherche[i].innerHTML != "Aucun résultat trouvé") {
                 resultatTrouve = true;
                 resultRecherche[i].classList.remove("hidden");
             } 

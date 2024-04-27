@@ -37,7 +37,8 @@
     background-color: rgba(230, 232, 236, 0.63);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    overflow: hidden;
+    overflow: auto;
+    max-height: 40vh;
 }
 
 .resultat-recherche {
@@ -48,6 +49,8 @@
     width: 100%;
     display: block;
     font-weight: 600;
+    cursor: pointer;
+    animation: slide-in 0.5s ease;
 }
 
 .hidden {
@@ -59,4 +62,39 @@
     background-color: rgba(17, 73, 159, 1);
     color: rgb(255, 255, 255);
     border-radius: 10px 10px 0 0;
+    animation: burst-color 0.5s ease;
+}
+
+.recherche-inactive {
+    animation: burst-color-reverse 0.5s ease;
+}
+
+@keyframes burst-color {
+    from{
+        background-color: rgba(230, 232, 236, 0.502);
+    }
+    to{        
+        background-color: rgba(17, 73, 159, 1);
+    }
+}
+
+@keyframes burst-color-reverse {
+    from{
+        background-color: rgba(17, 73, 159, 1);
+    }
+    to{        
+        background-color: rgba(230, 232, 236, 0.502);
+    }
+    
+}
+
+@keyframes slide-in {
+    from{
+        margin-top: 100%;
+        height: 300%;
+    }
+    to{
+        margin-top: 0%;
+        height: 100%;
+    }
 }

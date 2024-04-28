@@ -6,21 +6,41 @@
         console.log("CECI EST UNE ALERTE ROUGE");
     }
 
+
+    /* on récupère la clé (nom de l'arrêt) de chaque élément du dictionnaire */
     const nomArrets = Object.keys(resultatsArrets);
-    console.log(nomArrets);
 
-    nomArrets.forEach(element => {
+    /* pour chacune des clés (donc chacun des arrêts) */
+    nomArrets.forEach(arret => {
 
+        /* je récupère l'id de la div parent dans lequel on va placé l'enfant (div avec le nom de l'arrêt) */
         const resultatRecherche = document.getElementById("res-recherche");
+        /* création de la div enfant */
         const arretActuel = document.createElement("div");
 
+        /* je donne l'attribut class='resultat-recherche hidden' */
         arretActuel.setAttribute("class", "resultat-recherche hidden");
 
-        arretActuel.innerHTML = element;
+        /* et à l'intérieur j'écris le nom de l'ârret*/
+        arretActuel.innerHTML = arret;
 
+        /* et je l'ajoute enfin à la page EJS */
         resultatRecherche.appendChild(arretActuel);
 
     })
+
+    /* on récupère tout les éléments avec la classe resultat-recherche (ce sont tous les arrêts) */
+    const resultats = document.querySelectorAll('.resultat-recherche');
+
+    /* on parcourt chacun des arrêts */
+    resultats.forEach(resultat => {
+        /*quand on click sur l'arrêt choisi */
+        resultat.addEventListener('click', () => {
+
+            /* test pour récupèrer le nom de l'arrêt clicker */
+            console.log("Informations sur l'arrêt sélectionné:", resultat.innerHTML);
+        });
+    });
 
 })();
 
@@ -30,7 +50,6 @@ const barreRecherche = document.getElementById('recherche');
 const resultRecherche = document.getElementsByClassName('resultat-recherche');
 const aucunResultat = resultRecherche[resultRecherche.length-1];
 
-/* On commence par cacher tout les arrêts */
 
 barreRecherche.addEventListener("keyup", (e) => {
 
@@ -49,7 +68,6 @@ barreRecherche.addEventListener("keyup", (e) => {
 
         for(i = 0 ; i < resultRecherche.length ; i++){
 
-            console.log(resultRecherche[i].innerHTML);
             resultRecherche[i].classList.add("hidden");
         
         }
@@ -70,28 +88,8 @@ barreRecherche.addEventListener("keyup", (e) => {
                 resultRecherche[i].classList.add("hidden");
             }
         }
-        
 
-        if (!resultatTrouve) {
-            console.log(resultRecherche.length)
-            console.log(resultatTrouve)
-            
-            aucunResultat.classList.remove("hidden");
-
-            /*
-            const resultatNull = document.getElementById("res-recherche");
-            const divResultatNull = document.createElement("div");
-
-            divResultatNull.setAttribute("class", "resultat-recherche");
-
-            divResultatNull.innerHTML = "Aucun résultat trouvé";
-
-            resultatNull.appendChild(divResultatNull);
-            */
-
-
-
-        }
+        if (!resultatTrouve) {aucunResultat.classList.remove("hidden");}
     
     }
 
@@ -99,3 +97,5 @@ barreRecherche.addEventListener("keyup", (e) => {
 
 });
 
+/* le prochain objectif est de rajouter un evenement sur chaque résultat de notre recherche qui fait que lorsque l'on clique sur la div qui nous correspond
+une pop up s'affiche avec l'information sur l'arrêt choisi */

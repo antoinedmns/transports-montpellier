@@ -6,7 +6,7 @@
 }
 
 .couleur-titre {
-    color: rgba(17, 73, 159, 1);
+    color: var(--couleur-principale);
 }
 
 .conteneur-recherche {
@@ -59,7 +59,7 @@
 
 .recherche-active {
     font-weight: 600;
-    background-color: rgba(17, 73, 159, 1);
+    background-color: var(--couleur-principale);
     color: rgb(255, 255, 255);
     border-radius: 10px 10px 0 0;
     animation: burst-color 0.5s ease;
@@ -74,13 +74,13 @@
         background-color: rgba(230, 232, 236, 0.502);
     }
     to{        
-        background-color: rgba(17, 73, 159, 1);
+        background-color: var(--couleur-principale);
     }
 }
 
 @keyframes burst-color-reverse {
     from{
-        background-color: rgba(17, 73, 159, 1);
+        background-color: var(--couleur-principale);
     }
     to{        
         background-color: rgba(230, 232, 236, 0.502);

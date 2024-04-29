@@ -41,3 +41,7 @@
 .leaflet-container a.leaflet-popup-close-button:hover {
     color: #ffffff9c
 }
+
+.fa-solid.fa-location-dot {
+    color: var(--couleur-principale);
+}

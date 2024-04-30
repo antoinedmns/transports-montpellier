@@ -32,8 +32,9 @@ export default class ApiArretBus extends ApiEndpointAbstract {
                 } else {
 
                     // on ajoute l'arrêt au cache
-                    arretEnCache = new ArretBus(feature.properties.description, feature.properties.commune, feature.geometry.coordinates, [ligne.numExploitation]);
+                    arretEnCache = new ArretBus(ArretManager.assignerID(), feature.properties.description, feature.properties.commune, feature.geometry.coordinates, [ligne.numExploitation]);
                     ArretManager.cache.set(feature.properties.description, arretEnCache);
+                    ArretManager.cacheID.set(arretEnCache.id, arretEnCache);
                 
                 }
                 

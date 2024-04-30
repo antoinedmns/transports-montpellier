@@ -5,7 +5,7 @@ import ArretManager from "../../../struct/api_distante/reseau/ArretManager";
 
 export default class Test extends RouteAbstract {
 
-    public chemin = '/api/arrets/reseau';
+    public chemin = '/api/arret/:id/passages';
     public methode: Methodes = 'get';
 
     public execution(req: Request, res: Response): void {
@@ -19,7 +19,6 @@ export default class Test extends RouteAbstract {
 }
 
 export interface ArretInfo {
-    id: number,
     coords: number[],
     nom: string,
     commune: string,

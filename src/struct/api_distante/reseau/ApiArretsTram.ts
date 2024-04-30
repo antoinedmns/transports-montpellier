@@ -31,8 +31,9 @@ export default class ApiArretTram extends ApiEndpointAbstract {
                 } else {
 
                     // on ajoute l'arrêt au cache
-                    arretEnCache = new ArretTramway(feature.properties.description, feature.properties.commune, feature.geometry.coordinates, [ligne.numExploitation]);
+                    arretEnCache = new ArretTramway(ArretManager.assignerID(), feature.properties.description, feature.properties.commune, feature.geometry.coordinates, [ligne.numExploitation]);
                     ArretManager.cache.set(feature.properties.description, arretEnCache);
+                    ArretManager.cacheID.set(arretEnCache.id, arretEnCache);
                 
                 }
                 

@@ -17,9 +17,8 @@ class CoordinateurContenu {
 
     /**
      * Initier un coordinateur de contenu
-     * @param {*} pageDepart Chemin vers la première page à afficher (affichera l'accueil par défaut)
      */
-    constructor(pageDepart = 'itineraires') {
+    constructor() {
 
         // Récupérer tous les éléments de la barre de navigation, et les lier
         document.querySelectorAll('div[data-nav-page]').forEach((elm) => {
@@ -27,9 +26,6 @@ class CoordinateurContenu {
             this.navElements.set(cheminPage, elm);
             elm.addEventListener('click', () => { this.chargerPage(cheminPage); });
         });
-
-        // Charger la page de départ
-        this.chargerPage(pageDepart);
 
     }
 
@@ -52,7 +48,7 @@ class CoordinateurContenu {
             const newScriptEl = document.createElement("script");
             
             Array.from(oldScriptEl.attributes).forEach( attr => {
-                newScriptEl.setAttribute(attr.name, attr.value) 
+                newScriptEl.setAttribute(attr.name, attr.value);
             });
             
             const scriptText = document.createTextNode(oldScriptEl.innerHTML);
@@ -125,8 +121,35 @@ class CoordinateurAPI {
 
 }
 
+/**
+ * Coordinateur de contenu
+ */
 const coordinateur = new CoordinateurContenu();
 
+// Récupérer les informations essentielles de l'API
+let infoLignes = {};
+CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = 'Chargement du site......';
+
+// Requête API pour récupérer les informations des lignes
+coordinateur.api.getAPI('/api/lignes/infos').then((infos) => {
+
+    console.log(infos);
+    infoLignes = infos;
+
+    // Charger la page des arrêts
+    coordinateur.chargerPage('arrets');
+
+}).catch((err) => {
+
+    // Afficher une erreur
+    console.error(err);
+    alert('Impossible de charger le site. Rechargez la page.');
+
+});
+
+/**
+ * Boîtes de dialogue
+ */
 document.querySelectorAll('button[data-ouvrir-dialogue]').forEach(buttonDialogue => {
 
     // Stockage de la boite de dialogue choisie

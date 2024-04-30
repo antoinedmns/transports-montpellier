@@ -290,3 +290,8 @@ div {
     line-height: 1.6em;
     border-radius: 0.34em;
 }
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}

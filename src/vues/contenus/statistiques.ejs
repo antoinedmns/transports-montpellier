@@ -1,21 +1,66 @@
-<div id="value"><h1>0</h1></div>
+<link rel="stylesheet" href="css/contenus/stats.css">
+<link rel="stylesheet" href="css/main.css">
+
+<div class="entete">
+  <div class="titre-entete">
+    <p class="premier-titre-entete">Montpellier</p>
+    <p class="second-titre-entete">Statistiques</p>
+  </div>
+</div>
+
+<div class="titre-principale">
+  <h1>La <span style="color: var(--couleur-principale)">TaM</span> c'est...</h1>
+</div>
+<div class="stats">
+  <div class="conteneur-compteur">
+    <div id="value-passager" class="compteur">
+      <h1>0</h1>
+    </div>
+    <div class="compteur-texte">Passagers par an sur le réseau TaM</div>
+  </div>
+  <div class="conteneur-compteur">
+    <div id="value-stations" class="compteur">
+      <h1>0</h1>
+    </div>
+    <div class="compteur-texte">Stations</div>
+  </div>
+  <div class="conteneur-compteur">
+    <div id="value-rames" class="compteur">
+      <h1>0</h1>
+    </div>
+    <div class="compteur-texte">Rames</div>
+  </div>
+  <div class="conteneur-compteur">
+    <div id="value-longueur" class="compteur">
+      <h1>0</h1>
+    </div>
+    <div class="compteur-texte">m de réseau</div>
+  </div>
+</div>
 
 <script>
-function animateValue(obj, start, end, duration) {
-  let startTimestamp = null;
-  const step = (timestamp) => {
-    if (!startTimestamp) startTimestamp = timestamp;
-    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-    obj.innerHTML = Math.floor(progress * (end - start) + start);
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  };
-  window.requestAnimationFrame(step);
-}
+  function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      obj.innerHTML = Math.floor(progress * (end - start) + start);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }
 
-const obj = document.getElementById("value");
-animateValue(obj, 0, 100, 2500);
+  const stats = [
+    { id: "value-passager", start: 0, end: 66337830, duration: 2300 },
+    { id: "value-stations", start: 0, end: 84, duration: 2300 },
+    { id: "value-rames", start: 0, end: 86, duration: 2300 },
+    { id: "value-longueur", start: 0, end: 60500, duration: 2300 }
+  ];
 
-
+  stats.forEach(stat => {
+    const obj = document.getElementById(stat.id);
+    animateValue(obj, stat.start, stat.end, stat.duration);
+  });
 </script>

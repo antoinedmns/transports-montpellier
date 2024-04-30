@@ -43,14 +43,24 @@
 
 .resultat-recherche {
     font-family: 'Roboto', 'sans-serif';
-    padding: 0.9rem;
+    padding: 0.5rem 0.9rem 0.5rem 0.9rem;
     border-top: solid 1px rgba(0, 0, 0, 0.2);
     color: rgba(58, 55, 55, 1);
     width: 100%;
-    display: block;
+    display: flex;
+    justify-content: space-between;
     font-weight: 600;
     cursor: pointer;
     animation: slide-in 0.5s ease;
+}
+
+.resultat-logo {
+    margin: 0 0.3em 0 0;
+}
+
+.resultat-nom-arret{
+    display: flex;
+    align-items: center;
 }
 
 .hidden {
@@ -69,6 +79,8 @@
     animation: burst-color-reverse 0.5s ease;
 }
 
+
+/* ------ Animation ------ */
 @keyframes burst-color {
     from{
         background-color: rgba(230, 232, 236, 0.502);
@@ -98,3 +110,4 @@
         height: 100%;
     }
 }
+/*------------------------------------*/

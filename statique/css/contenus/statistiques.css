@@ -1,0 +1,50 @@
+p {
+    margin: 0;
+}
+
+.stats {
+    margin-top: 2em;
+    animation: slide-in 2.5s ease;
+}
+
+.titre-principale {
+    margin: 1em;
+    font-size: 1.6em;
+    text-align: center; 
+}
+
+.conteneur-compteur{
+    display: flex;
+    margin: 2em;
+    justify-content: center;
+}
+
+.compteur-texte {
+    padding-top: 0.1em;
+    font-weight: 900;
+    margin: 0;
+    font-size: 2em;
+    font-family: 'Roboto', 'sans-serif';
+    justify-content: center;
+}
+
+
+.compteur {
+    text-align: center;
+    margin: 0 0.25em 0 0;
+    font-size: 2.2em;
+    font-weight: 900;
+    font-family: 'Roboto', 'sans-serif';
+    color: var(--couleur-principale);
+}
+
+@keyframes slide-in {
+    from{
+        left: 100%;
+        width: 300%;
+    }
+    to{
+        left: 0;
+        width: 100%;
+    }
+}

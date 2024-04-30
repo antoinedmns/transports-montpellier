@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="css/contenus/arrets.css">
-<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/ressources/indicateur_lignes.css">
 
 <div class="titre-entete">
     <h1>Chercher un <span class="couleur-titre">arrêt</span></h1>
@@ -11,7 +11,7 @@
             <div class="header-dialog-box">
                 <div class="title-header" id="title-header-dialog">
                     <h1 class="first-title">Choisir une ligne</h1>
-                    <!--<h2 class="second-title">Une erreur est survenue</h2>-->
+                    <!--<h2 class="second-title">[Nom de l'arrêt]</h2>-->
                 </div>
                 <div class="close-button-container" onclick="fermerBoutonDialogue(this)">
                     <button>&times;</button>
@@ -27,13 +27,26 @@
 <div class="conteneur-recherche">
     <div class="sous-conteneur-recherche">
         <div class="conteneur-barre-recherche">
-            <input type="text" class="barre-de-recherche" id="recherche" placeholder="Place de l'Europe, Saint-Eloi,...">
+            <input type="text" class="barre-de-recherche" id="recherche"
+                placeholder="Place de l'Europe, Saint-Eloi,...">
         </div>
-        <div class="conteneur-resultat-recherche" id="res-recherche">
+        <div class="conteneur-resultat-recherche" id="res-recherche-conteneur">
+
+            <!--<div class="resultat-recherche">
+
+                Nom de l'arrêt
+                <div class="resultat-nom-arret">Mosson</div>
+
+                Chaque logo de ligne auxquel appartient l'arrêt
+                <div class="conteneur-resultat-logo">
+                    <div class="resultat-logo indicateur-ligne tramway ligne-1">T1</div>
+                    <div class="resultat-logo indicateur-ligne tramway ligne-2">T2</div>
+                </div>
+
+            </div>-->
             <div class="resultat-recherche hidden">Aucun résultat trouvé</div>
         </div>
     </div>
 </div>
 
 <script src="js/contenus/arrets.js"></script>
-<script src="js/main.js"></script>

@@ -5,6 +5,25 @@
     <h1>Chercher un <span class="couleur-titre">arrêt</span></h1>
 </div>
 
+<div class="overlay" id="overlay">
+    <div class="dialog-container">
+        <div class="dialog-box" id="ligneInfo">
+            <div class="header-dialog-box">
+                <div class="title-header" id="title-header-dialog">
+                    <h1 class="first-title">Choisir une ligne</h1>
+                    <!--<h2 class="second-title">Une erreur est survenue</h2>-->
+                </div>
+                <div class="close-button-container" onclick="fermerBoutonDialogue(this)">
+                    <button>&times;</button>
+                </div>
+            </div>
+            <div class="body-dialog-box dialog-text-container">
+                <p>Test</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="conteneur-recherche">
     <div class="sous-conteneur-recherche">
         <div class="conteneur-barre-recherche">
@@ -12,24 +31,6 @@
         </div>
         <div class="conteneur-resultat-recherche" id="res-recherche">
             <div class="resultat-recherche hidden">Aucun résultat trouvé</div>
-        </div>
-    </div>
-</div>
-<div class="overlay" id="overlay">
-    <div class="dialog-container">
-        <div class="dialog-box" id="ligneInfo">
-            <div class="header-dialog-box">
-                <div class="title-header">
-                    <h1 class="first-title">Choisir une ligne</h1>
-                    <h2 class="second-title">Une erreur est survenue</h2>
-                </div>
-                <div class="close-button-container" onclick="fermerBoutonDialogue(this)">
-                    <button>&times;</button>
-                </div>
-            </div>
-            <div class="body-dialog-box dialog-text-container">
-                <p>Veuillez vérifier votre connexion internet et recharger la page.</p>
-            </div>
         </div>
     </div>
 </div>

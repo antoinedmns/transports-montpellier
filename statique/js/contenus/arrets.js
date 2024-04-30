@@ -6,15 +6,17 @@
         console.log("CECI EST UNE ALERTE ROUGE");
     }
 
-
     /* on récupère la clé (nom de l'arrêt) de chaque élément du dictionnaire */
     const nomArrets = Object.keys(resultatsArrets);
+
+    console.log(resultatsArrets);
 
     /* pour chacune des clés (donc chacun des arrêts) */
     nomArrets.forEach(arret => {
 
         /* je récupère l'id de la div parent dans lequel on va placé l'enfant (div avec le nom de l'arrêt) */
         const resultatRecherche = document.getElementById("res-recherche");
+
         /* création de la div enfant */
         const arretActuel = document.createElement("div");
 
@@ -30,16 +32,30 @@
     })
 
     /* on récupère tout les éléments avec la classe resultat-recherche (ce sont tous les arrêts) */
-    const resultats = document.querySelectorAll('.resultat-recherche');
+    const arretsResultat  = document.querySelectorAll('.resultat-recherche');
+
+    const headerDialog = document.getElementById("title-header-dialog");
+    const bodyDialog = document.getElementById("body-dialog-box");
+    const titreDialogue = document.createElement("h2");
 
     /* on parcourt chacun des arrêts */
-    resultats.forEach(resultat => {
-        /*quand on click sur l'arrêt choisi */
-        resultat.addEventListener('click', () => {
+    arretsResultat.forEach(arret => {
 
-            /* test pour récupèrer le nom de l'arrêt clicker */
-            console.log("Informations sur l'arrêt sélectionné:", resultat.innerHTML);
+        /*quand on click sur l'arrêt choisi */
+        arret.addEventListener('click', () => {
+
+            titreDialogue.setAttribute("class", "second-title");
+
+            /* et à l'intérieur j'écris le nom de l'ârret*/
+            titreDialogue.innerHTML = arret.innerHTML;
+
+            /* et je l'ajoute enfin à la page EJS */
+            headerDialog.appendChild(titreDialogue);
+
+            ouvrirDialogue("ligneInfo");
+
         });
+
     });
 
 })();
@@ -66,19 +82,22 @@ barreRecherche.addEventListener("keyup", (e) => {
         barreRecherche.classList.remove("recherche-active");
         barreRecherche.classList.add("recherche-inactive");
 
+        /* si la barre de recherche est inactive on cache tous les resultats */
         for(i = 0 ; i < resultRecherche.length ; i++){
 
             resultRecherche[i].classList.add("hidden");
         
         }
     
+    /* Sinon (barre de recherche active + comparaison avec résultat) */
     } else {
 
+        /* Booléen pour savoir si on a trouvé au moins 1 résultat pour notre recherche */
         let resultatTrouve = false;
 
         for(i = 0; i <resultRecherche.length ; i ++){
 
-
+            /* Condition pour la comparaison entre notre recherche (barreRecherche) et tout les arrêts (resultRecherche) */
             if(resultRecherche[i].innerHTML.toUpperCase().includes(barreRecherche.value.toUpperCase()) && resultRecherche[i].innerHTML != "Aucun résultat trouvé") {
                 resultatTrouve = true;
                 resultRecherche[i].classList.remove("hidden");
@@ -89,6 +108,7 @@ barreRecherche.addEventListener("keyup", (e) => {
             }
         }
 
+        /* Si on a pas trouvé de résultat pour notre recherche alors on affiche la div "aucun résultat trouvé" */ 
         if (!resultatTrouve) {aucunResultat.classList.remove("hidden");}
     
     }

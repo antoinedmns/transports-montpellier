@@ -1,9 +1,9 @@
 var map = L.map('map').setView([43.6112422, 3.8767337], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9wd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieW9sYXRlbmdvIiwiYSI6ImNsdm8xcTNoeDA0cXIycW83aDg5aG1jajUifQ.TiT6N0IKT3817FeULBlHxA', {
     maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
 
 map.addEventListener("click", (e) => console.log(e.latlng));
 
@@ -25,7 +25,7 @@ map.addEventListener("click", (e) => console.log(e.latlng));
                 layerBus.addLayer(L.polyline(trajet, { color: ligne.couleur,opacity: 0.5}));
             }
             else {
-                layerTram.addLayer(L.polyline(trajet, { color: ligne.couleur,weight: 5}));
+                layerTram.addLayer(L.polyline(trajet, { color: ligne.couleur,weight: 4}));
             }
         }
     }

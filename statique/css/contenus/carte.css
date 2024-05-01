@@ -33,8 +33,6 @@
 .leaflet-container a.leaflet-popup-close-button {
     position: absolute;
     color: #fff;
-    top: 20px;
-    right: 4px;
     font-size: large;
 }
 
@@ -44,4 +42,15 @@
 
 .fa-solid.fa-location-dot {
     color: var(--couleur-principale);
+}
+
+span {
+    position: absolute;
+    top: 1.5rem;
+    right: 0.5rem;
+}
+
+.liste-lignes {
+    color: black;
+    text-align: center;
 }

@@ -46,29 +46,23 @@ map.addEventListener("click", (e) => console.log(e.latlng));
 
 })();
 
-// dashArray: "6 1 0" 
-
 function echangerTexte() {
-    // Ajouter la classe pour l'effet de rotation
     const flecheConteneur = document.querySelector('.fleche-conteneur');
     flecheConteneur.classList.add('spin-effect');
 
-    // Définir un délai avant d'échanger le texte
     setTimeout(function () {
         const boiteDebut = document.querySelector('.boite-debut');
         const boiteFin = document.querySelector('.boite-fin');
 
-        // Échanger les valeurs
         const temp = boiteDebut.value;
         boiteDebut.value = boiteFin.value;
         boiteFin.value = temp;
 
-        // Supprimer la classe après un certain délai pour permettre à l'animation de se terminer
         setTimeout(function () {
             flecheConteneur.classList.remove('spin-effect');
-        }, 250); // Correspond à la durée de l'animation 
+        }, 250);
 
-    }, 125); // Délai en millisecondes avant l'échange de texte 
+    }, 125);
 }
 
 
@@ -81,26 +75,33 @@ map.addEventListener("click", (e) => {
     }
 })
 
-var boutonValider = coordinateur.api.recupererCache('bouton-valider');
+var boutonValider = document.getElementById('bouton-valider');
 
-if(boutonValider) boutonValider.addEventListener('click', async () => {
-    const elmDebut = coordinateur.api.recupererCache('boite-debut');
-    const elmFin = coordinateur.api.recupererCache('boite-fin');
-    const icoLoupe = coordinateur.api.recupererCache('loupe');
-    const icoPan = coordinateur.api.recupererCache('panneaux');
-    elmDebut.disabled = true;
-    elmFin.disabled = true;
+if(boutonValider) {
+    boutonValider.addEventListener('click', async () => {
+        const elmDebut = document.getElementById('boite-debut');
+        const elmFin = document.getElementById('boite-fin');
+        const icoLoupe = document.getElementById('loupe');
+        const icoPan = document.getElementById('panneaux');
 
-    icoLoupe.style.display = "none";
-    icoPan.style.display = "inline-block";
+        if (elmDebut.value.trim() === '' || elmFin.value.trim() === '') {
+            ouvrirDialogue("erreurCoord");
+            return;
+        }
 
-    const adrDebut = elmDebut.value;
-    const adrFin = elmFin.value;
+        elmDebut.disabled = true;
+        elmFin.disabled = true;
+        icoLoupe.style.display = "none";
+        icoPan.style.display = "inline-block";
 
-    const resultat = await coordinateur.api.postAPI('api/hhhhhhhhhh',{debut: adrDebut, fin: adrFin});
-    elmDebut.disabled = false;
-    elmFin.disabled = false;
-    icoLoupe.style.display = "inline-block";
-    icoPan.style.display = "none";
-    if (true) {ouvrirDialogue("erreurCoord");}   
-});
+        const adrDebut = elmDebut.value;
+        const adrFin = elmFin.value;
+
+        const resultat = await coordinateur.api.postAPI('api/hhhhhhhhhh',{debut: adrDebut, fin: adrFin});
+        elmDebut.disabled = false;
+        elmFin.disabled = false;
+        icoLoupe.style.display = "inline-block";
+        icoPan.style.display = "none";
+        if (true) {ouvrirDialogue("erreurCoord");}   
+    });
+}

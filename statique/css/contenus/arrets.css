@@ -5,22 +5,29 @@
     font-size: 1.30em;
 }
 
+/* chercher un Arrêt en couleur */
 .couleur-titre {
     color: var(--couleur-principale);
 }
+/*------------------------------*/
 
+/* CONTENEUR DE LA RECHERCHE */
+
+/* conteneur de la barre de recherche */
 .conteneur-recherche {
     display: flex;
-    justify-content: center;
+    justify-content: center;  /*on aligne la barre au milieu (et les résultats de la recherche)*/
 }
 
+/* sous conteneur qui permet de resteindre la taille de la barre de recherche */ 
 .sous-conteneur-recherche {
     width: 50%;
 }
 
+/* style de la barre de recherche */
 .barre-de-recherche {
     padding: 1.1rem;
-    border-radius: 0.3rem;
+    border-radius: 10px;
     background-color: rgba(230, 232, 236, 0.502);
     border: solid 2px rgba(0, 0, 0, 0.1);
     color: rgba(22, 22, 22, 0.7);
@@ -31,16 +38,18 @@
     box-sizing: border-box;
 }
 
+/* conteneur dans lequel s'ajoutera tout les résultat de notre recherche */
 .conteneur-resultat-recherche {
     text-align: left;
     font-size: 1.3em;
     background-color: rgba(230, 232, 236, 0.63);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    overflow: auto;
-    max-height: 40vh;
+    max-height: 40vh; /* permet de limiter la taille des résultats lors de l'affichage */
+    overflow: auto; /* l'overflow permet de rajouter une side-bar afin de parcourir les résultats si ces derniers dépasse la hauteur max */
 }
 
+/* style d'un résultat de la recherche */
 .resultat-recherche {
     font-family: 'Roboto', 'sans-serif';
     padding: 0.5rem 0.9rem 0.5rem 0.9rem;
@@ -54,19 +63,25 @@
     animation: slide-in 0.5s ease;
 }
 
+/* LOGO DES RESULTATS RECHERCHE */
+
+/* Chaque logo est espacé */
 .resultat-logo {
     margin: 0 0.3em 0 0;
 }
 
+/* le nom de l'arrêt dans chaque résultat de la recherche */
 .resultat-nom-arret{
     display: flex;
     align-items: center;
 }
 
+/* cache les résultats qui correspondent pas à la recherche */
 .hidden {
     display: none;
 }
 
+/* style quand la barre de recherche devient active */
 .recherche-active {
     font-weight: 600;
     background-color: var(--couleur-principale);
@@ -75,6 +90,7 @@
     animation: burst-color 0.5s ease;
 }
 
+/* animation quand elle devient inactive */
 .recherche-inactive {
     animation: burst-color-reverse 0.5s ease;
 }
@@ -100,3 +116,82 @@
     
 }
 /*------------------------------------*/
+
+/* BOITE DE DIALOGUE */
+.dialog-ligne-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.description-ligne-conteneur {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8.5em 0 0.4em;
+    
+    .description-transport-ligne{
+        color:rgba(255, 255, 255, 0.8);
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+
+    .description-nom-ligne{
+        color:rgba(255, 255, 255, 1);
+        font-weight: 900;
+        font-size: 0.9em;
+    }
+}
+
+
+.dialog-ligne {
+    display: flex;
+    justify-content:space-between;
+    /*background-opacity: 0.8; */
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.horaire-ligne-conteneur {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.horaire-ligne-conteneur > .horaire-ligne{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    margin: 0.4em 1.2rem 0.4em 0;
+    padding: 0.5em;
+    color: var(--couleur-principale);
+
+    .nom-terminus {
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+
+    .timer-prochain-passage{
+        font-weight: 900;
+        font-size: 1.2em;
+        font-family: 'Roboto', 'sans-serif';
+    }
+}
+
+.logo-ligne {
+    margin: 0.2em;
+}
+
+.bouton-redirection {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.fa-arrow-right {
+    font-size: 2em;
+    font-weight: 600;
+    margin-right: 0.4em;
+    color:rgb(255, 255, 255);
+}

@@ -17,7 +17,7 @@
 
     const arretsTram = ['1', '2', '3', '4'];
     const arretsBusUrbain = ['6', '7', '8', '9', '10', '11', '14', '15', '16', '17', '18', '19', '51', '52', '53'];
-    const arretsBusSuburbain = ['18', '20', '21', '22', '23', '24', '25', '26', '30', '32', '33', '34', '36', '38', '40', '41', '43', '44', '46'];
+    // const arretsBusSuburbain = ['18', '20', '21', '22', '23', '24', '25', '26', '30', '32', '33', '34', '36', '38', '40', '41', '43', '44', '46'];
 
     nomArrets.forEach(arret => {
         console.log("arret : ", resultatsArrets[arret].nom, " \n lignes :", resultatsArrets[arret].lignes);
@@ -48,14 +48,16 @@
                 const logoLigne = document.createElement("span");
                 if(arretsTram.includes(ligne)){
                     logoLigne.setAttribute("class", `resultat-logo indicateur-ligne tramway ligne-${ligne}`);
+                    logoLigne.innerHTML = "T"+ligne;
                 }
                 else if(arretsBusUrbain.includes(ligne)){
                     logoLigne.setAttribute("class", `resultat-logo indicateur-ligne busMTP ligne-${ligne}`);
+                    logoLigne.innerHTML = ligne;
                 }
                 else {
                     logoLigne.setAttribute("class", `resultat-logo indicateur-ligne bus3M ligne-${ligne}`);
+                    logoLigne.innerHTML = ligne;
                 }
-                logoLigne.innerHTML = ligne;
                 arretActuelLogo.appendChild(logoLigne);// J'ajoute chaque logo à la div contenant les logos
                 listeLigneArretActuel.push(ligne);
             }
@@ -81,10 +83,98 @@
         /*quand on click sur l'arrêt choisi */
         arret.addEventListener('click', () => {
 
+            // En premier lieu on ajoute le conteneur d'élément
+            console.log(arret.childNodes[1].childNodes[0].classList.contains("tramway"));
+            console.log(arret.classList);
+
+            const titreArretHeader = arret.getElementsByClassName("resultat-nom-arret")[0].textContent;
+
+            console.log(arret.childNodes[1].getElementsByClassName("resultat-logo"));
+
+            const resultatsLogo = arret.childNodes[1].getElementsByClassName("resultat-logo");
+            console.log(resultatsLogo[0].textContent);
+
+            const resultatsLogoArray = Array.from(resultatsLogo);
+
+
+            resultatsLogoArray.forEach(ligne => {
+
+                let numeroLigneActuelle = ligne.textContent;
+                const conteneurLigne = document.createElement("div");
+
+                // Ici on test si la ligne actuel est une ligne de tram, forme : [T1, T2, T3, T4]
+                if(numeroLigneActuelle.includes("T")){
+
+                    // si oui alors on supprime le T du numéro de la ligne (pour éviter d'avoir des soucis par la suite)
+                    numeroLigneActuelle = numeroLigneActuelle.replace('T', "");
+
+                }
+
+                // on ajoute l'attribut qui lie la couleur au background du conteneur avec les éléments de la ligne
+                conteneurLigne.setAttribute("class",`dialog-ligne ligne-${numeroLigneActuelle}`);
+
+                const logoActuel = document.createElement("h1");
+                logoActuel.setAttribute("class", "logo-ligne");
+                logoActuel.appendChild(ligne);
+                console.log(logoActuel);
+
+                // Ensuite on ajoute le logo de la ligne au conteneur d'élément
+                conteneurLigne.appendChild(logoActuel);
+
+                // On créée le conteneur avec le type de transport et le numéro de la ligne
+                const descriptionLigneActuelle = document.createElement("div");
+                descriptionLigneActuelle.setAttribute("class", "description-ligne-conteneur");
+
+                const elementH1Transport = document.createElement('h1');
+                const elementH2Nom = document.createElement('h2');
+
+                // Création du type de transport utilisé
+                const descriptionTransportLigne = document.createElement("span");
+                descriptionTransportLigne.setAttribute("class", "description-transport-ligne");
+
+                if (arretsTram.includes(numeroLigneActuelle)){
+                    descriptionTransportLigne.textContent = "Tramway";
+                }
+                else {
+                    descriptionTransportLigne.textContent = "Bus";
+                }
+
+                // Type de transport (h1 + span) ajouté au conteneur parent (descriptionLigneActuelle)
+                elementH1Transport.appendChild(descriptionTransportLigne)
+                descriptionLigneActuelle.appendChild(elementH1Transport);
+
+
+                // Création du nom de la ligne utilisé
+                const descriptionNomLigne = document.createElement("span");
+                descriptionNomLigne.setAttribute("class", "description-nom-ligne");
+                descriptionNomLigne.innerHTML = "Ligne "+ numeroLigneActuelle;
+                
+                // Ligne [numéro de ligne] ajouté au conteneur parent (descriptionLigneActuelle)
+                elementH2Nom.appendChild(descriptionNomLigne);
+                descriptionLigneActuelle.appendChild(elementH2Nom);
+
+                // On ajoute le conteneur parent avec les 2 informations dans le conteneur élément
+                conteneurLigne.appendChild(descriptionLigneActuelle);
+
+                // ICI on ajoute les horaires (pas encore dispo)
+
+                // création de la flèche
+                const conteneurFleche = document.createElement("div");
+                conteneurFleche.setAttribute("class","bouton-redirection");
+                const fleche = document.createElement("i");
+                fleche.setAttribute("class", "fa-solid fa-arrow-right");
+                conteneurFleche.appendChild(fleche);
+
+                conteneurLigne.appendChild(conteneurFleche);
+                bodyDialog.appendChild(conteneurLigne);
+
+                console.log(conteneurLigne);
+            });
+
             titreDialogue.setAttribute("class", "second-title");
 
             /* et à l'intérieur j'écris le nom de l'ârret*/
-            titreDialogue.innerHTML = arret.innerHTML;
+            titreDialogue.innerHTML = titreArretHeader;
 
             /* et je l'ajoute enfin à la page EJS */
             headerDialog.appendChild(titreDialogue);

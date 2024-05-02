@@ -4,17 +4,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
     maxZoom: 19,
 }).addTo(map);
 
-
-//var tramIcon = L.divIcon({className: 'fa-solid fa-train-tram fa-lg'});
-//var busIcon = L.divIcon({className: 'fa-solid fa-bus-simple fa-lg'});
-//var marker = L.marker([43.6112422, 3.8767337],{icon: busIcon}).addTo(map);
-//marker.bindPopup('<div class="bandeau-popup"><p>Place de l\'Europe</p></div><span class="indicateur-ligne tramway ligne-1">T1</span>');
-
 (async () => {
 
-    const layerTram = L.layerGroup();
-    const layerBus = L.layerGroup();
-    const layerMarkers = L.layerGroup(); // Ajout du layer pour les marqueurs
+    const layerTram = L.layerGroup(); // Layer pour les tramways
+    const layerBus = L.layerGroup(); // Layer pour les bus
+    const layerMarkers = L.layerGroup(); // Layer pour les arrêts
 
     const resultatTraces = await coordinateur.api.getAPI('api/traces-reseau');
     const resultatArrets = await coordinateur.api.getAPI('/api/arrets/reseau');
@@ -22,14 +16,8 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
 
     if (resultatTraces === undefined || resultatArrets === undefined) { 
         ouvrirDialogue("erreurCoord");
-        return; // Quitte la fonction si une erreur est survenue
     }
 
-    function enleverDoublons(liste) {
-        return [...new Set(liste)];
-    }
-
-    // Création des couches pour les lignes de tram et de bus
     for (let i = resultatTraces.length - 1; i >= 0; i--) {
         const ligne = resultatTraces[i];
         for (const trajet of ligne.coordonnees) {
@@ -41,17 +29,37 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
             }
         }
     }
-
-    // Ajout des marqueurs d'arrêt au layerMarkers
+    
+    const arretsTram = ['1', '2', '3', '4'];
+    const arretsBusUrbain = ['6', '7', '8', '9', '10', '11', '14', '15', '16', '17', '18', '19', '51', '52', '53'];
+    
     const coordArrets = Object.values(resultatArrets);
     for (const arret of coordArrets) {
-        console.log(enleverDoublons(arret.lignes));
+        const lignesUniques = [...new Set(arret.lignes)]; // On enlève les doublons
+        console.log(lignesUniques);
         let coordsInverse = [arret.coords[1], arret.coords[0]];
         let pointArret = L.marker(coordsInverse, { icon: arretIcon }).addTo(layerMarkers);
-        pointArret.bindPopup('<div class="bandeau-popup"><p>'+arret.nom+' '+'</p></div></span><div class="liste-lignes"><h4 class="indicateur-ligne tramway ligne-4">'+enleverDoublons(arret.lignes)+'</h4></div>');
-    }
-
-    // Contrôle de l'affichage des couches en fonction du niveau de zoom
+        let popupContent = '<div class="bandeau-popup"><p>'+arret.nom+' '+'</p></div></span>';
+    
+        // Ajout de chaque ligne dans sa propre div pour les afficher en ligne
+        popupContent += '<div class="liste-lignes">'; // Ajout d'une div pour contenir toutes les lignes
+        for (const ligne of lignesUniques) {
+            let classeLigne = ''; // Classe par défaut (si il y a une erreur rien ne s'affiche)
+            if (arretsTram.includes(ligne)) {
+                classeLigne = 'tramway';
+            } else if (arretsBusUrbain.includes(ligne)) {
+                classeLigne = 'busMTP';
+            } else {
+                classeLigne = 'bus3M';
+            }
+            popupContent += '<h2 class="indicateur-ligne ' + classeLigne + ' ligne-' + ligne + '">' + ligne + '</h2>';
+        }
+        popupContent += '</div>'; // Fermeture de la div contenant toutes les lignes
+        popupContent += '<div class="info-lignes"><u>Informations →</u></div>'
+        pointArret.bindPopup(popupContent);
+    }    
+    
+    // Contrôle de l'affichage des layers en fonction du niveau de zoom
     map.on('zoomend', function () {
         const currentZoom = map.getZoom();
         if (currentZoom >= 14) {
@@ -64,7 +72,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
         }
     });
 
-    // Ajout des couches au map
     layerTram.addTo(map);
     layerBus.addTo(map);
     layerMarkers.addTo(map);

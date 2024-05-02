@@ -51,6 +51,14 @@ span {
 }
 
 .liste-lignes {
+    justify-content: center;
     color: black;
-    text-align: center;
+    display: flex;
+}
+
+.info-lignes {
+    position: absolute;
+    left: 9rem;
+    font-weight: 400;
+    color: var(--couleur-principale);
 }

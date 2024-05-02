@@ -6,11 +6,15 @@
 
 <!--Ajout du module de la map (OpenStreetView)-->
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    
 
 <!--Corps de la page-->
 
@@ -54,9 +58,10 @@
         </div>
     </button>
     <div class="bouton-valider-conteneur">
-    <button class="bouton-valider" id="bouton-valider"><i id="loupe" class="fa-solid fa-magnifying-glass fa-xl"
-        style="color: #ffffff;"></i><i id="panneaux" class="fa-solid fa-signs-post fa-flip fa-xl" style="color: #ffffff;"></i></button>
-    </div> 
+        <button class="bouton-valider" id="bouton-valider"><i id="loupe" class="fa-solid fa-magnifying-glass fa-xl"
+                style="color: #ffffff;"></i><i id="panneaux" class="fa-solid fa-signs-post fa-flip fa-xl"
+                style="color: #ffffff;"></i></button>
+    </div>
 </div>
 
 <div class="carte" id="map"></div>

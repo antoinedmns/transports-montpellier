@@ -7,45 +7,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
 
 map.addEventListener("click", (e) => console.log(e.latlng));
 
-(async () => {
-
-    const layerTram = L.layerGroup();
-    const layerBus = L.layerGroup();
-    const resultatTraces = await coordinateur.api.getAPI('api/traces-reseau/');
-
-    if (resultatTraces === undefined) {ouvrirDialogue("erreurCoord")}
-    console.log(resultatTraces);
-
-    for(let i=resultatTraces.length-1; i >= 0;i--) {
-        const ligne = resultatTraces[i];
-        console.log(ligne);
-        for(const trajet of ligne.coordonnees) {
-            console.log(trajet);
-            if(ligne.num >= 5) {
-                layerBus.addLayer(L.polyline(trajet, { color: ligne.couleur,opacity: 0.5}));
-            }
-            else {
-                layerTram.addLayer(L.polyline(trajet, { color: ligne.couleur,weight: 4}));
-            }
-        }
-    }
-
-    map.on('zoomend',function() {
-        console.log(map.getZoom())
-        if(map.getZoom() >= 14 && !map.hasLayer(layerBus)) {
-            map.addLayer(layerBus);
-        }
-        if(map.getZoom() < 14 && map.hasLayer(layerBus)) {
-            map.removeLayer(layerBus);
-        }
-    });
-
-    layerTram.addTo(map);
-    layerBus.addTo(map);
-    
-
-})();
-
 function echangerTexte() {
     const flecheConteneur = document.querySelector('.fleche-conteneur');
     flecheConteneur.classList.add('spin-effect');
@@ -65,7 +26,6 @@ function echangerTexte() {
     }, 125);
 }
 
-
 map.addEventListener("click", (e) => {
     if (document.getElementById("boite-debut").value == "") {
         document.getElementById("boite-debut").value = e.latlng.lat + " " + e.latlng.lng;
@@ -76,8 +36,41 @@ map.addEventListener("click", (e) => {
 })
 
 var boutonValider = document.getElementById('bouton-valider');
+let routingControl = null;
 
-if(boutonValider) {
+function addRoutingControl(debutCoords, finCoords) {
+    if (routingControl !== null) {
+        map.removeControl(routingControl);
+    }
+
+    routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(debutCoords[0], debutCoords[1]), 
+            L.latLng(finCoords[0], finCoords[1])
+        ],
+        lineOptions: {
+            styles: [
+                {color : "rgb(17, 73, 159)"}
+            ]
+        }
+    }).addTo(map);
+}
+
+function clearMap() {
+    map.eachLayer(function(layer) {
+        if (layer instanceof L.Marker || layer instanceof L.LayerGroup) {
+            map.removeLayer(layer);
+        }
+    });
+
+    map.eachLayer(function(layer) {
+        if (layer instanceof L.Routing.Control) {
+            map.removeControl(layer);
+        }
+    });
+}
+
+if (boutonValider) {
     boutonValider.addEventListener('click', async () => {
         const elmDebut = document.getElementById('boite-debut');
         const elmFin = document.getElementById('boite-fin');
@@ -89,19 +82,24 @@ if(boutonValider) {
             return;
         }
 
+        clearMap();
+
         elmDebut.disabled = true;
         elmFin.disabled = true;
         icoLoupe.style.display = "none";
         icoPan.style.display = "inline-block";
 
-        const adrDebut = elmDebut.value;
-        const adrFin = elmFin.value;
+        const debutCoords = elmDebut.value.split(' ').map(coord => parseFloat(coord));
+        const finCoords = elmFin.value.split(' ').map(coord => parseFloat(coord));
 
-        const resultat = await coordinateur.api.postAPI('api/hhhhhhhhhh',{debut: adrDebut, fin: adrFin});
+        addRoutingControl(debutCoords, finCoords);
+
         elmDebut.disabled = false;
         elmFin.disabled = false;
         icoLoupe.style.display = "inline-block";
         icoPan.style.display = "none";
-        if (true) {ouvrirDialogue("erreurCoord");}   
+
+        elmDebut.value = "";
+        elmFin.value = "";
     });
 }

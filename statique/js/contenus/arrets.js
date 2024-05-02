@@ -83,10 +83,13 @@
         /*quand on click sur l'arrêt choisi */
         arret.addEventListener('click', () => {
 
-            // En premier lieu on ajoute le conteneur d'élément
+            // Je supprime le contenu précédent du body de la pop up afin d'éviter tout affichage de ligne de l'arret précédent
+            bodyDialog.innerHTML = "";
+
             console.log(arret.childNodes[1].childNodes[0].classList.contains("tramway"));
             console.log(arret.classList);
 
+            // Cela permet de récupérer le nom de l'arret pour par la suite l'ajouter dans le header de la pop-up
             const titreArretHeader = arret.getElementsByClassName("resultat-nom-arret")[0].textContent;
 
             console.log(arret.childNodes[1].getElementsByClassName("resultat-logo"));
@@ -94,15 +97,21 @@
             const resultatsLogo = arret.childNodes[1].getElementsByClassName("resultat-logo");
             console.log(resultatsLogo[0].textContent);
 
+            // afin de parcourir toutes les logos de ligne de l'arrêt choisi je crée un array avec ces éléments
             const resultatsLogoArray = Array.from(resultatsLogo);
 
+            // pour éviter les problèmes de réaffectation de logo j'initialise un clone des logos sur lequel je vais itérer ma boucle
+            const logosArrêtCopie = resultatsLogoArray.map(logo => logo.cloneNode(true));
 
-            resultatsLogoArray.forEach(ligne => {
+            logosArrêtCopie.forEach(ligne => {
 
+                // numéro de ligne de transport
                 let numeroLigneActuelle = ligne.textContent;
+
+                // En premier lieu on ajoute le conteneur d'élément
                 const conteneurLigne = document.createElement("div");
 
-                // Ici on test si la ligne actuel est une ligne de tram, forme : [T1, T2, T3, T4]
+                // Ici on test si la ligne actuel est une ligne de tram, de la forme : T1, T2, T3 ou T4.
                 if(numeroLigneActuelle.includes("T")){
 
                     // si oui alors on supprime le T du numéro de la ligne (pour éviter d'avoir des soucis par la suite)
@@ -116,7 +125,7 @@
                 const logoActuel = document.createElement("h1");
                 logoActuel.setAttribute("class", "logo-ligne");
                 logoActuel.appendChild(ligne);
-                console.log(logoActuel);
+                console.log("logo actuel :", logoActuel);
 
                 // Ensuite on ajoute le logo de la ligne au conteneur d'élément
                 conteneurLigne.appendChild(logoActuel);
@@ -156,7 +165,57 @@
                 // On ajoute le conteneur parent avec les 2 informations dans le conteneur élément
                 conteneurLigne.appendChild(descriptionLigneActuelle);
 
-                // ICI on ajoute les horaires (pas encore dispo)
+                // ICI on ajoute les horaires (pas encore dynamique)
+                const horairesConteneur = document.createElement("div");
+                horairesConteneur.setAttribute("class", `horaire-ligne-conteneur ligne-${numeroLigneActuelle}`);
+
+                // Horaire de la ligne terminus Aller
+                const horaireAller = document.createElement("div");
+                horaireAller.setAttribute("class", `horaire-ligne aller`);
+
+                // Création de nom pour l'horaire aller
+                const nomTerminusA = document.createElement("h3");
+
+                nomTerminusA.innerHTML = "<span class='nom-terminus'>Odysseum</span>";
+
+
+                // Création du timer aller
+                const timerProchainPassageA = document.createElement("div");
+                timerProchainPassageA.setAttribute("class", "timer-prochain-passage");
+
+                timerProchainPassageA.innerHTML = "X min";
+
+                //Ajout timer + nom dans le conteneur aller
+                horaireAller.appendChild(nomTerminusA);
+                horaireAller.appendChild(timerProchainPassageA);
+
+                // Horaire de la ligne terminus retour
+                const horaireRetour = document.createElement("div");
+                horaireRetour.setAttribute("class", `horaire-ligne retour`);
+
+                // Création de nom pour l'horaire retour
+                const nomTerminusR = document.createElement("h3");
+
+                nomTerminusR.innerHTML = "<span class='nom-terminus'>Mosson</span>";
+
+
+                // Création du timer retour
+                const timerProchainPassageR = document.createElement("div");
+                timerProchainPassageR.setAttribute("class", "timer-prochain-passage");
+
+                timerProchainPassageR.innerHTML = "X min";
+
+                //Ajout timer + nom dans le conteneur retour
+                horaireRetour.appendChild(nomTerminusR);
+                horaireRetour.appendChild(timerProchainPassageR);
+
+                // Ajout aller + retour dans horaire conteneur
+                horairesConteneur.appendChild(horaireAller);
+                horairesConteneur.appendChild(horaireRetour);
+
+                // Ajout dans le conteneur avec tous les éléments
+                conteneurLigne.appendChild(horairesConteneur);
+
 
                 // création de la flèche
                 const conteneurFleche = document.createElement("div");
@@ -245,6 +304,3 @@ barreRechercheArret.addEventListener("keyup", (e) => {
 
 
 });
-
-/* le prochain objectif est de rajouter un evenement sur chaque résultat de notre recherche qui fait que lorsque l'on clique sur la div qui nous correspond
-une pop up s'affiche avec l'information sur l'arrêt choisi */

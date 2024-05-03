@@ -29,7 +29,7 @@ export default class ArretsLignesInfo extends RouteAbstract {
             arretLignes.push({
                 numero: ligne.numExploitation,
                 couleur: ligne.couleur,
-                directions: arret.directions[ligne.numExploitation]
+                directions: arret.directions[ligne.numExploitation],
             })
 
         }

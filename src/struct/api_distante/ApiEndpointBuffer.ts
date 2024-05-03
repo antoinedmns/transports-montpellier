@@ -34,11 +34,10 @@ export default abstract class ApiEndpointBuffer extends ApiEndpointAbstract<Buff
                 if (!root) { resolve(null as D); return; }
                 
                 const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
-                const wows = FeedMessage.decode(donneesRaw);
-                console.log(wows.toJSON().entity[0].tripUpdate);
+                const messageDecode = FeedMessage.decode(donneesRaw);
 
-                return wows as D;
-
+                resolve(messageDecode.toJSON().entity)
+                
             });
 
         });

@@ -49,7 +49,7 @@ export default abstract class ApiEndpointHTTP extends ApiEndpointAbstract<string
     /**
      * Extraire les données CSV
      */
-    public extraireCSV<D>(donneesRaw: string): D {
+    public extraireCSV<D>(donneesRaw: string, separator = ','): D {
         
         let parsed: D = {} as D;
         let donneesLignes = donneesRaw.split('\n');
@@ -58,7 +58,7 @@ export default abstract class ApiEndpointHTTP extends ApiEndpointAbstract<string
 
         // Entêtes CSV
         let entetes: string[] = [];
-        donneesLignes.shift()!.replace('\r', '').split(',').forEach((entete => {
+        donneesLignes.shift()!.replace('\r', '').split(separator).forEach((entete => {
             if(entete.charCodeAt(0) === 65279) entete = entete.slice(1);
             (parsed as any)[entete] = [];
             entetes.push(entete);
@@ -66,7 +66,7 @@ export default abstract class ApiEndpointHTTP extends ApiEndpointAbstract<string
 
         // Corps CSV
         donneesLignes.forEach((ligne) => {
-            ligne.replace('\r', '').split(',').forEach((clef, i) => {
+            ligne.replace('\r', '').split(separator).forEach((clef, i) => {
                 (parsed as any)[entetes[i]].push(clef);
             });
         });

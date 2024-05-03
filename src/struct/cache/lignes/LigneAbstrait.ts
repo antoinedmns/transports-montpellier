@@ -24,6 +24,11 @@ export default abstract class LigneAbstrait<D extends ArretTramway | ArretBus> {
     public arrets = new Map<string, D>();
 
     /**
+     * Cache des trajets de la ligne
+     */
+    public trajets = new Map<string, D>();
+
+    /**
      * Tracés de la ligne
      */
     public traces: number[][][] = [];

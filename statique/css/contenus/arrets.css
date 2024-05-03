@@ -63,6 +63,11 @@
     animation: slide-in 0.5s ease;
 }
 
+/* style pour la box aucun résultat */
+.aucun-res {
+    padding: 0.8em;
+}
+
 /* LOGO DES RESULTATS RECHERCHE */
 
 /* Chaque logo est espacé */
@@ -79,6 +84,11 @@
 /* cache les résultats qui correspondent pas à la recherche */
 .hidden {
     display: none;
+}
+
+/* cache les arrêts sans ligne*/
+.null {
+    display: none !important;
 }
 
 /* style quand la barre de recherche devient active */
@@ -122,24 +132,31 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 1rem 1rem 0 1rem;
 }
 
 .description-ligne-conteneur {
     display: flex;
     flex-direction: column;
-    margin: 0 8.5em 0 0.4em;
+    align-items:self-start;
+    justify-content: center;
+    margin-bottom: 0.4em;
     
     .description-transport-ligne{
-        color:rgba(255, 255, 255, 0.8);
         font-weight: 400;
-        font-size: 0.8em;
+        font-size: 0.7em;
     }
 
     .description-nom-ligne{
-        color:rgba(255, 255, 255, 1);
         font-weight: 900;
-        font-size: 0.9em;
+        font-size: 1.2em;
     }
+}
+
+.sous-conteneur {
+    display: flex;
+    justify-content: center;
+    padding: 0.4rem;
 }
 
 
@@ -148,13 +165,14 @@
     justify-content:space-between;
     /*background-opacity: 0.8; */
     border-radius: 10px;
-    margin: 1rem;
+    margin-bottom: 1rem;
 }
 
 .horaire-ligne-conteneur {
     display: flex;
     justify-content: center;
     text-align: center;
+    align-items: center;
 }
 
 .horaire-ligne-conteneur > .horaire-ligne{
@@ -163,8 +181,9 @@
     justify-content: space-around;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
-    margin: 0.4em 1.2rem 0.4em 0;
+    margin: 0.4em 0.8em 0.4em 0;
     padding: 0.5em;
+    width: 8vw;
 
     .nom-terminus {
         font-weight: 400;
@@ -192,9 +211,9 @@
 }
 
 .fa-arrow-right {
-    font-size: 2em;
+    font-size: 2.2em;
     font-weight: 600;
-    margin-right: 0.4em;
+    margin: 0.2em;
     color:rgb(255, 255, 255);
     cursor: pointer;
 }

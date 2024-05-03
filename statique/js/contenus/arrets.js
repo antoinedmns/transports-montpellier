@@ -33,6 +33,11 @@
         arretActuelNom.innerHTML = arret;
 
         let listeLigneArretActuel = [];
+
+
+        if ( resultatsArrets[arret].lignes.length === 0){
+            arretActuelConteneur.setAttribute("class", "resultat-recherche null");
+        }
     
         // Je parcours les lignes associées à l'arrêt et crée un logo pour chacune d'elles
         for(ligne of resultatsArrets[arret].lignes) {
@@ -61,8 +66,6 @@
         arretActuelConteneur.appendChild(arretActuelLogo);
         resultatRechercheConteneur.appendChild(arretActuelConteneur);
 
-        const arretsResultatNom  = resultatsArrets[arret].nom;
-        console.log(arretsResultatNom);
 
         const headerDialog = document.getElementById("title-header-dialog");
         const bodyDialog = document.getElementById("body-dialog-box");
@@ -70,48 +73,76 @@
 
         arretActuelConteneur.addEventListener('click', () =>{
 
+            
+            // Je supprime le contenu body de la pop up précédente
             bodyDialog.innerHTML = "";
 
+            // Je supprime le contenu header de la pop up précédente
+            headerDialog.innerHTML = "";
+
+            // J'ajoute le premier et le second titre au header
             const titreArretHeader = resultatsArrets[arret].nom;
-            console.log(titreArretHeader);
+            const titreStaticHeader = document.createElement("h1");
 
-            const logosArretCopie = listeLigneArretActuel;
-            console.log(logosArretCopie);
+            titreStaticHeader.setAttribute('class', 'first-title');
+            titreDialogue.setAttribute("class", "second-title");
 
-            listeLigneArretActuel.forEach(ligne => {
+            // et à l'intérieur j'écris le "choisir une ligne" suivi du nom de l'arret
+            titreStaticHeader.innerHTML = "Choisir une ligne";
+            titreDialogue.innerHTML = titreArretHeader;
+
+            // et je l'ajoute enfin à la page EJS
+            if (!headerDialog.querySelector(".second-title")) {
+                headerDialog.appendChild(titreStaticHeader);
+                headerDialog.appendChild(titreDialogue);
+            }
+
+            coordinateur.api.getAPI('api/arret/' + resultatsArrets[arret].id + '/lignes').then((infos) => {for (ligne of infos){
+
+                const rgb = (ligne.couleur.match(/[A-Za-z0-9]{2}/g) ?? ['00', '00', '00']).map(e => parseInt(e, 16));
+                const moyenne = (rgb[0] + rgb[1] + rgb[2]) / 3;
+                const estCouleurNeutre = moyenne > 150;
 
                 // numéro de ligne de transport
-                let numeroLigneActuelle = ligne;
+                let numeroLigneActuelle = ligne.numero;
+                let direction = ligne.directions;
 
                 // En premier lieu on ajoute le conteneur d'élément
                 const conteneurLigne = document.createElement("div");
 
-                // on ajoute l'attribut qui lie la couleur au background du conteneur avec les éléments de la ligne
-                conteneurLigne.setAttribute("class",`dialog-ligne ligne-${numeroLigneActuelle}`);
+                const sousConteneurLigneGauche = document.createElement("div");
+                const sousConteneurLigneDroit = document.createElement("div");
 
+                sousConteneurLigneGauche.setAttribute("class", "sous-conteneur");
+                sousConteneurLigneDroit.setAttribute("class", "sous-conteneur");
+
+                // on ajoute l'attribut qui lie la couleur au background du conteneur avec les éléments de la ligne
+                conteneurLigne.setAttribute("class",`dialog-ligne`);
+
+
+                conteneurLigne.style.backgroundColor = 'rgba('+ rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + 0.8 + ')';
 
                 // Ici je recréé le logo pour chaque ligne de l'arrêt
                 const logoLigne = document.createElement("span");
-                if(arretsTram.includes(ligne)){
-                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne tramway ligne-${ligne}`);
-                    logoLigne.innerHTML = "T"+ligne;
+                if(arretsTram.includes(numeroLigneActuelle)){
+                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne tramway ligne-${numeroLigneActuelle}`);
+                    logoLigne.innerHTML = "T"+numeroLigneActuelle;
                 }
-                else if(arretsBusUrbain.includes(ligne)){
-                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne busMTP ligne-${ligne}`);
-                    logoLigne.innerHTML = ligne;
+                else if(arretsBusUrbain.includes(numeroLigneActuelle)){
+                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne busMTP ligne-${numeroLigneActuelle}`);
+                    logoLigne.innerHTML = numeroLigneActuelle;
                 }
                 else {
-                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne bus3M ligne-${ligne}`);
-                    logoLigne.innerHTML = ligne;
+                    logoLigne.setAttribute("class", `resultat-logo indicateur-ligne bus3M ligne-${numeroLigneActuelle}`);
+                    logoLigne.innerHTML = numeroLigneActuelle;
                 }
 
                 const logoActuel = document.createElement("h1");
                 logoActuel.setAttribute("class", "logo-ligne");
                 logoActuel.appendChild(logoLigne);
-                console.log("logo actuel :", logoActuel);
 
                 // Ensuite on ajoute le logo de la ligne au conteneur d'élément
-                conteneurLigne.appendChild(logoActuel);
+                sousConteneurLigneGauche.appendChild(logoActuel);
 
                 // On créée le conteneur avec le type de transport et le numéro de la ligne
                 const descriptionLigneActuelle = document.createElement("div");
@@ -119,6 +150,15 @@
 
                 const elementH1Transport = document.createElement('h1');
                 const elementH2Nom = document.createElement('h2');
+
+                if(estCouleurNeutre){
+                    elementH1Transport.style.color = 'rgba(38, 38, 38, 0.82)';
+                    elementH2Nom.style.color = '#262626';
+                }
+                else {
+                    elementH1Transport.style.color = 'rgba(255, 255, 255, 0.8)';
+                    elementH2Nom.style.color = '#ffffff';
+                }
 
                 // Création du type de transport utilisé
                 const descriptionTransportLigne = document.createElement("span");
@@ -146,11 +186,12 @@
                 descriptionLigneActuelle.appendChild(elementH2Nom);
 
                 // On ajoute le conteneur parent avec les 2 informations dans le conteneur élément
-                conteneurLigne.appendChild(descriptionLigneActuelle);
+                sousConteneurLigneGauche.appendChild(descriptionLigneActuelle);
+                conteneurLigne.appendChild(sousConteneurLigneGauche);
 
                 // ICI on ajoute les horaires (pas encore dynamique)
                 const horairesConteneur = document.createElement("div");
-                horairesConteneur.setAttribute("class", `horaire-ligne-conteneur ligne-${numeroLigneActuelle}`);
+                horairesConteneur.setAttribute("class", `horaire-ligne-conteneur`);
 
                 // Horaire de la ligne terminus Aller
                 const horaireAller = document.createElement("div");
@@ -159,7 +200,7 @@
                 // Création de nom pour l'horaire aller
                 const nomTerminusA = document.createElement("h3");
 
-                nomTerminusA.innerHTML = "<span class='nom-terminus'>Odysseum</span>";
+                nomTerminusA.innerHTML = "<span class='nom-terminus'>"+direction[0]+"</span>";
 
 
                 // Création du timer aller
@@ -179,7 +220,7 @@
                 // Création de nom pour l'horaire retour
                 const nomTerminusR = document.createElement("h3");
 
-                nomTerminusR.innerHTML = "<span class='nom-terminus'>Mosson</span>";
+                nomTerminusR.innerHTML = "<span class='nom-terminus'>"+direction[1]+"</span>";
 
 
                 // Création du timer retour
@@ -197,7 +238,7 @@
                 horairesConteneur.appendChild(horaireRetour);
 
                 // Ajout dans le conteneur avec tous les éléments
-                conteneurLigne.appendChild(horairesConteneur);
+                sousConteneurLigneDroit.appendChild(horairesConteneur);
 
 
                 // création de la flèche
@@ -207,7 +248,11 @@
                 fleche.setAttribute("class", "fa-solid fa-arrow-right");
                 conteneurFleche.appendChild(fleche);
 
-                conteneurLigne.appendChild(conteneurFleche);
+                sousConteneurLigneDroit.appendChild(conteneurFleche);
+
+                conteneurLigne.appendChild(sousConteneurLigneGauche);
+                conteneurLigne.appendChild(sousConteneurLigneDroit);
+
                 bodyDialog.appendChild(conteneurLigne);
 
                 // Rediriger vers la page d'infos détaillées sur l'arrêt
@@ -217,35 +262,25 @@
                     const idArret = resultatsArrets[arret].id;
 
                     // fermer la boite de dialogue et charger la page
-                    console.log(numeroLigneActuelle, idArret);
                     fermerDialogue("ligneInfo");
                     coordinateur.chargerPage('arret-details/' + numeroLigneActuelle + '/' + idArret);
 
                 });
 
-            });
-
-            titreDialogue.setAttribute("class", "second-title");
-
-            // et à l'intérieur j'écris le nom de l'ârret
-            titreDialogue.innerHTML = titreArretHeader;
-
-            // et je l'ajoute enfin à la page EJS
-            headerDialog.appendChild(titreDialogue);
+            }});
 
             // j'ouvre la pop-up
             ouvrirDialogue("ligneInfo");
 
-            
-        })
+        });
         
     });
 
     const barreRechercheArret = document.getElementById('recherche');
     const resultRecherche = document.getElementsByClassName('resultat-recherche');
-    const aucunResultat = resultRecherche[resultRecherche.length-1];
+    const aucunResultat = resultRecherche[0];
 
-    barreRechercheArret.addEventListener("keyup", (e) => {
+    barreRechercheArret.addEventListener("keyup", () => {
 
 
         /* Barre de recherche active (première lettre relâché) */
@@ -288,6 +323,8 @@
                 else {
                     resultRecherche[i].classList.add("hidden");
                 }
+
+
             }
 
             /* Si on a pas trouvé de résultat pour notre recherche alors on affiche la div "aucun résultat trouvé" */ 

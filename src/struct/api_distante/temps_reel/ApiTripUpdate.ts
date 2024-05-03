@@ -7,7 +7,7 @@ export default class ApiTripUpdate extends ApiEndpointBuffer {
 
     public parser(donneesRaw: Buffer) {
 
-        const arretsJson = this.extraireProtobuf<JsonApiArretsBus>(donneesRaw);
+        const arretsJson = this.extraireProtobuf(donneesRaw);
 
         const donnees = {
             
@@ -17,22 +17,4 @@ export default class ApiTripUpdate extends ApiEndpointBuffer {
 
     }
 
-}
-
-interface JsonApiArretsBus {
-    type: string,
-    name: string,
-    features: {
-        type: string,
-        geometry: {
-            coordinates: number[]
-        },
-        properties: {
-            description: string,
-            lignes_passantes: string,
-            lignes_et_direction: string,
-            station: "Arrêt de bus",
-            commune: string,
-        }
-    }[]
 }

@@ -31,11 +31,11 @@ export default abstract class ApiEndpointBuffer extends ApiEndpointAbstract<Buff
             protobuf.load(path.join(__dirname, '..', '..', '..', 'statique', 'protobuffers', 'gtfs-rt.proto'), (err, root) => {
 
                 if (err) console.log(err);
-                if (!root) { console.log('ow.'); resolve(null as D); return; }
+                if (!root) { resolve(null as D); return; }
                 
                 const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
                 const wows = FeedMessage.decode(donneesRaw);
-                console.log(JSON.stringify(wows.toJSON(), null, 4));
+                console.log(wows.toJSON().entity[0].tripUpdate);
 
                 return wows as D;
 

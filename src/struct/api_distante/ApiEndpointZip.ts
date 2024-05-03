@@ -1,32 +1,27 @@
 import request from 'request';
 import ApiEndpointAbstract from './ApiEndpointAbstract';
 import unzipper from 'unzipper';
+import { ClientRequest } from 'http';
 
-export default abstract class ApiEndpointZip extends ApiEndpointAbstract<string> {
+export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<string, FileInfo>> {
     
     /**
      * Récupérer les données du fichier distant à l'adresse donnée dans la propriété 'cheminDistant".
      * @returns Le contenu du fichier distant, au format texte
      */
-    public async recupererDonnees(): Promise<string> {
+    public async recupererDonnees(): Promise<Record<string, FileInfo>> {
 
         const response = await fetch(this.cheminDistant);
         const buffer = Buffer.from(await response.arrayBuffer());
-        // const directory = await unzipper.Open.buffer(buffer).catch(console.error);
-        // console.log(directory);
+        const directory = await unzipper.Open.buffer(buffer);
 
-        // const file = directory.files.find(d => d.path === 'tl_2015_us_zcta510.shp.iso.xml');
-        // const content = await file.buffer();
-        // console.log(content.toString());
+        const fichiers: Record<string, FileInfo> = {};
+        for (const f of directory.files) {
+            fichiers[f.path] = f;
+        }
 
-        return 'pl';
+        return fichiers;
     }
-
-    /**
-     * Parser les données distantes
-     * @returns true; si le parsage à réussi, false sinon
-     */
-    public abstract parser(donneesRaw: string): boolean;
 
     /**
      * Extraire les données CSV
@@ -57,4 +52,9 @@ export default abstract class ApiEndpointZip extends ApiEndpointAbstract<string>
 
     }
 
+}
+
+export interface FileInfo {
+    buffer: () => Promise<Buffer>
+    path: string
 }

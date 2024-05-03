@@ -69,8 +69,8 @@ export default class Application {
         this._loadMiddlewares();
 
         // Charger et récupérer les données des lignes
-        await (new ApiReseauGTFS().recuperer());
         // await (new ApiTripUpdate().recuperer());
+        // await (new ApiReseauGTFS().recuperer());
         await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
         await (new ApiTraceTram().recuperer());

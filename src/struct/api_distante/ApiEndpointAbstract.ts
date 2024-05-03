@@ -36,6 +36,6 @@ export default abstract class ApiEndpointAbstract<D> {
      * Parser les données distantes
      * @returns true; si le parsage à réussi, false sinon
      */
-    public abstract parser(donneesRaw: D): boolean;
+    public abstract parser(donneesRaw: D): boolean | Promise<boolean>;
 
 }

@@ -93,6 +93,12 @@
             width: 100%;
         }
 
+        .thermo-separateur {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-around;
+        }
+
     }
 
 }

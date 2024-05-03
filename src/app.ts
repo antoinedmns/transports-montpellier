@@ -15,6 +15,8 @@ import ApiArretBus from './struct/api_distante/reseau/arrets/ApiArretsBus';
 import ApiTraceBus from './struct/api_distante/reseau/ApiTraceBus';
 import ApiTripUpdate from './struct/api_distante/temps_reel/ApiTripUpdate';
 import ApiReseauGTFS from './struct/api_distante/reseau/ApiReseauGTFS';
+import ApiTempsReel from './struct/api_distante/reseau/ApiTempsReel';
+import ApiAlertesGTFS from './struct/api_distante/temps_reel/ApiAlertesGTFS';
 
 export default class Application {
 
@@ -69,14 +71,16 @@ export default class Application {
         this._loadMiddlewares();
 
         // Charger et récupérer les données des lignes
-        // await (new ApiTripUpdate().recuperer());
-        // await (new ApiReseauGTFS().recuperer());
+        await (new ApiTripUpdate().recuperer());
+        await (new ApiReseauGTFS().recuperer());
         await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
         await (new ApiTraceTram().recuperer());
         await (new ApiTraceBus().recuperer());
         await (new ApiArretsTram().recuperer());
         await (new ApiArretBus().recuperer());
+        await (new ApiTempsReel().recuperer());
+        await (new ApiAlertesGTFS().recuperer());
 
         // Générer les ressources
         this._genererRessources();

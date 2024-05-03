@@ -1,7 +1,7 @@
 import LignesManager from "../../cache/lignes/LignesManager";
-import ApiEndpointAbstract from "../ApiEndpointAbstract";
+import ApiEndpointHTTP from "../ApiEndpointHTTP";
 
-export default class ApiTraceTram extends ApiEndpointAbstract {
+export default class ApiTraceTram extends ApiEndpointHTTP {
 
     public cheminDistant = 'https://data.montpellier3m.fr/node/12891/download';
     public nom = 'Tracés tram'; 

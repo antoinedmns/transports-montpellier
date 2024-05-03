@@ -2,10 +2,10 @@ import ArretBus from "../../../cache/arrets/ArretBus";
 import ArretTramway from "../../../cache/arrets/ArretTramway";
 import LigneBusManager from "../../../cache/lignes/LigneBusManager";
 import LigneTramwayManager from "../../../cache/lignes/LigneTramwayManager";
-import ApiEndpointAbstract from "../../ApiEndpointAbstract";
+import ApiEndpointHTTP from "../../ApiEndpointHTTP";
 import ArretManager from "../ArretManager";
 
-export default abstract class ApiArretAbstrait extends ApiEndpointAbstract {
+export default abstract class ApiArretAbstrait extends ApiEndpointHTTP {
 
     /**
      * Paser les données et les ajouter au cache respectif

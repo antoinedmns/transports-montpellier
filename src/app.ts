@@ -14,6 +14,7 @@ import ApiArretsTram from './struct/api_distante/reseau/arrets/ApiArretsTram';
 import ApiArretBus from './struct/api_distante/reseau/arrets/ApiArretsBus';
 import ApiTraceBus from './struct/api_distante/reseau/ApiTraceBus';
 import ApiTripUpdate from './struct/api_distante/temps_reel/ApiTripUpdate';
+import ApiReseauGTFS from './struct/api_distante/reseau/ApiReseauGTFS';
 
 export default class Application {
 
@@ -68,7 +69,8 @@ export default class Application {
         this._loadMiddlewares();
 
         // Charger et récupérer les données des lignes
-        await (new ApiTripUpdate().recuperer());
+        await (new ApiReseauGTFS().recuperer());
+        // await (new ApiTripUpdate().recuperer());
         await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
         await (new ApiTraceTram().recuperer());

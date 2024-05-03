@@ -1,8 +1,8 @@
 import LigneBus, { ReseauBus } from "../../cache/lignes/LigneBus";
 import LignesManager from "../../cache/lignes/LignesManager";
-import ApiEndpointAbstract from "../ApiEndpointAbstract";
+import ApiEndpointHTTP from "../ApiEndpointHTTP";
 
-export default class ApiLigneBus extends ApiEndpointAbstract {
+export default class ApiLigneBus extends ApiEndpointHTTP {
 
     public cheminDistant = 'https://data.montpellier3m.fr/node/13227/download';
     public nom = 'Lignes bus'; 

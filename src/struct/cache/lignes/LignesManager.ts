@@ -13,12 +13,23 @@ export default class LignesManager {
 
         let css = '';
 
-        for (const ligne of LignesManager.tramway.cache.values()) {
-            css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur};}`
-        }
+        for (const cache of [LignesManager.tramway, LignesManager.bus]) {
 
-        for (const ligne of LignesManager.bus.cache.values()) {
-            css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur};}`
+            for (const ligne of cache.cache.values()) {
+
+                // on fait la moyenne RGB de la couleur
+                const rgb = (ligne.couleur.match(/[A-Za-z0-9]{2}/g) ?? ['00', '00', '00']).map(e => parseInt(e, 16));
+                const moyenne = (rgb[0] + rgb[1] + rgb[2]) / 3;
+
+                css += `.ligne-${ligne.numExploitation}{background-color:${ligne.couleur};` + 
+
+                    // si la couleur est trop claire, on colore le texte en noir
+                    (moyenne > 150 ? 'color:#262626;' : '') + 
+
+                '}';
+
+            }
+
         }
 
         return css;

@@ -1,0 +1,86 @@
+<!-- Style page -->
+<link rel="stylesheet" href="css/contenus/arret-details.css">
+
+<!-- En-tête -->
+<div class="entete arret-entete" id="enteteArret">
+    <h1 class="indicateur-ligne" id="enteteIndicateurLigne">?</h1>
+    <div class="titre-entete">
+        <p id="enteteTitre" class="premier-titre-entete">...</p>
+        <p id="enteteSoustitre" class="second-titre-entete">...</p>
+    </div>
+</div>
+
+<!-- Autres lignes -->
+<section class="section-arret autres-lignes" id="autresLignes">
+
+    <h2 class="section-titre">Autres lignes desservant cet arrêt</h2>
+
+    <div class="containeur-section">
+        <h2 class="liste-autres-lignes" id="listeAutresLignes"></h2>
+    </div>
+
+</section>
+
+<!-- Horaires en temps réel -->
+<div class="flex arret-horaires">
+
+    <section class="section-arret">
+
+        <h2 class="section-titre">Direction <span id="versDestination1">...</span></h2>
+
+        <div class="containeur-section containeur-horaires">
+            <div class="horaires-temps-reel" id="horairesTempsReel1">
+                <p class="horaires-temps-reel-vide">Aucun horaire en temps réel disponible</p>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="section-arret">
+
+        <h2 class="section-titre">Direction <span id="versDestination0">...</span></h2>
+
+        <div class="containeur-section containeur-horaires">
+            <div class="horaires-temps-reel" id="horairesTempsReel0">
+                <p class="horaires-temps-reel-vide">Aucun horaire en temps réel disponible</p>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- Thermomètre -->
+<section class="section-arret thermometre" id="thermometre">
+
+    <h2 class="section-titre">Plan de ligne</h2>
+
+    <div class="containeur-section">
+        <div class="thermometre-contenu">
+            
+            <!-- Terminus 1 -->
+            <p class="termometre-direction" id="thermometreDirection1">...</p>
+
+            <!-- Arrêts, ligne et correspondances -->
+            <div class="thermometre-principal">
+                
+                <div class="thermometre-ligne" id="thermometreLigne"></div>
+
+            </div>
+
+            <!-- Terminus 0 -->
+            <p class="termometre-direction" id="thermometreDirection0">...</p>
+
+        </div>
+    </div>
+
+</section>
+
+<!-- Récupération des données -->
+<script>
+    var arretId = <%= arret %>;
+    var ligneId = <%= ligne %>;
+</script>
+
+<!-- Scripts -->
+<script src="js/contenus/arret-details.js"></script>

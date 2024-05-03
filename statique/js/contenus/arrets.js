@@ -9,18 +9,11 @@
     /* on récupère la clé (nom de l'arrêt) de chaque élément du dictionnaire */
     const nomArrets = Object.keys(resultatsArrets);
 
-    const arretsValue = Object.values(resultatsArrets);
-
-    console.log(resultatsArrets);
-    console.log("nom arrets :",nomArrets);
-    console.log("nomArrets[0] :", nomArrets[0]);
-
     const arretsTram = ['1', '2', '3', '4'];
     const arretsBusUrbain = ['6', '7', '8', '9', '10', '11', '14', '15', '16', '17', '18', '19', '51', '52', '53'];
     // const arretsBusSuburbain = ['18', '20', '21', '22', '23', '24', '25', '26', '30', '32', '33', '34', '36', '38', '40', '41', '43', '44', '46'];
 
     nomArrets.forEach(arret => {
-        console.log("arret : ", resultatsArrets[arret].nom, " \n lignes :", resultatsArrets[arret].lignes);
 
         // Je récupère l'id de la div parent dans laquelle on va placer les enfants (div avec le nom de l'arrêt)
         const resultatRechercheConteneur = document.getElementById("res-recherche-conteneur");
@@ -92,18 +85,15 @@
             // Cela permet de récupérer le nom de l'arret pour par la suite l'ajouter dans le header de la pop-up
             const titreArretHeader = arret.getElementsByClassName("resultat-nom-arret")[0].textContent;
 
-            console.log(arret.childNodes[1].getElementsByClassName("resultat-logo"));
-
             const resultatsLogo = arret.childNodes[1].getElementsByClassName("resultat-logo");
-            console.log(resultatsLogo[0].textContent);
 
             // afin de parcourir toutes les logos de ligne de l'arrêt choisi je crée un array avec ces éléments
             const resultatsLogoArray = Array.from(resultatsLogo);
 
             // pour éviter les problèmes de réaffectation de logo j'initialise un clone des logos sur lequel je vais itérer ma boucle
-            const logosArrêtCopie = resultatsLogoArray.map(logo => logo.cloneNode(true));
+            const logosArretCopie = resultatsLogoArray.map(logo => logo.cloneNode(true));
 
-            logosArrêtCopie.forEach(ligne => {
+            logosArretCopie.forEach(ligne => {
 
                 // numéro de ligne de transport
                 let numeroLigneActuelle = ligne.textContent;
@@ -227,7 +217,19 @@
                 conteneurLigne.appendChild(conteneurFleche);
                 bodyDialog.appendChild(conteneurLigne);
 
-                console.log(conteneurLigne);
+                // Rediriger vers la page d'infos détaillées sur l'arrêt
+                conteneurFleche.addEventListener('click', () => {
+
+                    // TEMPORAIRE PCK LE CODE EST A RETRAVAILLER
+                    const idArret = resultatsArrets[arret.getElementsByClassName("resultat-nom-arret")[0].textContent].id;
+
+                    // fermer la boite de dialogue et charger la page
+                    console.log(numeroLigneActuelle, idArret);
+                    fermerDialogue("ligneInfo");
+                    coordinateur.chargerPage('arret-details/' + numeroLigneActuelle + '/' + idArret);
+
+                });
+
             });
 
             titreDialogue.setAttribute("class", "second-title");
@@ -244,63 +246,58 @@
 
     });
 
-})();
+    const barreRechercheArret = document.getElementById('recherche');
+    const resultRecherche = document.getElementsByClassName('resultat-recherche');
+    const aucunResultat = resultRecherche[resultRecherche.length-1];
+
+    barreRechercheArret.addEventListener("keyup", (e) => {
 
 
+        /* Barre de recherche active (première lettre relâché) */
+        if(!barreRechercheArret.classList.contains("recherche-active") && barreRechercheArret.value.length > 0) {
+            barreRechercheArret.classList.remove("recherche-inactive");
+            barreRechercheArret.classList.add("recherche-active");
+        }
+        
+        /* Barre de recherche inactive (plus de lettre dans la barre de recherche) */
+        if(barreRechercheArret.value.length < 1) {
 
-const barreRechercheArret = document.getElementById('recherche');
-const resultRecherche = document.getElementsByClassName('resultat-recherche');
-const aucunResultat = resultRecherche[resultRecherche.length-1];
+            barreRechercheArret.classList.remove("recherche-active");
+            barreRechercheArret.classList.add("recherche-inactive");
 
+            /* si la barre de recherche est inactive on cache tous les resultats */
+            for(i = 0 ; i < resultRecherche.length ; i++){
 
-barreRechercheArret.addEventListener("keyup", (e) => {
+                resultRecherche[i].classList.add("hidden");
+            
+            }
+        
+        /* Sinon (barre de recherche active + comparaison avec résultat) */
+        } else {
 
+            /* Booléen pour savoir si on a trouvé au moins 1 résultat pour notre recherche */
+            let resultatTrouve = false;
 
-    /* Barre de recherche active (première lettre relâché) */
-    if(!barreRechercheArret.classList.contains("recherche-active") && barreRechercheArret.value.length > 0) {
-        barreRechercheArret.classList.remove("recherche-inactive");
-        barreRechercheArret.classList.add("recherche-active");
-    }
-    
-    /* Barre de recherche inactive (plus de lettre dans la barre de recherche) */
-    if(barreRechercheArret.value.length < 1) {
+            for(i = 0; i <resultRecherche.length ; i ++){
 
-        barreRechercheArret.classList.remove("recherche-active");
-        barreRechercheArret.classList.add("recherche-inactive");
+                const contenu = resultRecherche[i].textContent;
 
-        /* si la barre de recherche est inactive on cache tous les resultats */
-        for(i = 0 ; i < resultRecherche.length ; i++){
+                /* Condition pour la comparaison entre notre recherche (barreRechercheArret) et tout les arrêts (resultRecherche) */
+                if(contenu.toUpperCase().includes(barreRechercheArret.value.toUpperCase()) && contenu != "Aucun résultat trouvé") {
+                    resultatTrouve = true;
+                    resultRecherche[i].classList.remove("hidden");
+                } 
+                
+                else {
+                    resultRecherche[i].classList.add("hidden");
+                }
+            }
 
-            resultRecherche[i].classList.add("hidden");
+            /* Si on a pas trouvé de résultat pour notre recherche alors on affiche la div "aucun résultat trouvé" */ 
+            if (!resultatTrouve) {aucunResultat.classList.remove("hidden");}
         
         }
     
-    /* Sinon (barre de recherche active + comparaison avec résultat) */
-    } else {
+    });
 
-        /* Booléen pour savoir si on a trouvé au moins 1 résultat pour notre recherche */
-        let resultatTrouve = false;
-
-        for(i = 0; i <resultRecherche.length ; i ++){
-
-            const contenu = resultRecherche[i].textContent;
-
-            /* Condition pour la comparaison entre notre recherche (barreRechercheArret) et tout les arrêts (resultRecherche) */
-            if(contenu.toUpperCase().includes(barreRechercheArret.value.toUpperCase()) && contenu != "Aucun résultat trouvé") {
-                resultatTrouve = true;
-                resultRecherche[i].classList.remove("hidden");
-            } 
-            
-            else {
-                resultRecherche[i].classList.add("hidden");
-            }
-        }
-
-        /* Si on a pas trouvé de résultat pour notre recherche alors on affiche la div "aucun résultat trouvé" */ 
-        if (!resultatTrouve) {aucunResultat.classList.remove("hidden");}
-    
-    }
-
-
-
-});
+})();

@@ -38,7 +38,7 @@ class CoordinateurContenu {
         this.api.cacheElements.clear();
 
         // Afficher un message de chargement
-        CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = 'CHARGEMENT EN COURS......';
+        // CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = 'CHARGEMENT EN COURS......';
         const resultat = await fetch('contenus/' + this.pageActuelle);
         CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = await resultat.text();
         
@@ -68,8 +68,9 @@ class CoordinateurContenu {
         const navElm = this.navElements.get(chemin);
         const currNavElm = this.navElements.get(this.pageActuelle);
 
-        if (navElm) navElm.classList.add('active');
-        if (currNavElm) currNavElm.classList.remove('active');
+        if (currNavElm !== navElm)
+            if (currNavElm) currNavElm.classList.remove('active');
+            if (navElm) navElm.classList.add('active');
 
         this.pageActuelle = chemin;
         this.actualiserPage();
@@ -133,7 +134,6 @@ CoordinateurContenu.ELEMENT_CONTENU_CADRE.innerHTML = 'Chargement du site......'
 // Requête API pour récupérer les informations des lignes
 coordinateur.api.getAPI('/api/lignes/infos').then((infos) => {
 
-    console.log(infos);
     infoLignes = infos;
 
     // Charger la page des arrêts

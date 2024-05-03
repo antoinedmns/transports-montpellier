@@ -1,0 +1,98 @@
+.arret-entete {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.arret-entete .indicateur-ligne {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* SECTIONS */
+.section-arret {
+    
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+
+    .section-titre {
+        font-size: 1.8em;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+        color: #252424;
+
+        span {
+            font-size: 1.12em;
+            font-weight: 900;
+        }
+    }
+
+    .containeur-section {
+        background-color: #E6E8EC;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 0.5rem 0 0 0;
+    }
+
+}
+
+/* CONTENU PAGE */
+.autres-lignes {
+
+    .liste-autres-lignes {
+        font-size: 1.8em;
+
+        span {
+            margin: 0.3rem 0.8rem 0.3rem 0;
+            box-shadow: 0 0 10px 0 #25242414;
+            transition-duration: 0.2s;
+        }
+
+        span:not(.ligne-active):hover {
+            cursor: pointer;
+            margin: 0 0.8rem 0.6rem 0;
+        }
+
+        span.ligne-active {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+    }
+
+    .arret-horaires {
+        gap: 2rem;
+    }
+
+    .containeur-horaires {
+        width: 100%;
+    }
+
+}
+
+.thermometre-contenu {
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .termometre-direction {
+        font-weight: 500;
+        font-style: italic;
+        font-size: 1.2em;
+        white-space: nowrap;
+    }
+
+    .thermometre-principal {
+
+        width: 100%;
+
+        .thermometre-ligne {
+            height: 0.5rem;
+            width: 100%;
+        }
+
+    }
+
+}

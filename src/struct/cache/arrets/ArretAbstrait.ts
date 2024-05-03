@@ -27,6 +27,11 @@ export default abstract class ArretAbstrait {
     public ligneAssociees: string[];
 
     /**
+     * Liste des directions par ligne
+     */
+    public directions: { [ligne: string]: string[] } = {};
+
+    /**
      * Arrêt
      */
     constructor(id: number, description: string, commune: string, coordonnees: number[], lignes: string[]) {

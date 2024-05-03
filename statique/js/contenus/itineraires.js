@@ -4,10 +4,10 @@ L.tileLayer('https://api.mapbox.com/styles/v1/yolatengo/clvo1mwvf01mr01qub500b9w
     maxZoom: 19,
 }).addTo(map);
 
-
 map.addEventListener("click", (e) => console.log(e.latlng));
 
 function echangerTexte() {
+
     const flecheConteneur = document.querySelector('.fleche-conteneur');
     flecheConteneur.classList.add('spin-effect');
 
@@ -24,6 +24,7 @@ function echangerTexte() {
         }, 250);
 
     }, 125);
+    
 }
 
 map.addEventListener("click", (e) => {
@@ -36,7 +37,7 @@ map.addEventListener("click", (e) => {
 })
 
 var boutonValider = document.getElementById('bouton-valider');
-let routingControl = null;
+var routingControl = null;
 
 function addRoutingControl(debutCoords, finCoords) {
     if (routingControl !== null) {
@@ -57,6 +58,7 @@ function addRoutingControl(debutCoords, finCoords) {
 }
 
 function clearMap() {
+
     map.eachLayer(function(layer) {
         if (layer instanceof L.Marker || layer instanceof L.LayerGroup) {
             map.removeLayer(layer);
@@ -68,9 +70,11 @@ function clearMap() {
             map.removeControl(layer);
         }
     });
+
 }
 
 if (boutonValider) {
+
     boutonValider.addEventListener('click', async () => {
         const elmDebut = document.getElementById('boite-debut');
         const elmFin = document.getElementById('boite-fin');
@@ -101,5 +105,6 @@ if (boutonValider) {
 
         elmDebut.value = "";
         elmFin.value = "";
+
     });
 }

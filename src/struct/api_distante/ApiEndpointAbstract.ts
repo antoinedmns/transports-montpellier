@@ -3,6 +3,7 @@ import Logger from '../internal/Logger';
 import { kml } from "@tmcw/togeojson";
 import { DOMParser } from 'xmldom';
 import type { Geometry, FeatureCollection, GeoJsonProperties } from 'geojson';
+import protobuf from 'protobufjs';
 
 export default abstract class ApiEndpointAbstract {
 
@@ -113,6 +114,17 @@ export default abstract class ApiEndpointAbstract {
 
         return JSON.parse(donneesRaw);
         
+    }
+
+    /**
+     * Extraire les données Protobuf
+     */
+    public extraireProtobuf<D>(donneesRaw: string): D {
+
+        // donnesRaw contient le fichier .pb téléchargé
+
+        return 'test' as any;
+
     }
 
 }

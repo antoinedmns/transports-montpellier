@@ -10,9 +10,10 @@ import ApiLignesTram from './struct/api_distante/reseau/ApiLignesTram';
 import LignesManager from './struct/cache/lignes/LignesManager';
 import ApiLigneBus from './struct/api_distante/reseau/ApiLignesBus';
 import ApiTraceTram from './struct/api_distante/reseau/ApiTraceTram';
-import ApiArretsTram from './struct/api_distante/reseau/ApiArretsTram';
-import ApiArretBus from './struct/api_distante/reseau/ApiArretsBus';
+import ApiArretsTram from './struct/api_distante/reseau/arrets/ApiArretsTram';
+import ApiArretBus from './struct/api_distante/reseau/arrets/ApiArretsBus';
 import ApiTraceBus from './struct/api_distante/reseau/ApiTraceBus';
+import ApiTripUpdate from './struct/api_distante/temps_reel/ApiTripUpdate';
 
 export default class Application {
 
@@ -67,6 +68,7 @@ export default class Application {
         this._loadMiddlewares();
 
         // Charger et récupérer les données des lignes
+        await (new ApiTripUpdate().recuperer());
         await (new ApiLignesTram().recuperer());
         await (new ApiLigneBus().recuperer());
         await (new ApiTraceTram().recuperer());
@@ -163,6 +165,11 @@ export default class Application {
                 this.serveur[instanceRoute.methode](instanceRoute.chemin, instanceRoute.execution);
 
             }
+
+            // Routes 404
+            this.serveur.all('*', function(req, res) {
+                res.status(404).json({ erreur: 'Ressource non trouvée' });
+            });
 
             Logger.log.success('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms','... ', 'OK!');
 			resolve(true);

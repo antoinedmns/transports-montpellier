@@ -15,9 +15,10 @@ const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/Ap
 const LignesManager_1 = __importDefault(require("./struct/cache/lignes/LignesManager"));
 const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesBus"));
 const ApiTraceTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceTram"));
-const ApiArretsTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiArretsTram"));
-const ApiArretsBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiArretsBus"));
+const ApiArretsTram_1 = __importDefault(require("./struct/api_distante/reseau/arrets/ApiArretsTram"));
+const ApiArretsBus_1 = __importDefault(require("./struct/api_distante/reseau/arrets/ApiArretsBus"));
 const ApiTraceBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceBus"));
+const ApiTripUpdate_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiTripUpdate"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -35,6 +36,7 @@ class Application {
             Logger_1.default.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.');
         this._loadRoutes();
         this._loadMiddlewares();
+        await (new ApiTripUpdate_1.default().recuperer());
         await (new ApiLignesTram_1.default().recuperer());
         await (new ApiLignesBus_1.default().recuperer());
         await (new ApiTraceTram_1.default().recuperer());
@@ -79,6 +81,9 @@ class Application {
                 const instanceRoute = new ConstructeurRoute();
                 this.serveur[instanceRoute.methode](instanceRoute.chemin, instanceRoute.execution);
             }
+            this.serveur.all('*', function (req, res) {
+                res.status(404).json({ erreur: 'Ressource non trouvée' });
+            });
             Logger_1.default.log.success('Routeur', 'Chargement de ', routes.length, ' routes en ', (Date.now() - tempsDebut) + 'ms', '... ', 'OK!');
             resolve(true);
         });

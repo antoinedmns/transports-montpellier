@@ -37,36 +37,110 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
         
     const coordArrets = Object.values(resultatArrets);
     for (const arret of coordArrets) {
-
-        const lignesUniques = [...new Set(arret.lignes)]; // On enlève les doublons
-
         let coordsInverse = [arret.coords[1], arret.coords[0]];
         let pointArret = L.marker(coordsInverse, { icon: arretIcon }).addTo(layerMarkers);
-        let popupContent = '<div class="bandeau-popup"><p>'+arret.nom+' '+'</p></div></span>';
-    
-        // NOTE HUGO: ça serrait pas mieux de créer le popup en temps réel, quand l'utilisateur clique sur le marqueur ?
-        // pck mettre en cache du HTML pré-construit de 230 arrets ça me parait un peu lourd
+        pointArret.bindPopup(arret.nom.toString());
 
-        // Ajout de chaque ligne dans sa propre div pour les afficher en ligne
-        popupContent += '<div class="liste-lignes">'; // Ajout d'une div pour contenir toutes les lignes
+    }
 
-        for (const ligne of lignesUniques) {
-            let classeLigne = ''; // Classe par défaut (si il y a une erreur rien ne s'affiche)
+map.on('popupopen', async function(e) {
+    const popupNode = e.popup.getElement().querySelector('.leaflet-popup-content');
+    const arretInfo = resultatArrets[popupNode.innerText];
+    const resultatTerminus = await coordinateur.api.getAPI('api/arret/'+arretInfo.id+'/lignes');
+    console.log(resultatTerminus);
 
-            if (infoLignes.tram.includes(ligne)) classeLigne = 'tramway';
-            else if (infoLignes.urbain.includes(ligne)) classeLigne = 'busMTP';
-            else classeLigne = 'bus3M';
+    // Création du wrapper du contenu de la popup Leaflet
+    const leafletPopupContentWrapper = document.createElement("div");
+    leafletPopupContentWrapper.classList.add("leaflet-popup-content");
 
-            popupContent += '<h2 class="indicateur-ligne ' + classeLigne + ' ligne-' + ligne + '">' + ligne + '</h2>';
+    // Création du conteneur du bandeau
+    const containerBandeau = document.createElement("div");
+    containerBandeau.classList.add("container-bandeau");
+
+    // Création du bandeau
+    const bandeauPopup = document.createElement("div");
+    bandeauPopup.classList.add("bandeau-popup");
+    bandeauPopup.innerHTML = arretInfo.nom;
+
+    // Création de la liste des lignes
+    const listeLignes = document.createElement("div");
+    listeLignes.classList.add("liste-lignes");
+
+    containerBandeau.appendChild(bandeauPopup);
+    leafletPopupContentWrapper.appendChild(containerBandeau);
+    leafletPopupContentWrapper.appendChild(listeLignes);
+
+    // Ajout des éléments pour chaque résultat de terminus
+    let i = 0;
+    for (const ligne of arretInfo.lignes) {
+        const rgb = (resultatTerminus[i].couleur.match(/[A-Za-z0-9]{2}/g) ?? ['00', '00', '00']).map(e => parseInt(e, 16));
+        const moyenne = (rgb[0] + rgb[1] + rgb[2]) / 3;
+        const estCouleurNeutre = moyenne > 128;
+        let ligneTexte = ligne;
+        console.log(ligne);
+        let classeLigne = '';
+        if (infoLignes.tram.includes(ligne)) {
+            classeLigne = 'tramway';
+            ligneTexte = 'T' + ligne;
+        } else if (infoLignes.urbain.includes(ligne)) {
+            classeLigne = 'busMTP';
+        } else {
+            classeLigne = 'bus3M';
         }
 
-        popupContent += '</div>'; // Fermeture de la div contenant toutes les lignes
-        popupContent += '<div class="info-lignes"><u>Informations →</u></div>'
-        
-        pointArret.bindPopup(popupContent);
+        // Création des éléments HTML
+        const ligneAffichage = document.createElement("div");
+        ligneAffichage.classList.add("ligne-affichage");
+        ligneAffichage.style.backgroundColor = resultatTerminus[i].couleur + "4A";
 
-    }    
+        const indicateurLigne = document.createElement("h1");
+        indicateurLigne.classList.add('indicateur-ligne', classeLigne, 'ligne-' + ligne);
+        indicateurLigne.innerHTML = ligneTexte;
+
+        const indicateurTempsConteneur = document.createElement("div");
+        indicateurTempsConteneur.classList.add("indicateur-temps-conteneur");
+
+        const terminusAller = document.createElement("p");
+        terminusAller.classList.add("terminus-aller");
+        terminusAller.innerHTML = resultatTerminus[i].directions[1];
+
+        const indicateurTempsBoiteAller = document.createElement("div");
+        indicateurTempsBoiteAller.classList.add("indicateur-temps-boite-aller");
+        indicateurTempsBoiteAller.style.color = resultatTerminus[i].couleur;
+        indicateurTempsBoiteAller.innerHTML = "2min";
+
+        const terminusRetour = document.createElement("p");
+        terminusRetour.classList.add("terminus-retour");
+        terminusRetour.innerHTML = resultatTerminus[i].directions[0];
+
+        const indicateurTempsBoiteRetour = document.createElement("div");
+        indicateurTempsBoiteRetour.classList.add("indicateur-temps-boite-retour");
+        indicateurTempsBoiteRetour.style.color = resultatTerminus[i].couleur;
+        indicateurTempsBoiteRetour.innerHTML = "1min";
+
+        // Ajout des éléments créés à leurs parents respectifs
+        ligneAffichage.appendChild(indicateurLigne);
+        indicateurTempsConteneur.appendChild(terminusAller);
+        indicateurTempsConteneur.appendChild(indicateurTempsBoiteAller);
+        indicateurTempsConteneur.appendChild(terminusRetour);
+        indicateurTempsConteneur.appendChild(indicateurTempsBoiteRetour);
+        ligneAffichage.appendChild(indicateurTempsConteneur);
+        listeLignes.appendChild(ligneAffichage);
+
+        i += 1;
+        popupNode.innerHTML = ''; // Effacer le contenu précédent
+        popupNode.appendChild(leafletPopupContentWrapper);
     
+        ligneAffichage.addEventListener('click', () => {
+    
+            // fermer la boite de dialogue et charger la page
+            coordinateur.chargerPage('arret-details/' + ligne + '/' + arretInfo.id);
+    
+        });
+    }
+});
+
+
     // Contrôle de l'affichage des layers en fonction du niveau de zoom
     map.on('zoomend', function () {
         const currentZoom = map.getZoom();

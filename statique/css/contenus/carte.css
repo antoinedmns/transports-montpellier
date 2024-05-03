@@ -4,61 +4,112 @@
     height: 100%;
 }
 
-.leaflet-popup-content{ 
-    margin: 0;
-    color: #fff;
-    font-family: 'Roboto';
-    font-weight: 600;
+.fa-solid.fa-location-dot {
+    color: var(--couleur-principale);
 }
 
-.leaflet-popup-content-wrapper {
-    padding: 0;
-    margin: 0;
-    border-top-right-radius: 0rem;
-    width: 15rem;
-    height: 10rem;
-    background-color: white;
-}
-
-.bandeau-popup {
-    margin: 0;
-    border-top-left-radius: 12px;
-    background-color: var(--couleur-principale);
-    line-height: 4rem;
-    bottom: 10px;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.leaflet-container a.leaflet-popup-close-button {
-    position: absolute;
-    color: #fff;
-    font-size: large;
+.leaflet-popup-content p {
+    margin: 0!important;
 }
 
 .leaflet-container a.leaflet-popup-close-button:hover {
     color: #ffffff9c
 }
 
-.fa-solid.fa-location-dot {
-    color: var(--couleur-principale);
+.leaflet-popup-content{
+    color: #fff;
+    font-family: 'Roboto';
+    font-weight: 600;
+}
+
+.leaflet-popup-content-wrapper {
+    padding: 0 0 0.1rem 0!important;
+    margin: 0!important;
+    width: 28rem;
+    background-color: white;
+}
+
+.leaflet-popup-content .indicateur-ligne {
+    font-size: 1.9em;
+}
+
+.container-bandeau {
+    margin-bottom: 0.5rem;
+}
+
+.bandeau-popup {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: var(--couleur-principale);
+    width: 28rem;
+    bottom: 10rem;
+    font-size: 1.5em;
+    text-align: center;
+    height: 3rem;
+    line-height: 3rem;
+    margin-left: -2.5rem;
 }
 
 span {
+    color: #fff;
     position: absolute;
-    top: 1.5rem;
+    top: 0.8rem;
     right: 0.5rem;
 }
 
-.liste-lignes {
-    justify-content: center;
-    color: black;
-    display: flex;
+span:hover {
+    color: #ffffff96;
 }
 
-.info-lignes {
-    position: absolute;
-    left: 9rem;
-    font-weight: 400;
+.indicateur-ligne {
+    margin: 0.5rem 0 0.5rem 0.5rem;
+}   
+
+.ligne-affichage {
+    display: flex;
+    background-color: rgba(99, 99, 99, 0.604);
+    border-radius: 0.4rem;
+    margin-bottom: 0.5rem;
+    width: 25rem;
+    margin-left: -0.94rem;
+    margin-top: 0.7rem;
+}
+
+.indicateur-temps-conteneur {
     color: var(--couleur-principale);
+    margin-left: auto; /* Centrer à droite */
+    align-self: center; /* Centrer verticalement */
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+}
+
+.indicateur-temps-boite-aller,
+.indicateur-temps-boite-retour {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.3rem;
+    background-color: #fff;
+    border-radius: 0.2rem;
+    width: 4rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+}
+
+.indicateur-temps-boite-aller {
+    margin-right: 2rem;
+    margin-top: 0.2rem;
+}
+
+.layer-hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease; /* Ajoute une transition d'opacité */
+}
+
+/* Ajout des marges droites pour les terminus */
+.terminus-aller,
+.terminus-retour {
+    color: #fff;
+    margin-right: 0.3rem;
 }

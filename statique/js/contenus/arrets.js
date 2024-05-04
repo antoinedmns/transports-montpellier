@@ -193,6 +193,8 @@
                 const horairesConteneur = document.createElement("div");
                 horairesConteneur.setAttribute("class", `horaire-ligne-conteneur`);
 
+                horairesConteneur.style.color = ligne.couleur;
+
                 // Horaire de la ligne terminus Aller
                 const horaireAller = document.createElement("div");
                 horaireAller.setAttribute("class", `horaire-ligne aller`);
@@ -250,6 +252,8 @@
 
                 sousConteneurLigneDroit.appendChild(conteneurFleche);
 
+    
+                // J'ajoute les 2 principaux sous-conteneurs au conteneur de la ligne 
                 conteneurLigne.appendChild(sousConteneurLigneGauche);
                 conteneurLigne.appendChild(sousConteneurLigneDroit);
 

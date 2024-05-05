@@ -14,7 +14,7 @@ function affiche() {
     var html = "";
     for (var i = 0; i < maListe.length; i++) {
         var objet = maListe[i];
-        html += "<li>"+ objet.vehicule + " Ligne: " + objet.ligne + " arret : " + objet.arret +  " Départ dans: " + objet.temps + " Incident: " + objet.incident + " Affluence: " + objet.afflu + 
+        html += "<li>"+ objet.vehicule + "&nbsp" + " Ligne: " + objet.ligne + "&nbsp"+" arret : " + objet.arret +  "&nbsp"+" Départ dans: " + objet.temps + "&nbsp"+" Incident: " + objet.incident +"&nbsp"+ 
         " <a class=\"X\" href = \"#\" onclick=\"suppr(" + i + ")\"> " + objet.suppr + " </a> " + "</li>";
     }
 
@@ -62,16 +62,18 @@ function fermer() {
 
 function valider(){
     let maListe = JSON.parse(localStorage.getItem('lifav')) || [];
-    var dico = {vehicule: Vehicule, ligne : Ligne , arret  : Arret , temps : " ?? ", incident : " ?? ", afflu :" ?? ", suppr : " X "}
+    var dico = {vehicule: Vehicule, ligne : Ligne , arret  : Arret , temps : " ?? ", incident : " ?? ", afflu :" ?? ", suppr : " Supprimer "}
     maListe.push(dico);
     localStorage.setItem('lifav', JSON.stringify(maListe));
     affiche();
+    document.getElementById('valider').style.display='none';
+    document.getElementById('confirmation').style.display='none';
 }
 
 
 function suppr(i) {
     let maListe = JSON.parse(localStorage.getItem('lifav'));
-    maListe.splice(0,1);
+    maListe.splice(i,1);
     localStorage.setItem('lifav', JSON.stringify(maListe));
     affiche();
 }
@@ -83,7 +85,8 @@ function afficheligne(v) {
     var html="";
     var menu1 = document.getElementById("menu1");
     for (var i = 0; i < infoLignes[v].length; i++) {
-        html += "<a class = \" ligne \" href = \"#\" onclick=\" affichearret( \'" + infoLignes[v][i] + "\'); menu1f(); menu2o()\"> ligne " + infoLignes[v][i] + " "+"</a>"
+
+        html += "<a class = \" ligne \" href = \"#\" onclick=\" affichearret( \'" + infoLignes[v][i] + "\'); menu1f(); menu2o()\"> Ligne "+infoLignes[v][i] + "</a>"
     }   
     menu1.innerHTML = html;
 }
@@ -102,11 +105,19 @@ async function affichearret(nl) {
     menu2.innerHTML=html;
 }
 
+
+function confirmation(){
+    var html="";
+    var conf = document.getElementById('confirmation')
+    html = "<div>" + Vehicule  + " Ligne: " + Ligne +" arret : " + Arret  +"</div>";
+    conf.innerHTML = html;
+    document.getElementById('confirmation').style.display='block';
+}
+
 function arretchoisi(a){
     Arret=a;
+    confirmation()
     document.getElementById('valider').style.display='block';
 }
 
 affiche()
-
-

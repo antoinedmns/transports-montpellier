@@ -40,16 +40,30 @@
 
 li {
     display : flex;
-    width : 55em;
-    margin-top: 0.4em;
+    width : 50em;
+    margin-top: 0.3em;
     margin-left: 0em;
     padding: 0.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius:0.3em;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.5em;
+}
+
+.X {
+    display : flex;
+    width : 5em;
+    margin-left: 9em;
+    padding: 0.2em;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0.3em;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-style: normal;
-    font-size: 1.5em;
+    font-size: 1em;
+    justify-content: center;
 }
 
 .Listefav {
@@ -102,9 +116,11 @@ li {
     display : flex;
     height: 40em;
     width: 100em;
-    margin:10em;
+    margin:auto;
+    margin-top: 15em;
     background-color: #fefefe;
     border-radius: 0.5em;
+    justify-content: center;
 }
   
 .valider{
@@ -139,100 +155,59 @@ li {
     justify-content: center;
     width: 5em;
     height: 1em;
-    margin: 0em;
-    margin-left: 0em;
+    margin-right: 1em;
     margin-top: 20em;
     padding: 0.5em;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0.3em;
 }
 
-.bus_u {
-    color : rgba(0, 0, 0, 0.8);
-    font-family: "Roboto", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    text-decoration: none;
-    font-size: 1.5em;
-
-    display : flex;
-    justify-content: center;
-    width: 5em;
-    height: 1em;
-    margin-left: 0em;
-    margin-top: 3em;
-    padding: 0.5em;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 0.3em;
-}
-
-.bus_sub {
-    color : rgba(0, 0, 0, 0.8);
-    font-family: "Roboto", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    text-decoration: none;
-    font-size: 1.5em;
-
-    display : flex;
-    justify-content: center;
-    width: 7em;
-    height: 1em;
-    margin-left: 0em;
-    margin-top: 3em;
-    padding: 0.5em;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 0.3em;
-}
-
-.tram {
-    color : rgba(0, 0, 0, 0.8);
-    font-family: "Roboto", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    text-decoration: none;
-    font-size: 1.5em;
-
-    display : flex;
-    justify-content: center;
-    width: 5em;
-    height: 1em;
-    margin-left: 0em;
-    margin-top: 3em;
-    padding: 0.5em;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 0.3em;
-}
-
 .bouton {
-    display:block;
+    display: flex;
 }
+
+.tram, .bus_u, .bus_sub  {
+    color : rgba(0, 0, 0, 0.8);
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 1.5em;
+
+    display : flex;
+    justify-content: center;
+    width: 100%;
+    height: 1em;
+    margin-right: 1em;
+    margin-top: 3em;
+    padding: 0.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 0.3em;
+    white-space: nowrap;
+}
+
 
 .menu1 {
     display: none;
+    display: flex;
+    margin-top: 0em;
+    margin-left: 7em;
+    padding: 3em;
+    overflow:auto;
 }
 
-#Menu1 {
-    display: flex;
-    margin-top: 15em;
-    margin-left: 10em;
-    height:3em;
-    padding: 0em;
-}
+
 
 .menu2 {
     display: none;
-    height:5em;
-    width: 5em;
+    display: flex;
+    margin-top: 0em;
+    margin-left: 7em;
+    padding: 3em;
+    overflow:auto;
 }
 
-#Menu2 {
-    display: flex;
-    margin-top: 15em;
-    margin-left: 10em;
-    height:3em;
-    padding: 0em;
-}
+
 
 .ligne {
     color : rgba(0, 0, 0, 0.8);
@@ -240,17 +215,19 @@ li {
     font-weight: 700;
     font-style: normal;
     text-decoration: none;
-    font-size: 0.75em;
+    font-size: 2em;
 
     display : flex;
     justify-content: center;
-    width: 5em;
+    width: 100%;
     height: 1em;
-    margin-left: 0em;
     margin-top: 3em;
+    margin-right: 1em;
     padding: 0.5em;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0.3em; 
+    margin-bottom: 1em;
+    white-space: nowrap;
 }
 
 .arret {
@@ -259,15 +236,36 @@ li {
     font-weight: 700;
     font-style: normal;
     text-decoration: none;
-    font-size: 0.75em;
+    font-size: 2em;
 
     display : flex;
     justify-content: center;
-    width: 5em;
+    width: 100%;
     height: 1em;
-    margin-left: 0em;
     margin-top: 3em;
     padding: 0.5em;
+    margin-right: 1em;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0.3em; 
+    margin-bottom: 1em;
+    white-space: nowrap;
+}
+
+
+.confirmation {
+    display : none;
+    width : 25em;
+    height:3em;
+    margin-top: 4em;
+    margin-left: 0em;
+    padding: 0.5em;
+    padding-bottom: -0.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius:0.3em;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.5em;
+    justify-content:center;
+    white-space: nowrap;
 }

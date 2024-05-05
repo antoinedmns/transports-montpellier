@@ -110,6 +110,6 @@ span:hover {
 /* Ajout des marges droites pour les terminus */
 .terminus-aller,
 .terminus-retour {
+    text-align: inherit;
     color: #fff;
-    margin-right: 0.3rem;
 }

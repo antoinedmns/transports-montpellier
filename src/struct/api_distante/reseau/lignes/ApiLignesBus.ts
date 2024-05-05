@@ -1,6 +1,6 @@
-import LigneBus, { ReseauBus } from "../../cache/lignes/LigneBus";
-import LignesManager from "../../cache/lignes/LignesManager";
-import ApiEndpointHTTP from "../ApiEndpointHTTP";
+import LigneBus, { ReseauBus } from "../../../cache/lignes/LigneBus";
+import LignesManager from "../../../cache/lignes/LignesManager";
+import ApiEndpointHTTP from "../../ApiEndpointHTTP";
 
 export default class ApiLigneBus extends ApiEndpointHTTP {
 
@@ -13,7 +13,8 @@ export default class ApiLigneBus extends ApiEndpointHTTP {
         
         for (let i = 0; i < csv.code_couleur.length; i++) {
 
-            const numExploitation = csv.num_exploitation[i];
+            // formatage du numéro d'exploitation (padding d'un 0 devant le numéro si < 10)
+            const numExploitation = ApiLigneBus.ligneFormatter(csv.num_exploitation[i]);
 
             // Instancier la ligne
             LignesManager.bus.ajouter(
@@ -29,6 +30,14 @@ export default class ApiLigneBus extends ApiEndpointHTTP {
 
         return true;
 
+    }
+
+    /**
+     * Formatter une ligne pour la rendre compatible avec le format attendu par la TaM.
+     * @param ligne 
+     */
+    static ligneFormatter(ligne: string) {
+        return ligne.length === 1 ? '0' + ligne : ligne;
     }
 
 }

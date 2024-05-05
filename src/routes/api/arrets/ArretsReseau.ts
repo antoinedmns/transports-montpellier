@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import RouteAbstract from "../../../struct/express/RouteAbstract";
 import { Methodes } from "../../../struct/express/Methodes";
-import ArretManager from "../../../struct/api_distante/reseau/ArretManager";
+import ArretManager from "../../../struct/cache/arrets/ArretManager";
 
 export default class Test extends RouteAbstract {
 
@@ -22,6 +22,6 @@ export interface ArretInfo {
     id: number,
     coords: number[],
     nom: string,
-    commune: string,
+    commune: string | null,
     lignes: string[]
 }

@@ -12,19 +12,11 @@ export default class Test extends RouteAbstract {
 
         const resultat: traceLigne[] = [];
 
-        for (const ligneTram of LignesManager.tramway.cache.values()) {
+        for (const ligne of LignesManager.cache.values()) {
             resultat.push({
-                num: ligneTram.numExploitation,
-                couleur: ligneTram.couleur,
-                coordonnees: ligneTram.traces
-            })
-        }
-
-        for (const ligneBus of LignesManager.bus.cache.values()) {
-            resultat.push({
-                num: ligneBus.numExploitation,
-                couleur: ligneBus.couleur,
-                coordonnees: ligneBus.traces
+                num: ligne.numExploitation,
+                couleur: ligne.couleur,
+                coordonnees: ligne.traces
             })
         }
 

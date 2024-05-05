@@ -1,105 +1,101 @@
+import ArretAggrege from "../../../cache/arrets/ArretAggrege";
+import ArretGTSF from "../../../cache/arrets/ArretGTSF";
 import ArretBus from "../../../cache/arrets/ArretBus";
 import ArretTramway from "../../../cache/arrets/ArretTramway";
 import LigneBusManager from "../../../cache/lignes/LigneBusManager";
 import LigneTramwayManager from "../../../cache/lignes/LigneTramwayManager";
+import Logger from "../../../internal/Logger";
 import ApiEndpointHTTP from "../../ApiEndpointHTTP";
-import ArretManager from "../ArretManager";
+import ArretManager from "../../../cache/arrets/ArretManager";
+import LignesManager from "../../../cache/lignes/LignesManager";
 
 export default abstract class ApiArretAbstrait extends ApiEndpointHTTP {
 
     /**
      * Paser les données et les ajouter au cache respectif
      * @param arretsJson la liste des arrets au format GeoJSON
-     * @param manager le manager de ligne associé
-     * @param constructeurArret le constructeur de l'arrêt (pour instancier l'arrêt)
      * @returns 
      */
-    public parserArrets(arretsJson: JsonApiArretsDonnees, manager: LigneBusManager | LigneTramwayManager, constructeurArret: typeof ArretBus | typeof ArretTramway) {
+    public parserArrets(arretsJson: JsonApiArretsDonnees) {
         
+        // pour chaque arrêt dans les données GeoJSON reçues
         for (const feature of arretsJson.features) {
 
-            // lignes et directions de l'arrêt
-            const lignesPassantes = feature.properties.lignes_passantes.split('; ');
-            const directionsPassantes = feature.properties.lignes_et_directions.split('; ');
+            // récupérer les arrêts GTFS
+            const arretsPositionsGTFS = ArretManager.cacheGTFSNomPositions.get(feature.properties.description);
+            if (!arretsPositionsGTFS) continue;
 
-            for (let i = 0; i < lignesPassantes.length; i++) {
+            let nomArret = feature.properties.description;
 
-                // numéro d'exploitation de la ligne
-                const ligneNum = lignesPassantes[i];
+            // Si l'arrêt est déjà dans le cache (mais sur une autre commune), préciser la commune
+            const preCacheArretAggrege = ArretManager.cache.get(nomArret);
+            if (preCacheArretAggrege) {
+            
+                if (preCacheArretAggrege.commune !== feature.properties.commune) {
 
-                // récupérer les directions
-                // ex: '1 Mosson; 1 Odysseum; 6 Euromédecine; 6 Antennes' => ['Mosson', 'Odysseum']
-                const directions = [];
-                for (const direction of directionsPassantes) {
-                    if (direction.startsWith(ligneNum)) {
-                        directions.push(direction.slice(ligneNum.length + 1));
-                    }
-                }
-
-                if (!ligneNum) continue;
-
-                // récupérer la ligne associée dans le cache
-                const ligne = manager.cache.get(ligneNum);
-
-                if (ligne) {
-
-                    let arretEnCache = ArretManager.cache.get(feature.properties.description);
-                    let nomArret = feature.properties.description;
-
-                    // si l'arrêt est déjà en cache mais sur une autre commune
-                    // (exemple: 'Mairie' est le nom de plusieurs arrêts dans plusieurs communes)
-                    if (arretEnCache && arretEnCache.commune !== feature.properties.commune) {
-
-                        // préciser la commune de l'arrêt
-                        nomArret += ` (${feature.properties.commune})`;
-
-                        // mettre à jour l'arrêt en cache
-                        arretEnCache = ArretManager.cache.get(nomArret);
-
-                    }
-
-                    // si l'arrêt est déjà en cache
-                    if (arretEnCache) {
-                        
-                        // sinon on ajoute la ligne à l'arrêt
-                        if (!arretEnCache.ligneAssociees.includes(ligne.numExploitation))
-                            arretEnCache.ligneAssociees.push(ligne.numExploitation);
-
-                    } else {
-
-                        // on ajoute l'arrêt au cache
-                        arretEnCache = new constructeurArret(ArretManager.assignerID(), nomArret, feature.properties.commune, feature.geometry.coordinates, []);
-                        ArretManager.cache.set(nomArret, arretEnCache);
-                        ArretManager.cacheID.set(arretEnCache.id, arretEnCache);
-                    
-                    }
-
-                    // directions de l'arrêt pour la ligne
-                    const directionsLigne = arretEnCache.directions[ligne.numExploitation];
-
-                    // ajouter la/les direction.s à l'arrêt
-                    if (directionsLigne) {
-
-                        for (const direction of directions) {
-                            if (!directionsLigne.includes(direction))
-                                directionsLigne.push(direction);
-                        }
-
-                    } else {
-
-                        arretEnCache.directions[ligne.numExploitation] = directions;
-
-                    }
-                    
-                    ligne.arrets.set(nomArret, arretEnCache);
+                    // Ajouter la commune à la description
+                    nomArret += ' (' + feature.properties.commune + ')';
 
                 }
 
             }
 
+            // Si l'arrêt est déjà dans le cache, le mettre à jour
+            if (ArretManager.cache.has(nomArret)) {
+
+                const arret = ArretManager.cache.get(nomArret);
+                if (!arret) continue;
+
+                for (const ligne of feature.properties.lignes_passantes.split('; ')) {
+                    const ligneHarmonisee = LignesManager.harmonisations.get(ligne) ?? ligne;
+                    if (arret.lignes.includes(ligneHarmonisee)) continue;
+                    arret.lignes.push(ligneHarmonisee);
+                }
+
+                continue;
+
+            }
+
+
+            const directions: Record<string, string[]> = {};
+
+            // Création de l'arrêt aggregé
+            const aggreg = new ArretAggrege(
+                nomArret,
+                feature.geometry.coordinates,
+                feature.properties.commune,
+                feature.properties.lignes_passantes.split('; '),
+                directions
+            );
+
+            // vérifier si chaque arrêt GTFS est à proximité de l'arrêt GeoJSON, et les associer
+            let trouveArretGTFS = false;
+            for (const [position, arret] of arretsPositionsGTFS) {
+
+                if (position.estProcheCoordonnees(feature.geometry.coordinates[0], feature.geometry.coordinates[1], 0.003, 0.003)) {
+                    trouveArretGTFS = true;
+                    arret.definirArretAggrege(aggreg);
+                }
+                
+            }
+
+            // Aucune correspondance trouvée
+            // C'est à dire qu'aucun arrêt GTFS n'a été trouvé à proximité de l'arrêt GeoJSON
+            // La distance maximale est configurée à 0.003 degrés, soit environ 333m
+            if (!trouveArretGTFS) {
+                Logger.log.warn('GeoJSON', 'Aucune correspondance GTFS trouvée pour l\'arrêt ', nomArret, '. Arrêt ignoré.');
+                continue;
+            }
+
+            // Ajout de l'arrêt au cache
+            ArretManager.cache.set(aggreg.description, aggreg);
+            ArretManager.cacheId.set(aggreg.id.toString(), aggreg);
+
         }
 
-        // on parse les arrêts et on met à jour le cache
+        Logger.log.success('GeoJSON', 'Aggregation de ', arretsJson.features.length, ' GeoJSON avec GTFS terminée.');
+
+        // Parser les arrêts
         ArretManager.parserArrets();
 
         return true;

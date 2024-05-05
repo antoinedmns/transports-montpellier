@@ -3,8 +3,6 @@ import Logger from '../internal/Logger';
 import { kml } from "@tmcw/togeojson";
 import { DOMParser } from 'xmldom';
 import type { Geometry, FeatureCollection, GeoJsonProperties } from 'geojson';
-import protobuf, { Message } from 'protobufjs';
-import path from 'path';
 import ApiEndpointAbstract from './ApiEndpointAbstract';
 
 export default abstract class ApiEndpointHTTP extends ApiEndpointAbstract<string> {

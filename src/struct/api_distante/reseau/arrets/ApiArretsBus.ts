@@ -10,7 +10,7 @@ export default class ApiArretBus extends ApiArretAbstrait {
     public parser(donneesRaw: string) {
 
         const arretsJson = this.extraireJSON<JsonApiArretsBus>(donneesRaw);
-        return this.parserArrets(arretsJson, LignesManager.bus, ArretBus);
+        return this.parserArrets(arretsJson);
 
     }
 

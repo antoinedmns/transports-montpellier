@@ -1,5 +1,5 @@
-import ArretAbstrait from "./ArretAbstrait";
+import ArretGTSF from "./ArretGTSF";
 
-export default class ArretBus extends ArretAbstrait {
+export default class ArretBus extends ArretGTSF {
 
 }

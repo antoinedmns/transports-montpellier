@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import RouteAbstract from "../../../struct/express/RouteAbstract";
 import { Methodes } from "../../../struct/express/Methodes";
 import LignesManager from "../../../struct/cache/lignes/LignesManager";
+import { ArretInfo } from "./ArretsReseau";
 
 export default class ArretsLigne extends RouteAbstract {
 
@@ -11,14 +12,14 @@ export default class ArretsLigne extends RouteAbstract {
     public execution(req: Request, res: Response): void {
 
         // récupérer la ligne
-        const ligne = LignesManager.tramway.cache.get(req.params.ligne) ?? LignesManager.bus.cache.get(req.params.ligne);
+        const ligne = LignesManager.cache.get(req.params.ligne);
         if (!ligne) {
             res.status(404).json({ erreur: 'Ligne non trouvée' });
             return;
         }
 
         const arretsObj: Record<string, Partial<ArretInfo>> = {};
-        for (const arret of ligne.arrets.values()) {
+        /*for (const arret of ligne.arrets.values()) {
 
             if (!arretsObj[arret.description]) {
                 arretsObj[arret.description] = {
@@ -27,7 +28,7 @@ export default class ArretsLigne extends RouteAbstract {
                 }
             }
 
-        }
+        }*/
 
         res.json(
             arretsObj
@@ -35,12 +36,4 @@ export default class ArretsLigne extends RouteAbstract {
 
     }
 
-}
-
-export interface ArretInfo {
-    id: number,
-    coords: number[],
-    nom: string,
-    commune: string,
-    lignes: string[]
 }

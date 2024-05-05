@@ -197,41 +197,49 @@
                 const horaireAller = document.createElement("div");
                 horaireAller.setAttribute("class", `horaire-ligne aller`);
 
-                // Création de nom pour l'horaire aller
-                const nomTerminusA = document.createElement("h3");
+                if (ligne.prochains_passages[0]) {
 
-                nomTerminusA.innerHTML = "<span class='nom-terminus'>"+direction[0]+"</span>";
+                    // Création de nom pour l'horaire aller
+                    const nomTerminusA = document.createElement("h3");
 
+                    nomTerminusA.innerHTML = "<span class='nom-terminus'>"+ligne.prochains_passages[0].headsign+"</span>";
 
-                // Création du timer aller
-                const timerProchainPassageA = document.createElement("div");
-                timerProchainPassageA.setAttribute("class", "timer-prochain-passage");
+                    // Création du timer aller
+                    const timerProchainPassageA = document.createElement("div");
+                    timerProchainPassageA.setAttribute("class", "timer-prochain-passage");
 
-                timerProchainPassageA.innerHTML = "X min";
+                    const passageTempsSeconds = Math.floor((ligne.prochains_passages[0].timestamp - (Date.now() / 1000)));
+                    timerProchainPassageA.innerHTML = ligne.prochains_passages[0].timestamp === 0 ? 'Aucun passage' : passageTempsSeconds > 90 ? Math.floor(passageTempsSeconds / 60) + " min" : passageTempsSeconds + " sec";
 
-                //Ajout timer + nom dans le conteneur aller
-                horaireAller.appendChild(nomTerminusA);
-                horaireAller.appendChild(timerProchainPassageA);
+                    //Ajout timer + nom dans le conteneur aller
+                    horaireAller.appendChild(nomTerminusA);
+                    horaireAller.appendChild(timerProchainPassageA);
+
+                }
 
                 // Horaire de la ligne terminus retour
                 const horaireRetour = document.createElement("div");
-                horaireRetour.setAttribute("class", `horaire-ligne retour`);
+                horaireRetour.setAttribute("class", `horaire-ligne retour`);                
 
-                // Création de nom pour l'horaire retour
-                const nomTerminusR = document.createElement("h3");
+                if (ligne.prochains_passages[1]) {
 
-                nomTerminusR.innerHTML = "<span class='nom-terminus'>"+direction[1]+"</span>";
+                    // Création de nom pour l'horaire retour
+                    const nomTerminusR = document.createElement("h3");
 
+                    nomTerminusR.innerHTML = "<span class='nom-terminus'>"+ligne.prochains_passages[1].headsign+"</span>";
 
-                // Création du timer retour
-                const timerProchainPassageR = document.createElement("div");
-                timerProchainPassageR.setAttribute("class", "timer-prochain-passage");
+                    // Création du timer retour
+                    const timerProchainPassageR = document.createElement("div");
+                    timerProchainPassageR.setAttribute("class", "timer-prochain-passage");
 
-                timerProchainPassageR.innerHTML = "X min";
+                    const passageTempsSeconds = Math.floor((ligne.prochains_passages[1].timestamp - (Date.now() / 1000)));
+                    timerProchainPassageR.innerHTML = ligne.prochains_passages[1].timestamp === 0 ? 'Aucun passage' : passageTempsSeconds > 90 ? Math.floor(passageTempsSeconds / 60) + " min" : passageTempsSeconds + " sec";
 
-                //Ajout timer + nom dans le conteneur retour
-                horaireRetour.appendChild(nomTerminusR);
-                horaireRetour.appendChild(timerProchainPassageR);
+                    //Ajout timer + nom dans le conteneur retour
+                    horaireRetour.appendChild(nomTerminusR);
+                    horaireRetour.appendChild(timerProchainPassageR);
+
+                }
 
                 // Ajout aller + retour dans horaire conteneur
                 horairesConteneur.appendChild(horaireAller);

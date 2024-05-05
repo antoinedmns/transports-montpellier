@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import LignesManager from "../../../struct/cache/lignes/LignesManager";
 import { Methodes } from "../../../struct/express/Methodes";
 import RouteAbstract from "../../../struct/express/RouteAbstract";
-import ArretManager from "../../../struct/api_distante/reseau/ArretManager";
+import ArretManager from "../../../struct/cache/arrets/ArretManager";
 
 export default class ArretInfos extends RouteAbstract {
 
@@ -19,7 +19,7 @@ export default class ArretInfos extends RouteAbstract {
         }
 
         // récupérer l'arrêt
-        const arret = ArretManager.cacheID.get(parseInt(req.params.arret));
+        const arret = ArretManager.cacheId.get(req.params.arret);
         if (!arret) {
             res.status(404).json({ erreur: 'L\'id de l\'arrêt donné n\'a pas été trouvé' });
             return;
@@ -32,9 +32,9 @@ export default class ArretInfos extends RouteAbstract {
                 },
                 arret: {
                     nom: arret.description,
-                    commune: arret.commune,
+                    // commune: arret.commune,
                     coordonnees: arret.coordonnees,
-                    lignes: arret.ligneAssociees,
+                    // lignes: arret.ligneAssociees,
                     directions: arret.directions[ligne.numExploitation]
                 }
             }

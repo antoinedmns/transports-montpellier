@@ -25,6 +25,7 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
         const ligne = resultatTraces[i];
         
         for (const trajet of ligne.coordonnees) {
+            console.log(trajet);
             if (ligne.num >= 5) {
                 layerBus.addLayer(L.polyline(trajet, { color: ligne.couleur, opacity: 0.5 }));
             }

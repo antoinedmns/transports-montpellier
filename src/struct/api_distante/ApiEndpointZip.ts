@@ -2,6 +2,7 @@ import request from 'request';
 import ApiEndpointAbstract from './ApiEndpointAbstract';
 import unzipper from 'unzipper';
 import { ClientRequest } from 'http';
+import ArretManager from '../cache/arrets/ArretManager';
 
 export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<string, FileInfo>> {
     
@@ -49,6 +50,8 @@ export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<
         });
 
         return parsed;
+
+        ArretManager
 
     }
 

@@ -1,6 +1,6 @@
-import LigneTramway from "../../cache/lignes/LigneTramway";
-import LignesManager from "../../cache/lignes/LignesManager";
-import ApiEndpointHTTP from "../ApiEndpointHTTP";
+import LigneTramway from "../../../cache/lignes/LigneTramway";
+import LignesManager from "../../../cache/lignes/LignesManager";
+import ApiEndpointHTTP from "../../ApiEndpointHTTP";
 
 export default class ApiLignesTram extends ApiEndpointHTTP {
 
@@ -13,7 +13,7 @@ export default class ApiLignesTram extends ApiEndpointHTTP {
         
         for (let i = 0; i < csv.code_couleur.length; i++) {
 
-            const numExploitation = csv.num_exploitation[i];
+            const numExploitation = ApiLignesTram.ligneFormatter(csv.num_exploitation[i]);
 
             // Instancier la ligne
             LignesManager.tramway.ajouter(
@@ -28,6 +28,14 @@ export default class ApiLignesTram extends ApiEndpointHTTP {
 
         return true;
 
+    }
+
+    /**
+     * Formatter une ligne pour la rendre compatible avec le format attendu par la TaM.
+     * @param ligne 
+     */
+    static ligneFormatter(ligne: string) {
+        return ligne.length === 1 ? '0' + ligne : ligne;
     }
 
 }

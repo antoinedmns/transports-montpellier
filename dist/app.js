@@ -11,17 +11,15 @@ const Logger_1 = __importDefault(require("./struct/internal/Logger"));
 const fs_1 = __importDefault(require("fs"));
 const RouteAbstract_1 = __importDefault(require("./struct/express/RouteAbstract"));
 const MiddlewareAbstract_1 = __importDefault(require("./struct/express/MiddlewareAbstract"));
-const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesTram"));
+const ApiLignesTram_1 = __importDefault(require("./struct/api_distante/reseau/lignes/ApiLignesTram"));
 const LignesManager_1 = __importDefault(require("./struct/cache/lignes/LignesManager"));
-const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiLignesBus"));
-const ApiTraceTram_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceTram"));
+const ApiLignesBus_1 = __importDefault(require("./struct/api_distante/reseau/lignes/ApiLignesBus"));
+const ApiTraceTram_1 = __importDefault(require("./struct/api_distante/reseau/traces/ApiTraceTram"));
 const ApiArretsTram_1 = __importDefault(require("./struct/api_distante/reseau/arrets/ApiArretsTram"));
 const ApiArretsBus_1 = __importDefault(require("./struct/api_distante/reseau/arrets/ApiArretsBus"));
-const ApiTraceBus_1 = __importDefault(require("./struct/api_distante/reseau/ApiTraceBus"));
-const ApiTripUpdate_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiTripUpdate"));
-const ApiReseauGTFS_1 = __importDefault(require("./struct/api_distante/reseau/ApiReseauGTFS"));
-const ApiTempsReel_1 = __importDefault(require("./struct/api_distante/reseau/ApiTempsReel"));
-const ApiAlertesGTFS_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiAlertesGTFS"));
+const ApiTraceBus_1 = __importDefault(require("./struct/api_distante/reseau/traces/ApiTraceBus"));
+const ApiTripUpdateGTFS_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiTripUpdateGTFS"));
+const ApiReseauGTFS_1 = __importDefault(require("./struct/api_distante/reseau/GTFS/ApiReseauGTFS"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -39,7 +37,6 @@ class Application {
             Logger_1.default.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.');
         this._loadRoutes();
         this._loadMiddlewares();
-        await (new ApiTripUpdate_1.default().recuperer());
         await (new ApiReseauGTFS_1.default().recuperer());
         await (new ApiLignesTram_1.default().recuperer());
         await (new ApiLignesBus_1.default().recuperer());
@@ -47,8 +44,7 @@ class Application {
         await (new ApiTraceBus_1.default().recuperer());
         await (new ApiArretsTram_1.default().recuperer());
         await (new ApiArretsBus_1.default().recuperer());
-        await (new ApiTempsReel_1.default().recuperer());
-        await (new ApiAlertesGTFS_1.default().recuperer());
+        await (new ApiTripUpdateGTFS_1.default().recuperer());
         this._genererRessources();
         this.serveur.listen(process.env.PORT, async () => {
             Logger_1.default.log.separator();

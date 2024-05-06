@@ -9,13 +9,15 @@
                            |_|   
 ```
 
+> Merci de lire l'ensemble des informations ci-dessous pour lancer l'application.
+
 # Prérequis :
 - Node.js >v20.0
 - npm >v10.0
 
 # Étapes d'installation :
-1. git clone
-2. Renommer le fichier exemple.env en .env
-3. npm i
-4. npm run build
-5. npm run start                  
+- `git clone`
+- Renommer le fichier `exemple.env` en `.env`
+- `npm i`
+- `npm run build`
+- `npm run start`                  

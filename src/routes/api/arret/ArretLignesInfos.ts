@@ -43,9 +43,9 @@ export default class ArretsLignesInfo extends RouteAbstract {
                     for (const trajet in passagesDirection) {
 
                         const passage = passagesDirection[trajet];
-                        if ((!prochainPassageTimestamp || passage.departure.time < prochainPassageTimestamp) && (passage.departure.time * 1000 > now)) {
+                        if ((!prochainPassageTimestamp || passage.departure?.time < prochainPassageTimestamp) && (passage.departure?.time * 1000 > now)) {
                             prochainPassageId = trajet;
-                            prochainPassageTimestamp = passage.departure.time;
+                            prochainPassageTimestamp = passage.departure?.time;
                         }
 
                     }

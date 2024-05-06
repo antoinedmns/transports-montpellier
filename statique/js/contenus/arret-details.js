@@ -1,4 +1,8 @@
+var ligneActuelle = null;
+
 function afficherArretDetails(ligneId, arretId) {
+
+    ligneActuelle = ligneId;
 
     coordinateur.api.getAPI('api/ligne/' + ligneId + '/arret/' + arretId + '/infos').then((infos) => {
 
@@ -53,6 +57,8 @@ function afficherArretDetails(ligneId, arretId) {
 
         }
 
+        const listeIntervalles = [];
+
         // Afficher la liste des autres lignes passant par l'arrêt
         if (infos.arret.lignes.length > 1) {
         
@@ -79,7 +85,14 @@ function afficherArretDetails(ligneId, arretId) {
                 } else {
 
                     element.addEventListener('click', () => {
-                        afficherArretDetails(ligne, arretId);
+
+                        // supprimer toutes les intervalles de rafraichissement
+                        console.log('suppression de ', listeIntervalles.length, ' intervalles de rafraichissement...');
+                        (() => {
+                            listeIntervalles.forEach(clearInterval);
+                            afficherArretDetails(ligne, arretId);
+                        })();
+
                     });
 
                 }
@@ -104,6 +117,87 @@ function afficherArretDetails(ligneId, arretId) {
         ].forEach((element, index) => {
             element.innerHTML = infos.arret.directions[index] ?? 'Inconnu';
         });
+
+        const afficherHorraires = () => {
+
+            coordinateur.api.getAPI('api/ligne/' + ligneId + '/arret/' + arretId + '/passages').then((passages) => {
+
+                // Horaires
+                for (const containeurHorraireId of [0, 1]) {
+
+                    const containeurHorraire = coordinateur.api.recupererCache('horairesTempsReel' + containeurHorraireId);
+                    containeurHorraire.innerHTML = '';
+
+                    // Préparer les prochains passages (éliminer les passages déjà passés, et trier par ordre croissant)
+                    let passageHorraire = passages[containeurHorraireId] ?? [];
+                    passageHorraire = passageHorraire.filter(passage => passage.time * 1000 > Date.now()).sort((a, b) => a.time - b.time).slice(0, 7);
+
+                    for (let i = 0; i < passageHorraire.length; i++) {
+
+                        const passage = passageHorraire[i];
+
+                        // Créer un élément de passage
+                        const element = document.createElement('div');
+                        element.classList.add('passage');
+
+                        if (i === 0) {
+                            element.style.backgroundColor = infos.ligne.couleur;
+                            element.style.color = estCouleurNeutre ? 'rgba(38, 38, 38, 0.9)' : '#fff';
+                        }
+
+                        // Créer un élément de direction
+                        const direction = document.createElement('h2');
+                        direction.classList.add('direction');
+                        direction.innerText = passage.headsign;
+
+                        // Créer un élément de temps
+                        const temps = document.createElement('h2');
+                        temps.classList.add('temps');
+                        
+                        const passeDansSecondes = Math.round(((passage.time * 1000) - Date.now()) / 1000);
+                        temps.innerText = passeDansSecondes > 90 ? Math.floor(passeDansSecondes / 60) + ' min' : passeDansSecondes + 's';
+
+                        listeIntervalles.push(setInterval(
+                            () => {
+                                if (!temps) return;
+                                const tempsRestant = Math.round(((passage.time * 1000) - Date.now()) / 1000);
+                                temps.innerText = tempsRestant <= 0 ? 'A quai' : tempsRestant > 90 ? Math.floor(tempsRestant / 60) + ' min' : tempsRestant + 's';
+                            }, passeDansSecondes > 150 ? 10000 : 1000)
+                        )
+
+                        // Ajouter les éléments au passage
+                        element.appendChild(direction);
+                        element.appendChild(temps);
+
+                        // Ajouter le passage au conteneur
+                        containeurHorraire.appendChild(element);
+
+                    }
+
+                }
+
+            });
+
+            // Actualier les horaires toutes les 30 secondes
+            listeIntervalles.push(setInterval(() => {
+
+                console.log(ligneId, ligneActuelle, coordinateur.pageActuelle.startsWith('arret-details'));
+
+                // si l'utilisateur a changé de page, arrêter le rafraichissement ('arret-details/<ligne>/<arret>')
+                if (!coordinateur.pageActuelle.startsWith('arret-details') || ligneActuelle !== ligneId) {
+                    console.log('page quittée. réinitialisation des intervalles de rafraichissement...', coordinateur.pageActuelle, 'arret-details/' + ligneId + '/' + arretId);
+                    return;
+                } else {
+                    listeIntervalles.forEach(clearInterval);
+                    afficherHorraires();
+                    console.log('rafraichissement des horaires en cours...')
+                }
+            
+            }, 30000));
+
+        };
+
+        afficherHorraires();
 
         // Thermomètre
         [

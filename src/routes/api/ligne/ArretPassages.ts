@@ -4,9 +4,9 @@ import { Methodes } from "../../../struct/express/Methodes";
 import RouteAbstract from "../../../struct/express/RouteAbstract";
 import ArretManager from "../../../struct/cache/arrets/ArretManager";
 
-export default class ArretInfos extends RouteAbstract {
+export default class ArretPassages extends RouteAbstract {
 
-    public chemin = '/api/ligne/:ligne/arret/:arret/infos';
+    public chemin = '/api/ligne/:ligne/arret/:arret/passages';
     public methode: Methodes = 'get';
 
     public execution(req: Request, res: Response): void {
@@ -25,20 +25,21 @@ export default class ArretInfos extends RouteAbstract {
             return;
         }
 
-        res.json(
-            {
-                ligne: {
-                    couleur: ligne.couleur
-                },
-                arret: {
-                    nom: arret.description,
-                    commune: arret.commune,
-                    coordonnees: arret.coordonnees,
-                    lignes: arret.lignes,
-                    directions: ligne.directions
-                }
+        const passages: Record<string, { headsign: string, time: number }[]> = {};
+        for (const direction in arret.passages[ligne.numExploitation]) {
+
+            passages[direction] = [];
+            for (const [trajetId, passage] of Object.entries(arret.passages[ligne.numExploitation][direction])) {
+                passages[direction].push({
+                    headsign: ligne.trajets[trajetId] || 'Incertain',
+                    time: passage.departure?.time
+                });
             }
-        );
+
+
+        }
+
+        res.json(passages);
 
     }
 

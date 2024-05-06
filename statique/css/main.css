@@ -25,6 +25,8 @@ div {
 .cadre-contenu {
     width: 100%;
     position: relative;
+    height: 100vh;
+    overflow: auto;
 }
 
 /* BARRE DE NAVIGATION */

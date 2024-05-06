@@ -3,6 +3,7 @@ import ApiEndpointAbstract from './ApiEndpointAbstract';
 import unzipper from 'unzipper';
 import { ClientRequest } from 'http';
 import ArretManager from '../cache/arrets/ArretManager';
+import Logger from '../internal/Logger';
 
 export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<string, FileInfo>> {
     
@@ -15,6 +16,8 @@ export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<
         const response = await fetch(this.cheminDistant);
         const buffer = Buffer.from(await response.arrayBuffer());
         const directory = await unzipper.Open.buffer(buffer);
+
+        Logger.log.success('Api', 'Fichier ZIP contenant ', this.nom, ' téléchargé et décompressé');
 
         const fichiers: Record<string, FileInfo> = {};
         for (const f of directory.files) {
@@ -50,8 +53,6 @@ export default abstract class ApiEndpointZip extends ApiEndpointAbstract<Record<
         });
 
         return parsed;
-
-        ArretManager
 
     }
 

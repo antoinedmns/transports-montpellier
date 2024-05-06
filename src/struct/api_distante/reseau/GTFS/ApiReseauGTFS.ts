@@ -32,6 +32,10 @@ export default class ApiReseauGTFS extends ApiEndpointZip {
                 parseInt(routesCsv.route_type[i]) as GTFSRouteType
             );
 
+            let [direction0, ...direction1] = routesCsv.route_long_name[i].split(' - ');
+            if (direction1.length === 0 && routesCsv.route_long_name[i].split('-').length > 1) [direction0, ...direction1] = routesCsv.route_long_name[i].split('-');
+            ligne.directions = direction1.length > 0 ? [direction0.trim(), direction1.join('-').trim()] : [direction0.trim(), direction0.trim()];
+
             // Ajouter la ligne aux caches
             LignesManager.cache.set(ligne.id, ligne);
             LignesManager.cacheNum.set(ligne.numExploitation, ligne);

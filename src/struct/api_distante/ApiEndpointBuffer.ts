@@ -16,6 +16,7 @@ export default abstract class ApiEndpointBuffer extends ApiEndpointAbstract<Buff
      */
     public async recupererDonnees(): Promise<Buffer> {
 
+        Logger.log.success('Api', 'Téléchargement du buffer distant ', this.nom);
         const response = await fetch(this.cheminDistant);
         return Buffer.from(await response.arrayBuffer());
 
@@ -32,6 +33,8 @@ export default abstract class ApiEndpointBuffer extends ApiEndpointAbstract<Buff
 
                 if (err) console.log(err);
                 if (!root) { resolve(null as D); return; }
+
+                Logger.log.success('Api', 'Décodage du buffer ', this.nom, ' en données Protocol Buffer');
                 
                 const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
                 const messageDecode = FeedMessage.decode(donneesRaw);

@@ -9,8 +9,6 @@ export default class ApiAlertesGTFS extends ApiEndpointBuffer {
 
         const alertes = await this.extraireProtobuf<AlerteRaw[]>(donneesRaw);
         
-        console.log(JSON.stringify(alertes[2], null, 2));
-
         for (const alerte of alertes) {
 
         }

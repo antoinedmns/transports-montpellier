@@ -1,6 +1,7 @@
 import LignesManager from "../../cache/lignes/LignesManager";
 import ApiEndpointBuffer from "../ApiEndpointBuffer";
 import ArretManager from "../../cache/arrets/ArretManager";
+import Logger from "../../internal/Logger";
 
 export default class ApiTripUpdate extends ApiEndpointBuffer {
 
@@ -9,21 +10,30 @@ export default class ApiTripUpdate extends ApiEndpointBuffer {
 
     public async parser(donneesRaw: Buffer) {
 
-        const arretsJson = await this.extraireProtobuf<TripUpdate[]>(donneesRaw);
+        const tripUpdatesJSON = await this.extraireProtobuf<TripUpdate[]>(donneesRaw);
+        Logger.log.success('Trajets', 'Décodage de ', tripUpdatesJSON.length + ' trajets', ' temps réel');
 
-        for (let i = 0; i < arretsJson.length; i++) {
+        // Réinitialiser tous les passages dans le cache
+        for (const arret of ArretManager.cache.values()) {
+            arret.passages = {};
+        }
+
+        for (let i = 0; i < tripUpdatesJSON.length; i++) {
             
-            const tripUpdate = arretsJson[i];
+            const tripUpdate = tripUpdatesJSON[i];
             const ligne = LignesManager.cache.get(tripUpdate.tripUpdate.trip.routeId);
+            if (!ligne) console.log('ligne ' + tripUpdate.tripUpdate.trip.routeId + ' non trouvée');
             if (!ligne) continue;
 
-            for (const stopTimeUpdate of tripUpdate.tripUpdate.stopTimeUpdate) {
+            const stops = tripUpdate.tripUpdate.stopTimeUpdate || [];
+            for (const stopTimeUpdate of stops) {
 
                 // récupérer l'arrêt depuis le cache (ou le créer si inexistant)
                 let arret = ligne.arrets.get(stopTimeUpdate.stopId);
                 if (!arret) {
 
                     arret = ArretManager.cacheGTFS.get(stopTimeUpdate.stopId);
+                    if (!arret) Logger.log.error('Arret', 'Arrêt ' + stopTimeUpdate.stopId + ' non trouvé');
                     if (!arret) continue;
 
                     ligne.arrets.set(arret.id, arret);

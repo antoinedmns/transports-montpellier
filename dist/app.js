@@ -20,6 +20,7 @@ const ApiArretsBus_1 = __importDefault(require("./struct/api_distante/reseau/arr
 const ApiTraceBus_1 = __importDefault(require("./struct/api_distante/reseau/traces/ApiTraceBus"));
 const ApiTripUpdateGTFS_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiTripUpdateGTFS"));
 const ApiReseauGTFS_1 = __importDefault(require("./struct/api_distante/reseau/GTFS/ApiReseauGTFS"));
+const ApiAlertesGTFS_1 = __importDefault(require("./struct/api_distante/temps_reel/ApiAlertesGTFS"));
 class Application {
     constructor() {
         this.serveur = (0, express_1.default)();
@@ -37,14 +38,17 @@ class Application {
             Logger_1.default.log.warn('AppInit', 'Tentative de redémarrage de l\'application ', 'annulée', ' : déjà initialisée.');
         this._loadRoutes();
         this._loadMiddlewares();
-        await (new ApiReseauGTFS_1.default().recuperer());
-        await (new ApiLignesTram_1.default().recuperer());
-        await (new ApiLignesBus_1.default().recuperer());
-        await (new ApiTraceTram_1.default().recuperer());
-        await (new ApiTraceBus_1.default().recuperer());
-        await (new ApiArretsTram_1.default().recuperer());
-        await (new ApiArretsBus_1.default().recuperer());
-        await (new ApiTripUpdateGTFS_1.default().recuperer());
+        for (const apiConstr of [
+            ApiReseauGTFS_1.default, ApiLignesTram_1.default, ApiLignesBus_1.default,
+            ApiTraceTram_1.default, ApiTraceBus_1.default, ApiArretsTram_1.default,
+            ApiArretsBus_1.default, ApiTripUpdateGTFS_1.default, ApiAlertesGTFS_1.default
+        ]) {
+            await (new apiConstr().recuperer());
+        }
+        setInterval(async () => {
+            Logger_1.default.log.debug('Temps réel', 'Récupération des données temps réel...');
+            new ApiTripUpdateGTFS_1.default().recuperer();
+        }, 30000);
         this._genererRessources();
         this.serveur.listen(process.env.PORT, async () => {
             Logger_1.default.log.separator();

@@ -29,7 +29,7 @@
         <h2 class="section-titre">Direction <span id="versDestination1">...</span></h2>
 
         <div class="containeur-section containeur-horaires">
-            <div class="horaires-temps-reel" id="horairesTempsReel1">
+            <div class="horaires-temps-reel" id="horairesTempsReel0">
                 <p class="horaires-temps-reel-vide">Aucun horaire en temps réel disponible</p>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <h2 class="section-titre">Direction <span id="versDestination0">...</span></h2>
 
         <div class="containeur-section containeur-horaires">
-            <div class="horaires-temps-reel" id="horairesTempsReel0">
+            <div class="horaires-temps-reel" id="horairesTempsReel1">
                 <p class="horaires-temps-reel-vide">Aucun horaire en temps réel disponible</p>
             </div>
         </div>
@@ -91,7 +91,7 @@
 <!-- Récupération des données -->
 <script>
     var arretId = <%= arret %>;
-    var ligneId = <%= ligne %>;
+    var ligneId = "<%= ligne %>";
 </script>
 
 <!-- Scripts -->

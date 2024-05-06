@@ -33,14 +33,17 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
     const coordArrets = Object.values(resultatArrets);
     for (const arret of coordArrets) {
         let coordsInverse = [arret.coords[1], arret.coords[0]];
-        let pointArret = L.marker(coordsInverse, { icon: arretIcon }).addTo(layerMarkers);
+        let pointArret = L.marker(coordsInverse, { icon: arretIcon, title: arret.nom }).addTo(layerMarkers);
         pointArret.bindPopup(arret.nom.toString());
     }
 
     map.on('popupopen', async function(e) {
+
         const popupNode = e.popup.getElement().querySelector('.leaflet-popup-content');
         const arretInfo = resultatArrets[popupNode.innerText];
         const resultatTerminus = await coordinateur.api.getAPI('api/arret/'+arretInfo.id+'/lignes');
+
+        console.log(resultatTerminus);
 
         // Création du wrapper du contenu de la popup Leaflet
         const leafletPopupContentWrapper = document.createElement("div");
@@ -92,6 +95,7 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
             const indicateurTempsConteneur = document.createElement("div");
             indicateurTempsConteneur.classList.add("indicateur-temps-conteneur");
 
+            /* 
             const terminusAller = document.createElement("p");
             terminusAller.classList.add("terminus-aller");
             terminusAller.innerHTML = resultatTerminus[i].directions[1];
@@ -108,21 +112,49 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
             const indicateurTempsBoiteRetour = document.createElement("div");
             indicateurTempsBoiteRetour.classList.add("indicateur-temps-boite-retour");
             indicateurTempsBoiteRetour.style.color = resultatTerminus[i].couleur;
-            indicateurTempsBoiteRetour.innerHTML = "1min";
+            indicateurTempsBoiteRetour.innerHTML = "1min"; */
 
-            if (estCouleurNeutre) {
-                terminusRetour.style.color = '#000';
-                terminusAller.style.color = '#000';
+            console.log(resultatTerminus[i]);
+
+            const directionPassagesBrut = Object.values(resultatTerminus[i].prochains_passages);
+            const directionPassages = (directionPassagesBrut.length >= 1
+                ? directionPassagesBrut : [null, null])
+
+            for (const directionPassage of directionPassages) {
+
+                const passageElement = document.createElement("div");
+                passageElement.classList.add("passage-element");
+
+                const terminus = document.createElement("p");
+                terminus.classList.add("terminus");
+                terminus.innerHTML = directionPassage ? directionPassage.headsign : "Service";
+
+                const temps = document.createElement("p");
+                temps.classList.add("temps");
+
+                if (directionPassage) {
+                    const passageDansSecondes = parseInt(directionPassage.timestamp) - Math.floor(Date.now() / 1000);
+                    temps.innerHTML = passageDansSecondes <= 5 ? "A quai"
+                        : passageDansSecondes < 90 ? passageDansSecondes + "s"
+                        : Math.floor(passageDansSecondes / 60) + " min";
+                } else temps.innerHTML = "Terminé";
+
+                passageElement.appendChild(terminus);
+                passageElement.appendChild(temps);
+                indicateurTempsConteneur.appendChild(passageElement);
+
             }
 
             // Ajout des éléments créés à leurs parents respectifs
             ligneAffichage.appendChild(indicateurLigne);
-            indicateurTempsConteneur.appendChild(terminusAller);
-            indicateurTempsConteneur.appendChild(indicateurTempsBoiteAller);
-            indicateurTempsConteneur.appendChild(terminusRetour);
-            indicateurTempsConteneur.appendChild(indicateurTempsBoiteRetour);
             ligneAffichage.appendChild(indicateurTempsConteneur);
             listeLignes.appendChild(ligneAffichage);
+
+            // Écouteur d'événement click sur chaque ligne
+            ligneAffichage.addEventListener('click', () => {
+                // fermer la boite de dialogue et charger la page
+                coordinateur.chargerPage('arret-details/' + ligne + '/' + arretInfo.id);
+            });
 
             i += 1;
         }
@@ -130,29 +162,44 @@ document.getElementById('leafletScript').addEventListener('load', async () => {
         popupNode.innerHTML = ''; // Effacer le contenu précédent
         popupNode.appendChild(leafletPopupContentWrapper);
     
-        // Écouteur d'événement click sur chaque ligne
-        listeLignes.querySelectorAll('.ligne-affichage').forEach(ligneAffichage => {
-            ligneAffichage.addEventListener('click', () => {
-                // fermer la boite de dialogue et charger la page
-                coordinateur.chargerPage('arret-details/' + ligne + '/' + arretInfo.id);
-            });
-        });
     });
 
     // Contrôle de l'affichage des layers en fonction du niveau de zoom
-    map.on('zoomend', function () {
+    map.on('zoomend', recalibrerZoom);
+
+    /**
+     * Recalibrer le zoom (affichage des layers en fonction du niveau de zoom)
+     */
+    function recalibrerZoom() {
+
         const currentZoom = map.getZoom();
-        if (currentZoom >= 14) {
+        if (currentZoom >= 12) {
+
+            const layerOpacite = Math.min(1, (currentZoom - 11.5) / 7);
+            console.log(currentZoom);
+            layerBus.eachLayer(function (layer) {
+                layer.setStyle({ opacity: layerOpacite });
+            });
+
             if (!map.hasLayer(layerBus)) map.addLayer(layerBus);
-            if (!map.hasLayer(layerMarkers)) map.addLayer(layerMarkers);
+            if (currentZoom >= 14 && !map.hasLayer(layerMarkers)) map.addLayer(layerMarkers);
+            else if (currentZoom < 14 && map.hasLayer(layerMarkers)) map.removeLayer(layerMarkers);
+
         } else {
+
             if (map.hasLayer(layerBus)) map.removeLayer(layerBus);
             if (map.hasLayer(layerMarkers)) map.removeLayer(layerMarkers);
             if (!map.hasLayer(layerTram)) map.addLayer(layerTram);
+            
         }
-    });
+
+    }
 
     layerTram.addTo(map);
     layerBus.addTo(map);
     layerMarkers.addTo(map);
+
+    // Calibrer le zoom initial
+    recalibrerZoom();
+
 });

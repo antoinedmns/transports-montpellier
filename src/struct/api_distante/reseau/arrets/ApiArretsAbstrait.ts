@@ -58,6 +58,17 @@ export default abstract class ApiArretAbstrait extends ApiEndpointHTTP {
 
 
             const directions: Record<string, string[]> = {};
+            for (const ligneEtDirection of feature.properties.lignes_et_directions.split('; ')) {
+
+                const [ligne, ...direction] = ligneEtDirection.split(' ');
+                const ligneHarmonisee = LignesManager.harmonisations.get(ligne) ?? ligne;
+
+                if (!directions[ligneHarmonisee]) directions[ligneHarmonisee] = [];
+                const directionStr = direction.join(' ');
+
+                if (!directions[ligneHarmonisee].includes(directionStr)) directions[ligneHarmonisee].push(directionStr);
+
+            }
 
             // Création de l'arrêt aggregé
             const aggreg = new ArretAggrege(

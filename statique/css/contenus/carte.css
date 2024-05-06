@@ -76,12 +76,28 @@ span:hover {
 }
 
 .indicateur-temps-conteneur {
-    color: var(--couleur-principale);
+    color: #131313cc;
     margin-left: auto; /* Centrer à droite */
     align-self: center; /* Centrer verticalement */
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
+    padding-right: 0.7rem;
+
+    .passage-element {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 0.2rem 0;
+
+        .temps {
+            width: 4rem;
+            background-color: #fff;
+            border-radius: 4px;
+            text-align: center;
+            padding: 0.2rem;
+        }
+
+    }
+
 }
 
 .indicateur-temps-boite-aller,

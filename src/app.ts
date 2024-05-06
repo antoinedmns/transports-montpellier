@@ -70,17 +70,26 @@ export default class Application {
         // Charger et lier les middlewares
         this._loadMiddlewares();
 
-        // Charger et récupérer les données des lignes
-        await (new ApiReseauGTFS().recuperer());
-        await (new ApiLignesTram().recuperer());
-        await (new ApiLigneBus().recuperer());
-        await (new ApiTraceTram().recuperer());
-        await (new ApiTraceBus().recuperer());
-        await (new ApiArretsTram().recuperer());
-        await (new ApiArretBus().recuperer());
-        await (new ApiTripUpdate().recuperer());
-        // await (new ApiTempsReel().recuperer()); [discontinué]
-        // await (new ApiAlertesGTFS().recuperer());
+        for (const apiConstr of [
+
+            // Charger et récupérer les données des API distantes
+            ApiReseauGTFS, ApiLignesTram, ApiLigneBus,
+            ApiTraceTram, ApiTraceBus, ApiArretsTram,
+            ApiArretBus, ApiTripUpdate, ApiAlertesGTFS
+
+        ]) {
+            
+            await (new apiConstr().recuperer());
+
+        }
+
+        // Récupérer les données temps réel toutes les 30 secondes
+        setInterval(async () => {
+
+            Logger.log.debug('Temps réel', 'Récupération des données temps réel...');
+            new ApiTripUpdate().recuperer();
+
+        }, 30000);
 
         // Générer les ressources
         this._genererRessources();

@@ -43,6 +43,11 @@ export default class LigneBase {
     public trajets: Record<string, string> = {};
 
     /**
+     * Directions de la ligne
+     */
+    public directions: string[] = [];
+
+    /**
      * Ligne
      */
     constructor(id: string, couleur: string, numExploitation: string, nomComplete: string, type: GTFSRouteType) {

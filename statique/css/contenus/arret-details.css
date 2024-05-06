@@ -61,14 +61,6 @@
 
     }
 
-    .arret-horaires {
-        gap: 2rem;
-    }
-
-    .containeur-horaires {
-        width: 100%;
-    }
-
 }
 
 .thermometre-contenu {
@@ -97,6 +89,30 @@
             display: flex;
             gap: 1rem;
             justify-content: space-around;
+        }
+
+    }
+
+}
+
+.arret-horaires {
+
+    .horaires-temps-reel {
+        
+        .passage {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            background-color: #25272b1a;
+            padding: 0.7rem 1.35rem;
+            border-radius: 5px;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .passage:first-child {
+            margin: 0;
         }
 
     }

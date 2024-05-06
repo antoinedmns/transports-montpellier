@@ -9,8 +9,6 @@
                            |_|   
 ```
 
-> Merci de lire l'ensemble des informations ci-dessous pour lancer l'application.
-
 # Prérequis :
 - Node.js >v20.0
 - npm >v10.0
@@ -20,4 +18,6 @@
 - Renommer le fichier `exemple.env` en `.env`
 - `npm i`
 - `npm run build`
-- `npm run start`                  
+- `npm run start`
+
+> Merci de lire l'ensemble des informations ci-dessous pour lancer l'application.                 
